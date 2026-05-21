@@ -2,12 +2,12 @@ annotations:
   - border_color: '#808080FF'
     border_radius: 10
     border_style: ''
-    color: '#BEBEBEAA'
+    color: '#B86239'
     rotation: 0
     thickness: 1
     type: rectangle
     x1: 120.0
-    y1: -120.0
+    y1: 0.0
     x2: 400.0
     y2: 320.0
     z_index: 0
@@ -86,7 +86,7 @@ annotations:
   - border_color: '#808080FF'
     border_radius: 10
     border_style: ''
-    color: '#BEBEBEAA'
+    color: '#B86239'
     rotation: 0
     thickness: 1
     type: rectangle
@@ -107,6 +107,261 @@ annotations:
     x2: 240.0
     y2: -600.0
     z_index: 2
+  - border_color: '#808080FF'
+    border_radius: 10
+    border_style: ''
+    color: '#46D2FE9A'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: 680.0
+    y1: -520.0
+    x2: 360.0
+    y2: 280.0
+    z_index: 1
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: R&D Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 960.0
+    y1: -40.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Security Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 960.0
+    y1: 600.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Sales Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 960.0
+    y1: 280.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: HR Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -480.0
+    y1: -40.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: IT Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -480.0
+    y1: 600.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Finance Department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -560.0
+    y1: 280.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Core
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 280.0
+    y1: -160.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Distribtion
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 240.0
+    y1: 320.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: HQ Server Room
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 1080.0
+    y1: -400.0
+    z_index: 3
+  - border_color: '#808080FF'
+    border_radius: 10
+    border_style: ''
+    color: '#B86239'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: -1600.0
+    y1: -800.0
+    x2: 640.0
+    y2: 560.0
+    z_index: 0
+  - border_color: '#808080FF'
+    border_radius: 10
+    border_style: ''
+    color: '#46D2FE9A'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: -1520.0
+    y1: -80.0
+    x2: 480.0
+    y2: 320.0
+    z_index: 0
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Core
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -1320.0
+    y1: -240.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: Technical/Support department
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -1400.0
+    y1: 240.0
+    z_index: 3
+  - border_color: '#808080FF'
+    border_radius: 10
+    border_style: ''
+    color: '#46D2FE9A'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: -2160.0
+    y1: -80.0
+    x2: 480.0
+    y2: 320.0
+    z_index: 0
+  - border_color: '#FFFFFF'
+    border_radius: 10
+    border_style: ''
+    color: '#B86239'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: -2240.0
+    y1: -800.0
+    x2: 480.0
+    y2: 440.0
+    z_index: 0
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: DR Server Room
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -2040.0
+    y1: 240.0
+    z_index: 3
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: false
+    text_content: DMZ
+    text_font: monospace
+    text_italic: false
+    text_size: 18
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -2040.0
+    y1: -360.0
+    z_index: 3
 smart_annotations: []
 nodes:
   - boot_disk_size: null
@@ -116,86 +371,6 @@ nodes:
     data_volume: null
     hide_links: false
     id: n0
-    image_definition: null
-    label: Edge Router 1
-    node_definition: cat8000v
-    parameters: {}
-    ram: null
-    tags: []
-    x: 240
-    y: -600
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n1
-    image_definition: null
-    label: Edge Router 2
-    node_definition: cat8000v
-    parameters: {}
-    ram: null
-    tags: []
-    x: 400
-    y: -600
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n2
     image_definition: null
     label: Firewall-HQ-1
     node_definition: asav
@@ -215,93 +390,33 @@ nodes:
         mac_address: null
         type: physical
         slot: 1
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n3
-    image_definition: null
-    label: CoreSwitch-HQ-1
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: 240
-    y: -360
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
       - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
+        label: GigabitEthernet0/1
         mac_address: null
         type: physical
         slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n4
-    image_definition: null
-    label: CoreSwitch-HQ-2
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: 400
-    y: -360
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
       - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
+        label: GigabitEthernet0/2
         mac_address: null
         type: physical
         slot: 3
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 5
   - boot_disk_size: null
     configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n5
+    id: n1
     image_definition: null
     label: Firewall-HQ-2
     node_definition: asav
@@ -321,36 +436,35 @@ nodes:
         mac_address: null
         type: physical
         slot: 1
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n6
-    image_definition: null
-    label: ubuntu-0
-    node_definition: ubuntu
-    parameters: {}
-    ram: null
-    tags: []
-    x: -600
-    y: -80
-    interfaces:
-      - id: i0
-        label: ens2
+      - id: i2
+        label: GigabitEthernet0/1
         mac_address: null
         type: physical
-        slot: 0
+        slot: 2
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 5
   - boot_disk_size: null
     configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n7
+    id: n2
     image_definition: null
-    label: Wireless Controller 1
+    label: WLC-HQ-1
     node_definition: cat9800
     parameters: {}
     ram: null
@@ -383,246 +497,6 @@ nodes:
         type: physical
         slot: 3
   - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n8
-    image_definition: null
-    label: DepartmentSwitch-HQ-Sales
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: 800
-    y: 200
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n9
-    image_definition: null
-    label: DepartmentSwitch-HQ-HR
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: -160
-    y: -120
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n10
-    image_definition: null
-    label: DepartmentSwitch-HQ-Security
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: 800
-    y: 520
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n11
-    image_definition: null
-    label: DepartmentSwitch-HQ-R&D
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: 800
-    y: -120
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n12
-    image_definition: null
-    label: DepartmentSwitch-HQ-Finance
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: -160
-    y: 200
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n13
-    image_definition: null
-    label: DepartmentSwitch-HQ-IT
-    node_definition: nxosv9000
-    parameters: {}
-    ram: null
-    tags: []
-    x: -160
-    y: 520
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: mgmt0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: Ethernet1/1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: Ethernet1/2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: Ethernet1/3
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
     configuration:
       - name: iosxe_config.txt
         content: |-
@@ -634,9 +508,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n14
+    id: n3
     image_definition: null
-    label: Wireless Controller 2
+    label: WLC-HQ-2
     node_definition: cat9800
     parameters: {}
     ram: null
@@ -674,15 +548,533 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n15
-    image_definition: null
-    label: Distro Switch 1
+    id: n4
+    image_definition: iosvl2-2020
+    label: DistSwitch-HQ-1
     node_definition: iosvl2
     parameters: {}
     ram: null
     tags: []
     x: 240
-    y: -40
+    y: 80
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n5
+    image_definition: iosvl2-2020
+    label: DistSwitch-HQ-2
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 400
+    y: 80
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n6
+    image_definition: iosvl2-2020
+    label: DistSwitch-HQ-3
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 240
+    y: 200
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n7
+    image_definition: iosvl2-2020
+    label: DistSwitch-HQ-4
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 400
+    y: 200
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n8
+    image_definition: null
+    label: RADIUS-HQ-1
+    node_definition: radius
+    parameters: {}
+    ram: null
+    tags: []
+    x: 960
+    y: -440
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n9
+    image_definition: null
+    label: DHCP/DNS-HQ-1
+    node_definition: server
+    parameters: {}
+    ram: null
+    tags: []
+    x: 960
+    y: -360
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n10
+    image_definition: null
+    label: trex-0 (Traffic generator - see Jaiden)
+    node_definition: trex
+    parameters: {}
+    ram: null
+    tags: []
+    x: -480
+    y: -1000
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n11
+    image_definition: null
+    label: asav-DR-1
+    node_definition: asav
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1400
+    y: -560
+    interfaces:
+      - id: i0
+        label: Management0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i6
+        label: GigabitEthernet0/5
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i7
+        label: GigabitEthernet0/6
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i8
+        label: GigabitEthernet0/7
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i9
+        label: GigabitEthernet0/8
+        mac_address: null
+        type: physical
+        slot: 9
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n12
+    image_definition: null
+    label: asav-DR-2
+    node_definition: asav
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1160
+    y: -560
+    interfaces:
+      - id: i0
+        label: Management0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i6
+        label: GigabitEthernet0/5
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i7
+        label: GigabitEthernet0/6
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i8
+        label: GigabitEthernet0/7
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i9
+        label: GigabitEthernet0/8
+        mac_address: null
+        type: physical
+        slot: 9
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: |-
+          platform console serial
+          hostname inserthostname-here
+          !
+          end
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n13
+    image_definition: null
+    label: Wireless Controller-DR-1
+    node_definition: cat9800
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1440
+    y: -320
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet2
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet3
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet4
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: |-
+          platform console serial
+          hostname inserthostname-here
+          !
+          end
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n14
+    image_definition: null
+    label: Wireless Controller-DR-2
+    node_definition: cat9800
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1120
+    y: -320
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet2
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet3
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet4
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: 50
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n15
+    image_definition: iosvl2-2020
+    label: DepartmentSwitch-HQ-HR
+    node_definition: iosvl2
+    parameters: {}
+    ram: 4768
+    tags: []
+    x: -160
+    y: -120
     interfaces:
       - id: i0
         label: Loopback0
@@ -710,63 +1102,295 @@ nodes:
         slot: 3
   - boot_disk_size: null
     configuration:
-      - name: ios_config.txt
-        content: hostname inserthostname-here
+      - name: iosxe_config.txt
+        content: |-
+          platform console serial
+          hostname inserthostname-here
+          !
+          end
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
     id: n16
     image_definition: null
-    label: Distro Switch 2
-    node_definition: iosvl2
+    label: Wireless AP-DR-1
+    node_definition: cat9800
     parameters: {}
     ram: null
     tags: []
-    x: 400
-    y: -40
+    x: -1440
+    y: 0
     interfaces:
       - id: i0
         label: Loopback0
         mac_address: null
         type: loopback
       - id: i1
-        label: GigabitEthernet0/0
+        label: GigabitEthernet1
         mac_address: null
         type: physical
         slot: 0
       - id: i2
-        label: GigabitEthernet0/1
+        label: GigabitEthernet2
         mac_address: null
         type: physical
         slot: 1
       - id: i3
-        label: GigabitEthernet0/2
+        label: GigabitEthernet3
         mac_address: null
         type: physical
         slot: 2
       - id: i4
-        label: GigabitEthernet0/3
+        label: GigabitEthernet4
         mac_address: null
         type: physical
         slot: 3
   - boot_disk_size: null
-    configuration:
-      - name: ios_config.txt
-        content: hostname inserthostname-here
+    configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
     id: n17
     image_definition: null
-    label: Distro Switch 3
+    label: DepartmentSwitch-DR-TechnicalSupport
     node_definition: iosvl2
     parameters: {}
     ram: null
     tags: []
-    x: 240
+    x: -1280
+    y: 0
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n18
+    image_definition: null
+    label: Phone Browser
+    node_definition: chrome
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1440
     y: 80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n19
+    image_definition: null
+    label: Wired-PC
+    node_definition: firefox
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1280
+    y: 80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n20
+    image_definition: null
+    label: Wired-IOT-Device
+    node_definition: desktop
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1120
+    y: 80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          # insert commands here
+          # ip address add dev eth1 10.0.0.1/24
+          # ip link set dev eth1 up
+          exit 0
+      - name: environment
+        content: |-
+          # -- These are understood by the start script
+          # -- Homepage to open at start (needs network!)
+          # HOME_URL=https://www.cisco.com/go/cml
+          # -- Wait additional time for network before starting browser
+          # WAIT=2
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n21
+    image_definition: null
+    label: TS-Staff-1
+    node_definition: firefox
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1440
+    y: 160
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          # insert commands here
+          # ip address add dev eth1 10.0.0.1/24
+          # ip link set dev eth1 up
+          exit 0
+      - name: environment
+        content: |-
+          # -- These are understood by the start script
+          # -- Homepage to open at start (needs network!)
+          # HOME_URL=https://www.cisco.com/go/cml
+          # -- Wait additional time for network before starting browser
+          # WAIT=2
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n22
+    image_definition: null
+    label: TS-Staff-2
+    node_definition: firefox
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1280
+    y: 160
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          # insert commands here
+          # ip address add dev eth1 10.0.0.1/24
+          # ip link set dev eth1 up
+          exit 0
+      - name: environment
+        content: |-
+          # -- These are understood by the start script
+          # -- Homepage to open at start (needs network!)
+          # HOME_URL=https://www.cisco.com/go/cml
+          # -- Wait additional time for network before starting browser
+          # WAIT=2
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n23
+    image_definition: null
+    label: TS-Staff-3
+    node_definition: firefox
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1120
+    y: 160
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n24
+    image_definition: null
+    label: Room-Switch-1
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -2080
+    y: 0
     interfaces:
       - id: i0
         label: Loopback0
@@ -800,15 +1424,15 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n18
+    id: n25
     image_definition: null
-    label: Distro Switch 4
+    label: Room-Switch-2
     node_definition: iosvl2
     parameters: {}
     ram: null
     tags: []
-    x: 400
-    y: 80
+    x: -2080
+    y: 120
     interfaces:
       - id: i0
         label: Loopback0
@@ -834,7 +1458,1803 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
-links: []
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n26
+    image_definition: null
+    label: Internal DNS/DHCP Server
+    node_definition: server
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1880
+    y: 0
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n27
+    image_definition: null
+    label: RADIUS Server
+    node_definition: radius
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1880
+    y: 120
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname inserthostname-here
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          # no password for tc user by default
+          TC_PASSWORD=
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n28
+    image_definition: null
+    label: DMZ DNS Server-1
+    node_definition: server
+    parameters: {}
+    ram: null
+    tags: []
+    x: -2120
+    y: -720
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname inserthostname-here
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          # no password for tc user by default
+          TC_PASSWORD=
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n29
+    image_definition: null
+    label: Website Server
+    node_definition: server
+    parameters: {}
+    ram: null
+    tags: []
+    x: -2120
+    y: -600
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname inserthostname-here
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+          # no password for tc user by default
+          TC_PASSWORD=
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n30
+    image_definition: null
+    label: DMZ DNS Server-2
+    node_definition: server
+    parameters: {}
+    ram: null
+    tags: []
+    x: -2120
+    y: -480
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n31
+    image_definition: null
+    label: DMZ Switch-1
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1920
+    y: -640
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n32
+    image_definition: null
+    label: DMZ Switch-2
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1920
+    y: -520
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: 50
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n33
+    image_definition: null
+    label: DepartmentSwitch-HQ-Finance
+    node_definition: iosvl2
+    parameters: {}
+    ram: 4768
+    tags: []
+    x: -160
+    y: 200
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n34
+    image_definition: null
+    label: DepartmentSwitch-HQ-IT
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -160
+    y: 520
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n35
+    image_definition: null
+    label: DepartmentSwitch-HQ-Security
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 800
+    y: 520
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n36
+    image_definition: null
+    label: DepartmentSwitch-HQ-Sales
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 800
+    y: 200
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n37
+    image_definition: null
+    label: DepartmentSwitch-HQ-R&D
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 800
+    y: -120
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n38
+    image_definition: null
+    label: iosv-0
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1480
+    y: 680
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n39
+    image_definition: null
+    label: CoreSwitch-HQ-1
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 240
+    y: -360
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i9
+        label: GigabitEthernet2/0
+        mac_address: null
+        type: physical
+        slot: 8
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n40
+    image_definition: null
+    label: CoreSwitch-HQ-2
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 400
+    y: -360
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n41
+    image_definition: null
+    label: CoreSwitch-DR-2
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1160
+    y: -440
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i9
+        label: GigabitEthernet2/0
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i10
+        label: GigabitEthernet2/1
+        mac_address: null
+        type: physical
+        slot: 9
+      - id: i11
+        label: GigabitEthernet2/2
+        mac_address: null
+        type: physical
+        slot: 10
+      - id: i12
+        label: GigabitEthernet2/3
+        mac_address: null
+        type: physical
+        slot: 11
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n42
+    image_definition: null
+    label: CoreSwitch-DR-1
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1400
+    y: -440
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i9
+        label: GigabitEthernet2/0
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i10
+        label: GigabitEthernet2/1
+        mac_address: null
+        type: physical
+        slot: 9
+      - id: i11
+        label: GigabitEthernet2/2
+        mac_address: null
+        type: physical
+        slot: 10
+      - id: i12
+        label: GigabitEthernet2/3
+        mac_address: null
+        type: physical
+        slot: 11
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n43
+    image_definition: null
+    label: ServerRoomSwitch-HQ-2
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 800
+    y: -360
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n44
+    image_definition: null
+    label: ServerRoomSwitch-HQ-1
+    node_definition: iosvl2
+    parameters: {}
+    ram: null
+    tags: []
+    x: 800
+    y: -440
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: GigabitEthernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: GigabitEthernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n45
+    image_definition: null
+    label: ISP-HQ-3 (Satellite)
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: 520
+    y: -800
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n46
+    image_definition: null
+    label: 'ISP-HQ-1 (Terrestrial Fibre) '
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: 80
+    y: -800
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n47
+    image_definition: null
+    label: ISP-HQ-2 (Terrestrial Fibre)
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: 320
+    y: -800
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n48
+    image_definition: null
+    label: EdgeRouter-HQ-1
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: 240
+    y: -560
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n49
+    image_definition: null
+    label: EdgeRouter-HQ-2
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: 400
+    y: -560
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n50
+    image_definition: null
+    label: EdgeRouter-DR-2
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1160
+    y: -680
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 4
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n51
+    image_definition: null
+    label: ISP-HQ-3 (Satellite)_0
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1080
+    y: -880
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n52
+    image_definition: null
+    label: ISP-HQ-2 (Terrestrial Fibre)_0
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1280
+    y: -880
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n53
+    image_definition: null
+    label: ISP-HQ-1 (Terrestrial Fibre) _0
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1520
+    y: -880
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration:
+      - name: ios_config.txt
+        content: hostname inserthostname-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n54
+    image_definition: null
+    label: EdgeRouter-DR-1
+    node_definition: iosv
+    parameters: {}
+    ram: null
+    tags: []
+    x: -1400
+    y: -680
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i5
+        label: GigabitEthernet0/4
+        mac_address: null
+        type: physical
+        slot: 4
+links:
+  - id: l0
+    n1: n15
+    n2: n5
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DepartmentSwitch-HQ-HR-GigabitEthernet0/0<->DistSwitch-HQ-2-GigabitEthernet0/1
+  - id: l1
+    n1: n4
+    n2: n15
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DistSwitch-HQ-1-GigabitEthernet0/0<->DepartmentSwitch-HQ-HR-GigabitEthernet0/1
+  - id: l2
+    n1: n37
+    n2: n5
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: DepartmentSwitch-HQ-R&D-GigabitEthernet0/0<->DistSwitch-HQ-2-GigabitEthernet0/0
+  - id: l3
+    n1: n37
+    n2: n4
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: DepartmentSwitch-HQ-R&D-GigabitEthernet0/1<->DistSwitch-HQ-1-GigabitEthernet0/1
+  - id: l4
+    n1: n33
+    n2: n4
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Finace-GigabitEthernet0/0<->DistSwitch-HQ-1-GigabitEthernet0/2
+  - id: l5
+    n1: n33
+    n2: n6
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Finace-GigabitEthernet0/1<->DistSwitch-HQ-3-GigabitEthernet0/0
+  - id: l6
+    n1: n34
+    n2: n6
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DepartmentSwitch-HQ-IT-GigabitEthernet0/0<->DistSwitch-HQ-3-GigabitEthernet0/1
+  - id: l7
+    n1: n34
+    n2: n7
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: DepartmentSwitch-HQ-IT-GigabitEthernet0/1<->DistSwitch-HQ-4-GigabitEthernet0/0
+  - id: l8
+    n1: n35
+    n2: n7
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Security-GigabitEthernet0/0<->DistSwitch-HQ-4-GigabitEthernet0/1
+  - id: l9
+    n1: n35
+    n2: n6
+    i1: i2
+    i2: i3
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Security-GigabitEthernet0/1<->DistSwitch-HQ-3-GigabitEthernet0/2
+  - id: l10
+    n1: n36
+    n2: n7
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Sales-GigabitEthernet0/0<->DistSwitch-HQ-4-GigabitEthernet0/2
+  - id: l11
+    n1: n36
+    n2: n5
+    i1: i2
+    i2: i3
+    conditioning: {}
+    label: DepartmentSwitch-HQ-Sales-GigabitEthernet0/1<->DistSwitch-HQ-2-GigabitEthernet0/2
+  - id: l12
+    n1: n4
+    n2: n7
+    i1: i4
+    i2: i4
+    conditioning: {}
+    label: DistSwitch-HQ-1-GigabitEthernet0/3<->DistSwitch-HQ-4-GigabitEthernet0/3
+  - id: l13
+    n1: n5
+    n2: n6
+    i1: i4
+    i2: i4
+    conditioning: {}
+    label: DistSwitch-HQ-2-GigabitEthernet0/3<->DistSwitch-HQ-3-GigabitEthernet0/3
+  - id: l14
+    n1: n4
+    n2: n6
+    i1: i5
+    i2: i5
+    conditioning: {}
+    label: DistSwitch-HQ-1-GigabitEthernet1/0<->DistSwitch-HQ-3-GigabitEthernet1/0
+  - id: l15
+    n1: n7
+    n2: n5
+    i1: i5
+    i2: i5
+    conditioning: {}
+    label: DistSwitch-HQ-4-GigabitEthernet1/0<->DistSwitch-HQ-2-GigabitEthernet1/0
+  - id: l16
+    n1: n5
+    n2: n4
+    i1: i6
+    i2: i6
+    conditioning: {}
+    label: DistSwitch-HQ-2-GigabitEthernet1/1<->DistSwitch-HQ-1-GigabitEthernet1/1
+  - id: l17
+    n1: n6
+    n2: n7
+    i1: i6
+    i2: i6
+    conditioning: {}
+    label: DistSwitch-HQ-3-GigabitEthernet1/1<->DistSwitch-HQ-4-GigabitEthernet1/1
+  - id: l18
+    n1: n11
+    n2: n12
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: asav-DR-1-GigabitEthernet0/0<->asav-DR-2-GigabitEthernet0/0
+  - id: l19
+    n1: n16
+    n2: n18
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: Wireless AP-DR-1-GigabitEthernet1<->Phone Browser-eth1
+  - id: l20
+    n1: n18
+    n2: n21
+    i1: i0
+    i2: i0
+    conditioning: {}
+    label: Phone Browser-eth0<->TS-Staff-1-eth0
+  - id: l21
+    n1: n16
+    n2: n17
+    i1: i2
+    i2: i3
+    conditioning: {}
+    label: Wireless AP-DR-1-GigabitEthernet2<->Dept Switch-GigabitEthernet0/2
+  - id: l22
+    n1: n17
+    n2: n19
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: Dept Switch-GigabitEthernet0/0<->Wired-PC-eth0
+  - id: l23
+    n1: n19
+    n2: n22
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: Wired-PC-eth1<->TS-Staff-2-eth1
+  - id: l24
+    n1: n17
+    n2: n20
+    i1: i2
+    i2: i0
+    conditioning: {}
+    label: Dept Switch-GigabitEthernet0/1<->Wired-IOT-Device-eth0
+  - id: l25
+    n1: n20
+    n2: n23
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: Wired-IOT-Device-eth1<->TS-Staff-3-eth1
+  - id: l26
+    n1: n46
+    n2: n48
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/0
+  - id: l27
+    n1: n46
+    n2: n49
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/0
+  - id: l28
+    n1: n47
+    n2: n48
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/1
+  - id: l29
+    n1: n49
+    n2: n47
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-HQ-2-GigabitEthernet0/1<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/1
+  - id: l30
+    n1: n45
+    n2: n48
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: ISP-HQ-3 (Satellite)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/2
+  - id: l31
+    n1: n45
+    n2: n49
+    i1: i2
+    i2: i3
+    conditioning: {}
+    label: ISP-HQ-3 (Satellite)-GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/2
+  - id: l32
+    n1: n48
+    n2: n0
+    i1: i4
+    i2: i1
+    conditioning: {}
+    label: EdgeRouter-HQ-1-GigabitEthernet0/3<->Firewall-HQ-1-GigabitEthernet0/0
+  - id: l33
+    n1: n49
+    n2: n1
+    i1: i4
+    i2: i1
+    conditioning: {}
+    label: EdgeRouter-HQ-2-GigabitEthernet0/3<->Firewall-HQ-2-GigabitEthernet0/0
+  - id: l34
+    n1: n0
+    n2: n1
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: Firewall-HQ-1-GigabitEthernet0/1<->Firewall-HQ-2-GigabitEthernet0/1
+  - id: l35
+    n1: n0
+    n2: n39
+    i1: i3
+    i2: i1
+    conditioning: {}
+    label: Firewall-HQ-1-GigabitEthernet0/2<->CoreSwitch-HQ-1-GigabitEthernet0/0
+  - id: l36
+    n1: n40
+    n2: n1
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: CoreSwitch-HQ-2-GigabitEthernet0/0<->Firewall-HQ-2-GigabitEthernet0/2
+  - id: l37
+    n1: n39
+    n2: n2
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-HQ-1-GigabitEthernet0/1<->WLC-HQ-1-GigabitEthernet1
+  - id: l38
+    n1: n40
+    n2: n3
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-HQ-2-GigabitEthernet0/1<->WLC-HQ-2-GigabitEthernet1
+  - id: l39
+    n1: n40
+    n2: n39
+    i1: i3
+    i2: i3
+    conditioning: {}
+    label: CoreSwitch-HQ-2-GigabitEthernet0/2<->CoreSwitch-HQ-1-GigabitEthernet0/2
+  - id: l40
+    n1: n40
+    n2: n0
+    i1: i4
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-HQ-2-GigabitEthernet0/3<->Firewall-HQ-1-GigabitEthernet0/3
+  - id: l41
+    n1: n39
+    n2: n1
+    i1: i4
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-HQ-1-GigabitEthernet0/3<->Firewall-HQ-2-GigabitEthernet0/3
+  - id: l42
+    n1: n44
+    n2: n39
+    i1: i1
+    i2: i5
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-1-GigabitEthernet0/0<->CoreSwitch-HQ-1-GigabitEthernet1/0
+  - id: l43
+    n1: n43
+    n2: n40
+    i1: i1
+    i2: i5
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-2-GigabitEthernet0/0<->CoreSwitch-HQ-2-GigabitEthernet1/0
+  - id: l44
+    n1: n44
+    n2: n40
+    i1: i2
+    i2: i6
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-1-GigabitEthernet0/1<->CoreSwitch-HQ-2-GigabitEthernet1/1
+  - id: l45
+    n1: n43
+    n2: n39
+    i1: i2
+    i2: i6
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-2-GigabitEthernet0/1<->CoreSwitch-HQ-1-GigabitEthernet1/1
+  - id: l46
+    n1: n43
+    n2: n44
+    i1: i3
+    i2: i3
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-2-GigabitEthernet0/2<->ServerRoomSwitch-HQ-1-GigabitEthernet0/2
+  - id: l47
+    n1: n44
+    n2: n8
+    i1: i4
+    i2: i0
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-1-GigabitEthernet0/3<->RADIUS-HQ-1-eth0
+  - id: l48
+    n1: n8
+    n2: n43
+    i1: i1
+    i2: i4
+    conditioning: {}
+    label: RADIUS-HQ-1-eth1<->ServerRoomSwitch-HQ-2-GigabitEthernet0/3
+  - id: l49
+    n1: n9
+    n2: n43
+    i1: i0
+    i2: i5
+    conditioning: {}
+    label: DHCP/DNS-HQ-1-eth0<->ServerRoomSwitch-HQ-2-GigabitEthernet1/0
+  - id: l50
+    n1: n9
+    n2: n44
+    i1: i1
+    i2: i5
+    conditioning: {}
+    label: DHCP/DNS-HQ-1-eth1<->ServerRoomSwitch-HQ-1-GigabitEthernet1/0
+  - id: l51
+    n1: n3
+    n2: n2
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: WLC-HQ-2-GigabitEthernet2<->WLC-HQ-1-GigabitEthernet2
+  - id: l52
+    n1: n50
+    n2: n51
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: EdgeRouter-DR-2-GigabitEthernet0/0<->ISP-HQ-3 (Satellite)_0-GigabitEthernet0/0
+  - id: l53
+    n1: n50
+    n2: n52
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: EdgeRouter-DR-2-GigabitEthernet0/1<->ISP-HQ-2 (Terrestrial Fibre)_0-GigabitEthernet0/0
+  - id: l54
+    n1: n50
+    n2: n53
+    i1: i3
+    i2: i1
+    conditioning: {}
+    label: EdgeRouter-DR-2-GigabitEthernet0/2<->ISP-HQ-1 (Terrestrial Fibre) _0-GigabitEthernet0/0
+  - id: l55
+    n1: n54
+    n2: n53
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-DR-1-GigabitEthernet0/0<->ISP-HQ-1 (Terrestrial Fibre) _0-GigabitEthernet0/1
+  - id: l56
+    n1: n54
+    n2: n52
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-DR-1-GigabitEthernet0/1<->ISP-HQ-2 (Terrestrial Fibre)_0-GigabitEthernet0/1
+  - id: l57
+    n1: n54
+    n2: n51
+    i1: i3
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-DR-1-GigabitEthernet0/2<->ISP-HQ-3 (Satellite)_0-GigabitEthernet0/1
+  - id: l58
+    n1: n54
+    n2: n11
+    i1: i4
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-DR-1-GigabitEthernet0/3<->asav-DR-1-GigabitEthernet0/1
+  - id: l59
+    n1: n50
+    n2: n12
+    i1: i4
+    i2: i2
+    conditioning: {}
+    label: EdgeRouter-DR-2-GigabitEthernet0/3<->asav-DR-2-GigabitEthernet0/1
+  - id: l60
+    n1: n12
+    n2: n54
+    i1: i3
+    i2: i5
+    conditioning: {}
+    label: asav-DR-2-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/4
+  - id: l61
+    n1: n11
+    n2: n50
+    i1: i3
+    i2: i5
+    conditioning: {}
+    label: asav-DR-1-GigabitEthernet0/2<->EdgeRouter-DR-2-GigabitEthernet0/4
+  - id: l62
+    n1: n41
+    n2: n12
+    i1: i1
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-DR-2-GigabitEthernet0/0<->asav-DR-2-GigabitEthernet0/3
+  - id: l63
+    n1: n41
+    n2: n42
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-DR-2-GigabitEthernet0/1<->CoreSwitch-DR-1-GigabitEthernet0/0
+  - id: l64
+    n1: n42
+    n2: n11
+    i1: i2
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-DR-1-GigabitEthernet0/1<->asav-DR-1-GigabitEthernet0/3
+  - id: l65
+    n1: n12
+    n2: n42
+    i1: i5
+    i2: i3
+    conditioning: {}
+    label: asav-DR-2-GigabitEthernet0/4<->CoreSwitch-DR-1-GigabitEthernet0/2
+  - id: l66
+    n1: n41
+    n2: n11
+    i1: i3
+    i2: i5
+    conditioning: {}
+    label: CoreSwitch-DR-2-GigabitEthernet0/2<->asav-DR-1-GigabitEthernet0/4
+  - id: l67
+    n1: n41
+    n2: n14
+    i1: i4
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-DR-2-GigabitEthernet0/3<->Wireless Controller-DR-2-GigabitEthernet1
+  - id: l68
+    n1: n42
+    n2: n13
+    i1: i4
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-DR-1-GigabitEthernet0/3<->Wireless Controller-DR-1-GigabitEthernet1
+  - id: l69
+    n1: n14
+    n2: n13
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: Wireless Controller-DR-2-GigabitEthernet2<->Wireless Controller-DR-1-GigabitEthernet2
 lab:
   description: ''
   notes: ''
