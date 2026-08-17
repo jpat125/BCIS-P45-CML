@@ -268,9 +268,9 @@ annotations:
     thickness: 1
     type: rectangle
     x1: -1720.0
-    y1: -280.0
+    y1: -520.0
     x2: 440.0
-    y2: 400.0
+    y2: 280.0
     z_index: 0
   - border_color: '#FFFFFF'
     border_radius: 10
@@ -279,8 +279,8 @@ annotations:
     rotation: 0
     thickness: 1
     type: rectangle
-    x1: -1720.0
-    y1: -880.0
+    x1: -1920.0
+    y1: -1160.0
     x2: 480.0
     y2: 520.0
     z_index: 0
@@ -297,7 +297,7 @@ annotations:
     thickness: 1
     type: text
     x1: -1560.0
-    y1: 160.0
+    y1: -560.0
     z_index: 3
   - border_color: '#00000000'
     border_style: ''
@@ -311,8 +311,8 @@ annotations:
     text_unit: pt
     thickness: 1
     type: text
-    x1: -1520.0
-    y1: -360.0
+    x1: -1720.0
+    y1: -640.0
     z_index: 3
   - border_color: '#FFFFFF'
     border_radius: 10
@@ -398,62 +398,369 @@ annotations:
     x1: 240.0
     y1: -1280.0
     z_index: 3
+  - border_color: '#808080FF'
+    border_radius: 10
+    border_style: ''
+    color: '#B600619E'
+    rotation: 0
+    thickness: 1
+    type: rectangle
+    x1: -200.0
+    y1: -1040.0
+    x2: 200.0
+    y2: 160.0
+    z_index: 0
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#000000'
+    rotation: 0
+    text_bold: true
+    text_content: Wider Internet
+    text_font: monospace
+    text_italic: false
+    text_size: 12
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: -160.0
+    y1: -1080.0
+    z_index: 4
 smart_annotations: []
 nodes:
   - boot_disk_size: null
     configuration:
       - name: day0-config
         content: |-
+          : Saved
+
+          :
+          : Serial Number: 9ATG61GGD58
+          : Hardware:   ASAv, 2048 MB RAM, CPU Pentium II 2100 MHz
+          : Written by enable_15 at 12:33:11.295 UTC Mon Aug 17 2026
+          !
+          ASA Version 9.24(1)
           !
           hostname Firewall-HQ-1
           domain-name hq.p45.local
+          enable password $sha512$5000$qRQm1t7OGyrdvmDwEbsO/g==$H+N3KyzdoiUdcsFxTWSeKg== pbkdf2
+          service-module 0 keepalive-timeout 4
+          service-module 0 keepalive-counter 6
           !
-          enable password autp45cml
-          username admin password autp45cml privilege 15
-          aaa authentication ssh console LOCAL
+          license smart
+           feature tier standard
+           throughput level 1G
+          names
+          no mac-address auto
+
           !
           interface GigabitEthernet0/0
            description to EdgeRouter-HQ-1 GigabitEthernet0/3
            nameif outside
            security-level 0
            ip address 10.255.4.2 255.255.255.252
-           no shutdown
+           ospf dead-interval minimal hello-multiplier 4
           !
           interface GigabitEthernet0/1
-           description FO to Firewall-HQ-2
-           description LAN FAILOVER
+           description LAN FAILOVER LINK - unused, see the note at the top of this file
+           shutdown
+           no nameif
+           no security-level
+           no ip address
           !
           interface GigabitEthernet0/2
            description to CoreSwitch-HQ-1 Ethernet0/0
            nameif inside
            security-level 100
            ip address 10.255.5.2 255.255.255.252
-           no shutdown
+           ospf dead-interval minimal hello-multiplier 4
           !
-          failover
-          failover lan unit primary
-          failover lan interface FO GigabitEthernet0/1
-          failover link FO GigabitEthernet0/1
-          failover interface ip FO 10.255.5.100 255.255.255.252 standby 10.255.5.101
+          interface GigabitEthernet0/3
+           description to EdgeRouter-HQ-2 GigabitEthernet0/5
+           nameif outside2
+           security-level 0
+           ip address 10.255.4.14 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
           !
-          access-list OUTSIDE-IN extended permit icmp any any
-          access-list OUTSIDE-IN extended permit tcp any host 100.11.0.20 eq https
-          access-list OUTSIDE-IN extended permit tcp any host 100.11.0.20 eq http
-          access-list OUTSIDE-IN extended deny ip any any
-          access-group OUTSIDE-IN in interface outside
+          interface GigabitEthernet0/4
+           description to DMZSwitch-HQ-1 Ethernet0/0
+           nameif dmz
+           security-level 50
+           ip address 10.50.1.1 255.255.255.0
+           ospf dead-interval minimal hello-multiplier 4
           !
+          interface GigabitEthernet0/5
+           description to CoreSwitch-HQ-2 Ethernet1/3
+           nameif inside2
+           security-level 100
+           ip address 10.255.5.30 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
+          !
+          interface Management0/0
+           no management-only
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          ftp mode passive
+          dns server-group DefaultDNS
+           domain-name hq.p45.local
+          no object-group-search access-control
           object network INSIDE-NET
            subnet 192.168.0.0 255.255.0.0
-           nat (inside,outside) dynamic interface
+          object network DMZ-NET
+           subnet 10.50.1.0 255.255.255.0
+          object network DMZ-DNS-REAL
+           host 10.50.1.53
+          object network DMZ-DNS-PUBLIC
+           host 100.11.0.53
+          object-group network CORP-ALL
+           network-object 10.0.0.0 255.0.0.0
+           network-object 172.16.0.0 255.255.0.0
+           network-object 192.168.0.0 255.255.0.0
+          access-group OUTSIDE-IN in interface outside
+          access-group OUTSIDE-IN in interface outside2
+          access-group DMZ-IN in interface dmz
+          access-list DMZ-IN extended deny ip any4 192.168.0.0 255.255.0.0
+          access-list DMZ-IN extended deny ip any4 172.16.0.0 255.255.0.0
+          access-list DMZ-IN extended permit udp 10.50.1.0 255.255.255.0 any4 eq domain
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq domain
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq www
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq https
+          access-list DMZ-IN extended permit icmp any4 any4
+          access-list DMZ-IN extended deny ip any4 any4
+          access-list OUTSIDE-IN extended permit icmp any4 any4
+          access-list OUTSIDE-IN extended permit tcp any4 host 100.11.0.20 eq https
+          access-list OUTSIDE-IN extended permit tcp any4 host 100.11.0.20 eq www
+          access-list OUTSIDE-IN extended permit ospf any4 any4
+          access-list OUTSIDE-IN extended permit udp any4 host 10.50.1.53 eq domain
+          access-list OUTSIDE-IN extended permit tcp any4 host 10.50.1.53 eq domain
+          access-list OUTSIDE-IN extended deny ip any4 any4
+          pager lines 23
+          mtu outside 1500
+          mtu inside 1500
+          mtu outside2 1500
+          mtu dmz 1500
+          mtu inside2 1500
+          no failover
+          no failover wait-disable
+          no monitor-interface service-module
+          icmp unreachable rate-limit 1 burst-size 1
+          no asdm history enable
+          arp timeout 14400
+          no arp permit-nonconnected
+          arp rate-limit 8192
+          nat (inside,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside) source dynamic INSIDE-NET interface
+          nat (inside,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside2) source dynamic INSIDE-NET interface
+          nat (inside,dmz) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source static DMZ-DNS-REAL DMZ-DNS-PUBLIC
+          nat (dmz,outside) source dynamic DMZ-NET interface
+          nat (dmz,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside2) source static DMZ-DNS-REAL DMZ-DNS-PUBLIC
+          nat (dmz,outside2) source dynamic DMZ-NET interface
+          router ospf 1
+           router-id 10.255.0.71
+           network 10.50.1.0 255.255.255.0 area 0
+           network 10.255.4.0 255.255.255.252 area 0
+           network 10.255.4.12 255.255.255.252 area 0
+           network 10.255.5.0 255.255.255.252 area 0
+           network 10.255.5.28 255.255.255.252 area 0
+           log-adj-changes
           !
-          route outside 0.0.0.0 0.0.0.0 10.255.4.1 1
-          route inside 10.0.0.0 255.0.0.0 10.255.5.1 1
-          route inside 192.168.0.0 255.255.0.0 10.255.5.1 1
-          !
+          route outside 0.0.0.0 0.0.0.0 10.255.4.1 254
+          timeout xlate 3:00:00
+          timeout pat-xlate 0:00:30
+          timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+          timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+          timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+          timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+          timeout tcp-proxy-reassembly 0:01:00
+          timeout floating-conn 0:00:00
+          timeout conn-holddown 0:00:15
+          timeout igp stale-route 0:01:10
+          user-identity default-domain LOCAL
+          aaa authentication ssh console LOCAL
+          aaa authentication login-history
+          no snmp-server location
+          no snmp-server contact
+          crypto ipsec security-association pmtu-aging infinite
+          crypto ca trustpoint _SmartCallHome_ServerCA
+           no validation-usage
+           crl configure
+          crypto ca trustpoint _SmartCallHome_ServerCA2
+           no validation-usage
+           crl configure
+          crypto ca trustpool policy
+           auto-import
+          crypto ca certificate chain _SmartCallHome_ServerCA
+           certificate ca 0a0142800000014523c844b500000002
+              30820560 30820348 a0030201 0202100a 01428000 00014523 c844b500 00000230
+              0d06092a 864886f7 0d01010b 0500304a 310b3009 06035504 06130255 53311230
+              10060355 040a1309 4964656e 54727573 74312730 25060355 0403131e 4964656e
+              54727573 7420436f 6d6d6572 6369616c 20526f6f 74204341 2031301e 170d3134
+              30313136 31383132 32335a17 0d333430 31313631 38313232 335a304a 310b3009
+              06035504 06130255 53311230 10060355 040a1309 4964656e 54727573 74312730
+              25060355 0403131e 4964656e 54727573 7420436f 6d6d6572 6369616c 20526f6f
+              74204341 20313082 0222300d 06092a86 4886f70d 01010105 00038202 0f003082
+              020a0282 020100a7 5019de3f 993dd433 46f16f51 6182b2a9 4f8f6789 5d84d953
+              dd0c28d9 d7f0ffae 95437299 f9b55d7c 8ac142e1 315074d1 810d7ccd 9b21ab43
+              e2acad5e 866ef309 8a1f5a32 bda2eb94 f9e85c0a ecff98d2 af71b3b4 539f4e87
+              ef92bcbd ec4f3230 884b175e 57c453c2 f602978d d9622bbf 241f628d dfc3b829
+              4b49783c 93608822 fc99da36 c8c2a2d4 2c540067 356e73bf 0258f0a4 dde5b0a2
+              267acae0 36a51916 f5fdb7ef ae3f40f5 6d5a04fd ce34ca24 dc74231b 5d331312
+              5dc40125 f630dd02 5d9fe0d5 47bdb4eb 1ba1bb49 49d89f5b 02f38ae4 2490e462
+              4f4fc1af 8b0e7417 a8d17288 6a7a0149 ccb44679 c617b1da 981e0759 fa752185
+              65dd9056 cefbaba5 609dc49d f952b08b bd87f98f 2b230a23 763bf733 e1c900f3
+              69f94ba2 e04ebc7e 93398407 f744707e fe075ae5 b1acd118 ccf235e5 494908ca
+              56c93dfb 0f187d8b 3bc113c2 4d8fc94f 0e37e91f a10e6adf 622ecb35 0651792c
+              c82538f4 fa4ba789 5c9cd2e3 0d39864a 747cd559 87c23f4e 0c5c52f4 3df75282
+              f1eaa3ac fd49341a 28f34188 3a13eee8 deff991d 5fbacbe8 1ef2b950 60c031d3
+              73e5efbe a0ed330b 74be2020 c4676cf0 08037a55 807f464e 96a7f41e 3ee1f6d8
+              09e13364 2b63d732 5e9ff9c0 7b0f786f 97bc939a f99c1290 787a8087 15d77274
+              9c557478 b1bae16e 7004ba4f a0ba68c3 7bff31f0 733d3d94 2ab10b41 0ea0fe4d
+              88656b79 33b4d702 03010001 a3423040 300e0603 551d0f01 01ff0404 03020106
+              300f0603 551d1301 01ff0405 30030101 ff301d06 03551d0e 04160414 ed4419c0
+              d3f0068b eea47bbe 42e72654 c88e3676 300d0609 2a864886 f70d0101 0b050003
+              82020100 0dae9032 f6a64b7c 44761961 1e2728cd 5e54ef25 bce30890 f929d7ae
+              6808e194 0058ef2e 2e7e5352 8cb65c07 ea88ba99 8b5094d7 8280df61 090093ad
+              0d14e6ce c1f23794 78b05f9c b3a273b8 8f059338 cd8d3eb0 b8fbc0cf b1f2ec2d
+              2d1bccec aa9ab3aa 60821b2d 3bc3843d 578a961e 9c75b8d3 30cd6008 8390d38e
+              54f14d66 c05d7403 40a3ee85 7ec21f77 9c06e8c1 a7185d52 95edc9dd 259e6dfa
+              a9eda33a 34d0597b daed50f3 35bfedeb 144d31c7 60f4daf1 879ce248 e2c6c537
+              fb0610fa 75596631 4729da76 9a1ce982 aeef9ab9 51f78823 9a699562 3ce55580
+              36d75402 fff1b95d ced4236f d845844a 5b65ef89 0cdd14a7 20cb18a5 25b40df9
+              01f0a2d2 f400c874 8ea12a48 8e65db13 c4e22517 7debbe87 5b172054 51934a53
+              030bec5d ca33ed62 fd45c72f 5bdc58a0 8039e6fa d7fe1314 a6ed3d94 4a4274d4
+              c3775973 cd8f46be 5538effa e89132ea 97580422 de38c3cc bc6dc933 3a6a0a69
+              3fa0c8ea 728f8c63 8623bd6d 3c969e95 e0494caa a2b92a1b 9c368178 edc3e846
+              e2265944 751ed975 8951cd10 849d6160 cb5df997 224d8e98 e6e37ff6 5bbbaecd
+              ca4a816b 5e0bf351 e1742be9 7e27a7d9 99494ef8 a580db25 0f1c6362 8ac93367
+              6b3c1083 c6addea8 cd168e8d f0073771 9ff2abfc 41f5c18b ec00375d 09e54e80
+              effab15c 3806a51b 4ae1dc38 2d3cdcab 1f901ad5 4a9ceed1 706cccee f457f818
+              ba846e87
+            quit
+          crypto ca certificate chain _SmartCallHome_ServerCA2
+           certificate ca 0509
+              308205b7 3082039f a0030201 02020205 09300d06 092a8648 86f70d01 01050500
+              3045310b 30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164
+              6973204c 696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f
+              6f742043 41203230 1e170d30 36313132 34313832 3730305a 170d3331 31313234
+              31383233 33335a30 45310b30 09060355 04061302 424d3119 30170603 55040a13
+              1051756f 56616469 73204c69 6d697465 64311b30 19060355 04031312 51756f56
+              61646973 20526f6f 74204341 20323082 0222300d 06092a86 4886f70d 01010105
+              00038202 0f003082 020a0282 0201009a 18ca4b94 0d002daf 03298af0 0f81c8ae
+              4c19851d 089fab29 4485f32f 81ad321e 9046bfa3 86261a1e fe7e1c18 3a5c9c60
+              172a3a74 8333307d 615411cb edabe0e6 d2a27ef5 6b6f18b7 0a0b2dfd e93eef0a
+              c6b310e9 dcc24617 f85dfda4 daff9e49 5a9ce633 e62496f7 3fba5b2b 1c7a35c2
+              d667feab 66508b6d 28602bef d760c3c7 93bc8d36 91f37ff8 db1113c4 9c7776c1
+              aeb7026a 817aa945 83e205e6 b956c194 378f4871 6322ec17 6507958a 4bdf8fc6
+              5a0ae5b0 e35f5e6b 11ab0cf9 85eb44e9 f80473f2 e9fe5c98 8cf573af 6bb47ecd
+              d45c022b 4c39e1b2 95952d42 87d7d5b3 9043b76c 13f1dedd f6c4f889 3fd175f5
+              92c391d5 8a88d090 ecdc6dde 89c26571 968b0d03 fd9cbf5b 16ac92db eafe797c
+              adebaff7 16cbdbcd 252be51f fb9a9fe2 51cc3a53 0c48e60e bdc9b476 0652e611
+              13857263 0304e004 362b2019 02e874a7 1fb6c956 66f07525 dc67c10e 616088b3
+              3ed1a8fc a3da1db0 d1b12354 df44766d ed41d8c1 b222b653 1cdf351d dca1772a
+              31e42df5 e5e5dbc8 e0ffe580 d70b63a0 ff33a10f ba2c1515 ea97b3d2 a2b5bef2
+              8c961e1a 8f1d6ca4 6137b986 7333d797 969e237d 82a44c81 e2a1d1ba 675f9507
+              a32711ee 16107bbc 454a4cb2 04d2abef d5fd0c51 ce506a08 31f991da 0c8f645c
+              03c33a8b 203f6e8d 673d3ad6 fe7d5b88 c95efbcc 61dc8b33 77d34432 35096204
+              921610d8 9e2747fb 3b21e3f8 eb1d5b02 03010001 a381b030 81ad300f 0603551d
+              130101ff 04053003 0101ff30 0b060355 1d0f0404 03020106 301d0603 551d0e04
+              1604141a 8462bc48 4c332504 d4eed0f6 03c41946 d1946b30 6e060355 1d230467
+              30658014 1a8462bc 484c3325 04d4eed0 f603c419 46d1946b a149a447 3045310b
+              30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 6973204c
+              696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 6f742043
+              41203282 02050930 0d06092a 864886f7 0d010105 05000382 0201003e 0a164d9f
+              065ba8ae 715d2f05 2f67e613 4583c436 f6f3c026 0c0db547 645df8b4 72c946a5
+              03182755 89787d76 ea963480 1720dce7 83f88dfc 07b8da5f 4d2e67b2 84fdd944
+              fc775081 e67cb4c9 0d0b7253 f8760707 4147960c fbe08226 93558cfe 221f6065
+              7c5fe726 b3f73290 9850d437 7155f692 2178f795 79faf82d 26876656 3077a637
+              78335210 58ae3f61 8ef26ab1 ef187e4a 5963ca8d a256d5a7 2fbc561f cf39c1e2
+              fb0aa815 2c7d4d7a 63c66c97 443cd26f c34a170a f890d257 a21951a5 2d9741da
+              074fa950 da908d94 46e13ef0 94fd1000 38f53be8 40e1b46e 561a20cc 6f588ded
+              2e458fd6 e9933fe7 b12cdf3a d6228cdc 84bb226f d0f8e4c6 39e90488 3cc3baeb
+              557a6d80 9924f56c 01fbf897 b0945beb fdd26ff1 77680d35 6423acb8 55a103d1
+              4d4219dc f8755956 a3f9a849 79f8af0e b911a07c b76aed34 d0b62662 381a870c
+              f8e8fd2e d3907f07 912a1dd6 7e5c8583 99b03808 3fe95ef9 3507e4c9 626e577f
+              a75095f7 bac89be6 8ea201c5 d666bf79 61f33c1c e1b9825c 5da0c3e9 d848bd19
+              a2111419 6eb2861b 683e4837 1a88b75d 965e9cc7 ef276208 e291195c d2f121dd
+              ba174282 97718153 31a99ff6 7d62bf72 e1a3931d cc8a265a 0938d0ce d70d8016
+              b478a53a 874c8d8a a5d54697 f22c10b9 bc5422c0 01506943 9ef4b2ef 6df8ecda
+              f1e3b1ef df918f54 2a0b25c1 2619c452 100565d5 8210eac2 31cd2e
+            quit
+          telnet timeout 10
+          ssh stricthostkeycheck
+          ssh timeout 5
+          ssh key-exchange group dh-group14-sha256
           ssh 192.168.90.0 255.255.255.0 inside
-          ssh version 2
+          console timeout 0
+          threat-detection basic-threat
+          threat-detection statistics access-list
+          no threat-detection statistics tcp-intercept
+          dynamic-access-policy-record DfltAccessPolicy
+          username admin password $sha512$5000$xZvo0D3nKi8vHv0L9TBOiA==$2rGuYeJN/E/A9LlWSoIpEg== pbkdf2 privilege 15
           !
-          end
+          class-map inspection_default
+           match default-inspection-traffic
+          !
+          !
+          policy-map type inspect dns preset_dns_map
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          policy-map global_policy
+           class inspection_default
+            inspect ip-options
+            inspect netbios
+            inspect rtsp
+            inspect sunrpc
+            inspect tftp
+            inspect dns preset_dns_map
+            inspect ftp
+            inspect h323 h225
+            inspect h323 ras
+            inspect rsh
+            inspect esmtp
+            inspect sqlnet
+            inspect sip
+            inspect skinny
+            inspect icmp
+            inspect icmp error
+          policy-map type inspect dns migrated_dns_map_2
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          policy-map type inspect dns migrated_dns_map_1
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          !
+          service-policy global_policy global
+          prompt hostname context
+          call-home
+           profile License
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination transport-method http
+           profile CiscoTAC-1
+            no active
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination address email callhome@cisco.com
+            destination transport-method http
+            subscribe-to-alert-group diagnostic
+            subscribe-to-alert-group environment
+            subscribe-to-alert-group inventory periodic monthly
+            subscribe-to-alert-group configuration periodic monthly
+            subscribe-to-alert-group telemetry periodic daily
+          Cryptochecksum:cb72e1f13f2ddf10b6f085869b986834
+          : end
     cpu_limit: null
     cpus: null
     data_volume: null
@@ -503,60 +810,340 @@ nodes:
         mac_address: null
         type: physical
         slot: 5
+      - id: i6
+        label: GigabitEthernet0/5
+        mac_address: null
+        type: physical
+        slot: 6
   - boot_disk_size: null
     configuration:
       - name: day0-config
         content: |-
+          : Saved
+
+          :
+          : Serial Number: 9AMATP9BQA3
+          : Hardware:   ASAv, 2048 MB RAM, CPU Pentium II 2100 MHz
+          : Written by enable_15 at 12:33:11.288 UTC Mon Aug 17 2026
+          !
+          ASA Version 9.24(1)
           !
           hostname Firewall-HQ-2
           domain-name hq.p45.local
+          enable password $sha512$5000$w5PkcGKoj09rpuSbbEgi9w==$d5eKrlNJ1ZPTlFO9s4mKQQ== pbkdf2
+          service-module 0 keepalive-timeout 4
+          service-module 0 keepalive-counter 6
           !
-          enable password autp45cml
-          username admin password autp45cml privilege 15
-          aaa authentication ssh console LOCAL
+          license smart
+           feature tier standard
+           throughput level 1G
+          names
+          no mac-address auto
+
           !
           interface GigabitEthernet0/0
            description to EdgeRouter-HQ-2 GigabitEthernet0/3
            nameif outside
            security-level 0
-           ip address 10.255.4.6 255.255.255.252
-           no shutdown
+           ip address 10.255.4.10 255.255.255.252
+           ospf cost 50
+           ospf dead-interval minimal hello-multiplier 4
           !
           interface GigabitEthernet0/1
-           description FO to Firewall-HQ-1
-           description LAN FAILOVER
+           description LAN FAILOVER LINK - unused, see the note at the top of this file
+           shutdown
+           no nameif
+           no security-level
+           no ip address
           !
           interface GigabitEthernet0/2
            description to CoreSwitch-HQ-2 Ethernet0/0
            nameif inside
            security-level 100
            ip address 10.255.5.6 255.255.255.252
-           no shutdown
+           ospf cost 50
+           ospf dead-interval minimal hello-multiplier 4
           !
-          failover
-          failover lan unit secondary
-          failover lan interface FO GigabitEthernet0/1
-          failover link FO GigabitEthernet0/1
-          failover interface ip FO 10.255.5.101 255.255.255.252 standby 10.255.5.100
+          interface GigabitEthernet0/3
+           description to EdgeRouter-HQ-1 GigabitEthernet0/6
+           nameif outside2
+           security-level 0
+           ip address 10.255.4.6 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
           !
-          access-list OUTSIDE-IN extended permit icmp any any
-          access-list OUTSIDE-IN extended permit tcp any host 100.11.0.20 eq https
-          access-list OUTSIDE-IN extended permit tcp any host 100.11.0.20 eq http
-          access-list OUTSIDE-IN extended deny ip any any
-          access-group OUTSIDE-IN in interface outside
+          interface GigabitEthernet0/4
+           description to DMZSwitch-HQ-2 Ethernet0/0
+           nameif dmz
+           security-level 50
+           ip address 10.50.1.4 255.255.255.0
+           ospf cost 200
+           ospf dead-interval minimal hello-multiplier 4
           !
+          interface GigabitEthernet0/5
+           description to CoreSwitch-HQ-1 Ethernet1/2
+           nameif inside2
+           security-level 100
+           ip address 10.255.5.26 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
+          !
+          interface Management0/0
+           no management-only
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          ftp mode passive
+          dns server-group DefaultDNS
+           domain-name hq.p45.local
+          no object-group-search access-control
           object network INSIDE-NET
            subnet 192.168.0.0 255.255.0.0
-           nat (inside,outside) dynamic interface
+          object network DMZ-NET
+           subnet 10.50.1.0 255.255.255.0
+          object-group network CORP-ALL
+           network-object 10.0.0.0 255.0.0.0
+           network-object 172.16.0.0 255.255.0.0
+           network-object 192.168.0.0 255.255.0.0
+          access-group OUTSIDE-IN in interface outside
+          access-group OUTSIDE-IN in interface outside2
+          access-group DMZ-IN in interface dmz
+          access-list DMZ-IN extended deny ip any4 192.168.0.0 255.255.0.0
+          access-list DMZ-IN extended deny ip any4 172.16.0.0 255.255.0.0
+          access-list DMZ-IN extended permit udp 10.50.1.0 255.255.255.0 any4 eq domain
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq domain
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq www
+          access-list DMZ-IN extended permit tcp 10.50.1.0 255.255.255.0 any4 eq https
+          access-list DMZ-IN extended permit icmp any4 any4
+          access-list DMZ-IN extended deny ip any4 any4
+          access-list OUTSIDE-IN extended permit icmp any4 any4
+          access-list OUTSIDE-IN extended permit tcp any4 host 100.11.0.20 eq https
+          access-list OUTSIDE-IN extended permit tcp any4 host 100.11.0.20 eq www
+          access-list OUTSIDE-IN extended permit ospf any4 any4
+          access-list OUTSIDE-IN extended deny ip any4 any4
+          pager lines 23
+          mtu outside 1500
+          mtu inside 1500
+          mtu outside2 1500
+          mtu dmz 1500
+          mtu inside2 1500
+          no failover
+          no failover wait-disable
+          no monitor-interface service-module
+          icmp unreachable rate-limit 1 burst-size 1
+          no asdm history enable
+          arp timeout 14400
+          no arp permit-nonconnected
+          arp rate-limit 8192
+          nat (inside,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside) source dynamic INSIDE-NET interface
+          nat (inside,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside2) source dynamic INSIDE-NET interface
+          nat (inside,dmz) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source dynamic DMZ-NET interface
+          nat (dmz,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside2) source dynamic DMZ-NET interface
+          router ospf 1
+           router-id 10.255.0.72
+           network 10.50.1.0 255.255.255.0 area 0
+           network 10.255.4.4 255.255.255.252 area 0
+           network 10.255.4.8 255.255.255.252 area 0
+           network 10.255.5.4 255.255.255.252 area 0
+           network 10.255.5.24 255.255.255.252 area 0
+           log-adj-changes
           !
-          route outside 0.0.0.0 0.0.0.0 10.255.4.5 1
-          route inside 10.0.0.0 255.0.0.0 10.255.5.5 1
-          route inside 192.168.0.0 255.255.0.0 10.255.5.5 1
-          !
+          route outside 0.0.0.0 0.0.0.0 10.255.4.9 254
+          timeout xlate 3:00:00
+          timeout pat-xlate 0:00:30
+          timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+          timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+          timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+          timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+          timeout tcp-proxy-reassembly 0:01:00
+          timeout floating-conn 0:00:00
+          timeout conn-holddown 0:00:15
+          timeout igp stale-route 0:01:10
+          user-identity default-domain LOCAL
+          aaa authentication ssh console LOCAL
+          aaa authentication login-history
+          no snmp-server location
+          no snmp-server contact
+          crypto ipsec security-association pmtu-aging infinite
+          crypto ca trustpoint _SmartCallHome_ServerCA
+           no validation-usage
+           crl configure
+          crypto ca trustpoint _SmartCallHome_ServerCA2
+           no validation-usage
+           crl configure
+          crypto ca trustpool policy
+           auto-import
+          crypto ca certificate chain _SmartCallHome_ServerCA
+           certificate ca 0a0142800000014523c844b500000002
+              30820560 30820348 a0030201 0202100a 01428000 00014523 c844b500 00000230
+              0d06092a 864886f7 0d01010b 0500304a 310b3009 06035504 06130255 53311230
+              10060355 040a1309 4964656e 54727573 74312730 25060355 0403131e 4964656e
+              54727573 7420436f 6d6d6572 6369616c 20526f6f 74204341 2031301e 170d3134
+              30313136 31383132 32335a17 0d333430 31313631 38313232 335a304a 310b3009
+              06035504 06130255 53311230 10060355 040a1309 4964656e 54727573 74312730
+              25060355 0403131e 4964656e 54727573 7420436f 6d6d6572 6369616c 20526f6f
+              74204341 20313082 0222300d 06092a86 4886f70d 01010105 00038202 0f003082
+              020a0282 020100a7 5019de3f 993dd433 46f16f51 6182b2a9 4f8f6789 5d84d953
+              dd0c28d9 d7f0ffae 95437299 f9b55d7c 8ac142e1 315074d1 810d7ccd 9b21ab43
+              e2acad5e 866ef309 8a1f5a32 bda2eb94 f9e85c0a ecff98d2 af71b3b4 539f4e87
+              ef92bcbd ec4f3230 884b175e 57c453c2 f602978d d9622bbf 241f628d dfc3b829
+              4b49783c 93608822 fc99da36 c8c2a2d4 2c540067 356e73bf 0258f0a4 dde5b0a2
+              267acae0 36a51916 f5fdb7ef ae3f40f5 6d5a04fd ce34ca24 dc74231b 5d331312
+              5dc40125 f630dd02 5d9fe0d5 47bdb4eb 1ba1bb49 49d89f5b 02f38ae4 2490e462
+              4f4fc1af 8b0e7417 a8d17288 6a7a0149 ccb44679 c617b1da 981e0759 fa752185
+              65dd9056 cefbaba5 609dc49d f952b08b bd87f98f 2b230a23 763bf733 e1c900f3
+              69f94ba2 e04ebc7e 93398407 f744707e fe075ae5 b1acd118 ccf235e5 494908ca
+              56c93dfb 0f187d8b 3bc113c2 4d8fc94f 0e37e91f a10e6adf 622ecb35 0651792c
+              c82538f4 fa4ba789 5c9cd2e3 0d39864a 747cd559 87c23f4e 0c5c52f4 3df75282
+              f1eaa3ac fd49341a 28f34188 3a13eee8 deff991d 5fbacbe8 1ef2b950 60c031d3
+              73e5efbe a0ed330b 74be2020 c4676cf0 08037a55 807f464e 96a7f41e 3ee1f6d8
+              09e13364 2b63d732 5e9ff9c0 7b0f786f 97bc939a f99c1290 787a8087 15d77274
+              9c557478 b1bae16e 7004ba4f a0ba68c3 7bff31f0 733d3d94 2ab10b41 0ea0fe4d
+              88656b79 33b4d702 03010001 a3423040 300e0603 551d0f01 01ff0404 03020106
+              300f0603 551d1301 01ff0405 30030101 ff301d06 03551d0e 04160414 ed4419c0
+              d3f0068b eea47bbe 42e72654 c88e3676 300d0609 2a864886 f70d0101 0b050003
+              82020100 0dae9032 f6a64b7c 44761961 1e2728cd 5e54ef25 bce30890 f929d7ae
+              6808e194 0058ef2e 2e7e5352 8cb65c07 ea88ba99 8b5094d7 8280df61 090093ad
+              0d14e6ce c1f23794 78b05f9c b3a273b8 8f059338 cd8d3eb0 b8fbc0cf b1f2ec2d
+              2d1bccec aa9ab3aa 60821b2d 3bc3843d 578a961e 9c75b8d3 30cd6008 8390d38e
+              54f14d66 c05d7403 40a3ee85 7ec21f77 9c06e8c1 a7185d52 95edc9dd 259e6dfa
+              a9eda33a 34d0597b daed50f3 35bfedeb 144d31c7 60f4daf1 879ce248 e2c6c537
+              fb0610fa 75596631 4729da76 9a1ce982 aeef9ab9 51f78823 9a699562 3ce55580
+              36d75402 fff1b95d ced4236f d845844a 5b65ef89 0cdd14a7 20cb18a5 25b40df9
+              01f0a2d2 f400c874 8ea12a48 8e65db13 c4e22517 7debbe87 5b172054 51934a53
+              030bec5d ca33ed62 fd45c72f 5bdc58a0 8039e6fa d7fe1314 a6ed3d94 4a4274d4
+              c3775973 cd8f46be 5538effa e89132ea 97580422 de38c3cc bc6dc933 3a6a0a69
+              3fa0c8ea 728f8c63 8623bd6d 3c969e95 e0494caa a2b92a1b 9c368178 edc3e846
+              e2265944 751ed975 8951cd10 849d6160 cb5df997 224d8e98 e6e37ff6 5bbbaecd
+              ca4a816b 5e0bf351 e1742be9 7e27a7d9 99494ef8 a580db25 0f1c6362 8ac93367
+              6b3c1083 c6addea8 cd168e8d f0073771 9ff2abfc 41f5c18b ec00375d 09e54e80
+              effab15c 3806a51b 4ae1dc38 2d3cdcab 1f901ad5 4a9ceed1 706cccee f457f818
+              ba846e87
+            quit
+          crypto ca certificate chain _SmartCallHome_ServerCA2
+           certificate ca 0509
+              308205b7 3082039f a0030201 02020205 09300d06 092a8648 86f70d01 01050500
+              3045310b 30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164
+              6973204c 696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f
+              6f742043 41203230 1e170d30 36313132 34313832 3730305a 170d3331 31313234
+              31383233 33335a30 45310b30 09060355 04061302 424d3119 30170603 55040a13
+              1051756f 56616469 73204c69 6d697465 64311b30 19060355 04031312 51756f56
+              61646973 20526f6f 74204341 20323082 0222300d 06092a86 4886f70d 01010105
+              00038202 0f003082 020a0282 0201009a 18ca4b94 0d002daf 03298af0 0f81c8ae
+              4c19851d 089fab29 4485f32f 81ad321e 9046bfa3 86261a1e fe7e1c18 3a5c9c60
+              172a3a74 8333307d 615411cb edabe0e6 d2a27ef5 6b6f18b7 0a0b2dfd e93eef0a
+              c6b310e9 dcc24617 f85dfda4 daff9e49 5a9ce633 e62496f7 3fba5b2b 1c7a35c2
+              d667feab 66508b6d 28602bef d760c3c7 93bc8d36 91f37ff8 db1113c4 9c7776c1
+              aeb7026a 817aa945 83e205e6 b956c194 378f4871 6322ec17 6507958a 4bdf8fc6
+              5a0ae5b0 e35f5e6b 11ab0cf9 85eb44e9 f80473f2 e9fe5c98 8cf573af 6bb47ecd
+              d45c022b 4c39e1b2 95952d42 87d7d5b3 9043b76c 13f1dedd f6c4f889 3fd175f5
+              92c391d5 8a88d090 ecdc6dde 89c26571 968b0d03 fd9cbf5b 16ac92db eafe797c
+              adebaff7 16cbdbcd 252be51f fb9a9fe2 51cc3a53 0c48e60e bdc9b476 0652e611
+              13857263 0304e004 362b2019 02e874a7 1fb6c956 66f07525 dc67c10e 616088b3
+              3ed1a8fc a3da1db0 d1b12354 df44766d ed41d8c1 b222b653 1cdf351d dca1772a
+              31e42df5 e5e5dbc8 e0ffe580 d70b63a0 ff33a10f ba2c1515 ea97b3d2 a2b5bef2
+              8c961e1a 8f1d6ca4 6137b986 7333d797 969e237d 82a44c81 e2a1d1ba 675f9507
+              a32711ee 16107bbc 454a4cb2 04d2abef d5fd0c51 ce506a08 31f991da 0c8f645c
+              03c33a8b 203f6e8d 673d3ad6 fe7d5b88 c95efbcc 61dc8b33 77d34432 35096204
+              921610d8 9e2747fb 3b21e3f8 eb1d5b02 03010001 a381b030 81ad300f 0603551d
+              130101ff 04053003 0101ff30 0b060355 1d0f0404 03020106 301d0603 551d0e04
+              1604141a 8462bc48 4c332504 d4eed0f6 03c41946 d1946b30 6e060355 1d230467
+              30658014 1a8462bc 484c3325 04d4eed0 f603c419 46d1946b a149a447 3045310b
+              30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 6973204c
+              696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 6f742043
+              41203282 02050930 0d06092a 864886f7 0d010105 05000382 0201003e 0a164d9f
+              065ba8ae 715d2f05 2f67e613 4583c436 f6f3c026 0c0db547 645df8b4 72c946a5
+              03182755 89787d76 ea963480 1720dce7 83f88dfc 07b8da5f 4d2e67b2 84fdd944
+              fc775081 e67cb4c9 0d0b7253 f8760707 4147960c fbe08226 93558cfe 221f6065
+              7c5fe726 b3f73290 9850d437 7155f692 2178f795 79faf82d 26876656 3077a637
+              78335210 58ae3f61 8ef26ab1 ef187e4a 5963ca8d a256d5a7 2fbc561f cf39c1e2
+              fb0aa815 2c7d4d7a 63c66c97 443cd26f c34a170a f890d257 a21951a5 2d9741da
+              074fa950 da908d94 46e13ef0 94fd1000 38f53be8 40e1b46e 561a20cc 6f588ded
+              2e458fd6 e9933fe7 b12cdf3a d6228cdc 84bb226f d0f8e4c6 39e90488 3cc3baeb
+              557a6d80 9924f56c 01fbf897 b0945beb fdd26ff1 77680d35 6423acb8 55a103d1
+              4d4219dc f8755956 a3f9a849 79f8af0e b911a07c b76aed34 d0b62662 381a870c
+              f8e8fd2e d3907f07 912a1dd6 7e5c8583 99b03808 3fe95ef9 3507e4c9 626e577f
+              a75095f7 bac89be6 8ea201c5 d666bf79 61f33c1c e1b9825c 5da0c3e9 d848bd19
+              a2111419 6eb2861b 683e4837 1a88b75d 965e9cc7 ef276208 e291195c d2f121dd
+              ba174282 97718153 31a99ff6 7d62bf72 e1a3931d cc8a265a 0938d0ce d70d8016
+              b478a53a 874c8d8a a5d54697 f22c10b9 bc5422c0 01506943 9ef4b2ef 6df8ecda
+              f1e3b1ef df918f54 2a0b25c1 2619c452 100565d5 8210eac2 31cd2e
+            quit
+          telnet timeout 10
+          ssh stricthostkeycheck
+          ssh timeout 5
+          ssh key-exchange group dh-group14-sha256
           ssh 192.168.90.0 255.255.255.0 inside
-          ssh version 2
+          console timeout 0
+          threat-detection basic-threat
+          threat-detection statistics access-list
+          no threat-detection statistics tcp-intercept
+          dynamic-access-policy-record DfltAccessPolicy
+          username admin password $sha512$5000$dJS/oxYwLuGZtD5l2cxq8w==$bNGCnbOost6SKBUQPRbFVA== pbkdf2 privilege 15
           !
-          end
+          class-map inspection_default
+           match default-inspection-traffic
+          !
+          !
+          policy-map type inspect dns preset_dns_map
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          policy-map global_policy
+           class inspection_default
+            inspect ip-options
+            inspect netbios
+            inspect rtsp
+            inspect sunrpc
+            inspect tftp
+            inspect dns preset_dns_map
+            inspect ftp
+            inspect h323 h225
+            inspect h323 ras
+            inspect rsh
+            inspect esmtp
+            inspect sqlnet
+            inspect sip
+            inspect skinny
+            inspect icmp
+            inspect icmp error
+          policy-map type inspect dns migrated_dns_map_2
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          policy-map type inspect dns migrated_dns_map_1
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          !
+          service-policy global_policy global
+          prompt hostname context
+          call-home
+           profile License
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination transport-method http
+           profile CiscoTAC-1
+            no active
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination address email callhome@cisco.com
+            destination transport-method http
+            subscribe-to-alert-group diagnostic
+            subscribe-to-alert-group environment
+            subscribe-to-alert-group inventory periodic monthly
+            subscribe-to-alert-group configuration periodic monthly
+            subscribe-to-alert-group telemetry periodic daily
+          Cryptochecksum:04f79fbfc71777ee5731160796b36d31
+          : end
     cpu_limit: null
     cpus: null
     data_volume: null
@@ -606,49 +1193,96 @@ nodes:
         mac_address: null
         type: physical
         slot: 5
+      - id: i6
+        label: GigabitEthernet0/5
+        mac_address: null
+        type: physical
+        slot: 6
   - boot_disk_size: null
     configuration:
       - name: iosxe_config.txt
         content: |-
-          !
           hostname WLC-HQ-1
           !
           no ip domain lookup
-          ip domain-name hq.p45.local
+          ip domain name hq.p45.local
           !
           username admin privilege 15 secret 0 autp45cml
           enable secret 0 autp45cml
           !
+          aaa new-model
+          aaa group server radius P45-RAD
+           server name P45-RADIUS
+          !
+          aaa authentication login default local
+          aaa authentication dot1x default group P45-RAD
+          aaa authorization network default group P45-RAD
+          !
+          radius server P45-RADIUS
+           address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
+           key P45-RADIUS-KEY
+          !
+          vlan 80
+           name SERVERS
+          vlan 90
+           name MGMT
+          vlan 100
+           name GUEST
+          !
           interface GigabitEthernet1
            description To CoreSwitch trunk
-           no switchport
+           switchport trunk allowed vlan 80,90,100
+           switchport mode trunk
            no shutdown
           !
           interface GigabitEthernet2
-           description WLC HA RP
-           no switchport
+           description WLC HA redundancy port
            no shutdown
           !
-          interface Loopback0
-           description WLC mgmt
-           ip address 192.168.90.81 255.255.255.0
+          interface Vlan80
+           description Wireless management
+           ip address 192.168.80.5 255.255.255.0
+           no shutdown
           !
-          redundancy
-           mode sso
+          ip route 0.0.0.0 0.0.0.0 192.168.80.1
           !
-          wireless management interface Loopback0
+          wireless management interface Vlan80
+          !
+          ap country NZ
           !
           wlan P45-Guest 1 P45-Guest
-           no shutdown
-           wpa2 psk set-key ascii 0 P45-Guest-WiFi
            no security wpa akm dot1x
-           security wpa akm psk
+           security wpa akm psk set-key ascii 0 P45-Guest-WiFi
+           security wpa wpa2 ciphers aes
+           no shutdown
           !
-          ap join-profile default-ap-profile
-           country NZ
+          wireless profile flex P45-FLEX
+           native-vlan-id 100
+           vlan-name GUEST
+            vlan-id 100
           !
+          wireless profile policy P45-POLICY
+           no central association
+           no central dhcp
+           no central switching
+           vlan 100
+           no shutdown
+          !
+          wireless tag site P45-SITE
+           flex-profile P45-FLEX
+           no local-site
+          !
+          wireless tag policy P45-POLICY-TAG
+           wlan P45-Guest policy P45-POLICY
+          !
+          ap profile default-ap-profile
+           description P45 default AP profile
+          !
+          line con 0
+           logging synchronous
           line vty 0 15
            transport input ssh
+           login authentication default
           !
           end
     cpu_limit: null
@@ -786,45 +1420,92 @@ nodes:
     configuration:
       - name: clients.conf
         content: |-
-          #cloud-config
-          # RADIUS-HQ-1 — FreeRADIUS server
-          hostname: RADIUS-HQ-1
-          manage_etc_hosts: true
+          # Every NAS that may ask this server a question.
+          #
+          # Declared as whole subnets rather than per-device: every switch and
+          # router in the estate is a NAS, they are renumbered from the manifest,
+          # and a per-host list would go stale the first time one moved.
+          #
+          # The secret MUST match the `key` on the devices (P45-RADIUS-KEY) or the
+          # server answers nothing and the device reports a timeout, which looks
+          # identical to the server being down.
 
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [192.168.80.20/24]
-                      gateway4: 192.168.80.1
-                      nameservers: {addresses: [192.168.80.10]}
-                    eth1:
-                      optional: true
+          client localhost {
+              ipaddr = 127.0.0.1
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = other
+          }
 
-            - path: /etc/freeradius/3.0/clients.conf.d/p45-devices.conf
-              permissions: '0640'
-              content: |
-                client p45-devices {
-                  ipaddr = 0.0.0.0/0
-                  secret = P45-RADIUS-KEY
-                  nas_type = cisco
-                }
+          client p45-net-0 {
+              ipaddr = 192.168.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
 
-            - path: /etc/freeradius/3.0/mods-config/files/authorize
-              append: true
-              content: |
-                admin Cleartext-Password := "autp45cml"
-                        Service-Type = NAS-Prompt-User
+          client p45-net-1 {
+              ipaddr = 10.255.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
 
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y freeradius
-            - systemctl restart freeradius
+          client p45-net-2 {
+              ipaddr = 10.50.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
+      - name: radiusd.conf
+        content: "prefix = /usr\nexec_prefix = /usr\nsysconfdir = /etc\nlocalstatedir\
+          \ = /var\nsbindir = ${exec_prefix}/sbin\nlogdir = /var/log/freeradius\n\
+          raddbdir = ${sysconfdir}/freeradius/3.0\nradacctdir = ${logdir}/radacct\n\
+          \nname = freeradius\nconfdir = ${raddbdir}\nmodconfdir = ${confdir}/mods-config\n\
+          certdir = ${confdir}/certs\ncadir = ${confdir}/certs\nrun_dir = ${localstatedir}/run/${name}\n\
+          db_dir = ${raddbdir}\nlibdir = /usr/lib/freeradius\npidfile = ${run_dir}/${name}.pid\n\
+          \nmax_request_time = 30\ncleanup_delay = 5\nmax_requests = 16384\nhostname_lookups\
+          \ = no\n\nlog {\n\tdestination = stdout\n\tcolourise = no\n\tstripped_names\
+          \ = no\n\tauth = yes\n\tauth_badpass = yes\n\tauth_goodpass = no\n}\n\n\
+          checkrad = ${sbindir}/checkrad\n\nsecurity {\n\tmax_attributes = 200\n\t\
+          reject_delay = 1\n\tstatus_server = yes\n}\n\n$INCLUDE clients.conf\n\n\
+          thread pool {\n\tstart_servers = 5\n\tmax_servers = 32\n\tmin_spare_servers\
+          \ = 3\n\tmax_spare_servers = 10\n\tmax_requests_per_server = 0\n\tauto_limit_acct\
+          \ = no\n}\n\nmodules {\n\t$INCLUDE mods-enabled/\n}\n\ninstantiate {\n}\n\
+          \npolicy {\n\t$INCLUDE policy.d/\n}\n\n$INCLUDE sites-enabled/"
+      - name: users
+        content: |-
+          # Device administration (AAA login from switches, routers and WLCs).
+          p45admin Cleartext-Password := "autp45cml"
+          # Wireless 802.1X account.
+          wifiuser Cleartext-Password := "P45-WiFi-Pass"
+          # Kept so the stock smoke test still works.
+          testuser Cleartext-Password := "testpassword"
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_radius.py — do not edit on the node, edit the manifest.
+          #
+          # freeradius is PID 1 in this container, so this hook must exit 0 and must print
+          # READY to the console or the node never reaches BOOTED.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 192.168.80.20/24 dev eth0 2>/dev/null || true
+            ip route add default via 192.168.80.1 2>/dev/null || true
+            ip -4 addr show
+            ip route show
+            # Record whether the config would actually load.  freeradius is PID 1 here, so
+            # a config it cannot parse kills the container and CML rolls the node back to
+            # DEFINED_ON_CORE with no error surfaced anywhere (known-issues #10).  This
+            # turns that silent death into a line the next boot can be read for.
+            freeradius -XC 2>&1 | tail -25
+            echo "freeradius -XC exit=$?"
+          } >/var/log/boot.log 2>&1
+
+          echo "READY" >/dev/console
+          exit 0
     cpu_limit: null
     cpus: null
     data_volume: null
@@ -841,8 +1522,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 960
-    y: -480
+    x: 1000
+    y: -520
     interfaces:
       - id: i0
         label: eth0
@@ -866,163 +1547,361 @@ nodes:
         slot: 3
   - boot_disk_size: null
     configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DHCP/DNS-HQ-1 — internal DNS + DHCP (dnsmasq)
-          hostname: DHCP-DNS-HQ-1
-          fqdn: DHCP-DNS-HQ-1.hq.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [192.168.80.10/24]
-                      gateway4: 192.168.80.1
-                      nameservers: {addresses: [192.168.80.10]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                local=/hq.p45.local/
-                address=/www.p45.local/100.11.0.20
-                address=/vpn.p45.local/100.11.0.10
-                # DHCP for user VLANs — served over the interface trunked from the switch.
-                # Range per-VLAN configured below (helper=true means we act as relay target on other subnets).
-          dhcp-range=tag:vlan10,192.168.10.100,192.168.10.200,12h
-                dhcp-option=tag:vlan10,option:router,192.168.10.1
-                dhcp-option=tag:vlan10,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan20,192.168.20.100,192.168.20.200,12h
-                dhcp-option=tag:vlan20,option:router,192.168.20.1
-                dhcp-option=tag:vlan20,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan30,192.168.30.100,192.168.30.200,12h
-                dhcp-option=tag:vlan30,option:router,192.168.30.1
-                dhcp-option=tag:vlan30,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan40,192.168.40.100,192.168.40.200,12h
-                dhcp-option=tag:vlan40,option:router,192.168.40.1
-                dhcp-option=tag:vlan40,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan50,192.168.50.100,192.168.50.200,12h
-                dhcp-option=tag:vlan50,option:router,192.168.50.1
-                dhcp-option=tag:vlan50,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan60,192.168.60.100,192.168.60.200,12h
-                dhcp-option=tag:vlan60,option:router,192.168.60.1
-                dhcp-option=tag:vlan60,option:dns-server,192.168.80.10
-          dhcp-range=tag:vlan100,192.168.100.100,192.168.100.200,12h
-                dhcp-option=tag:vlan100,option:router,192.168.100.1
-                dhcp-option=tag:vlan100,option:dns-server,192.168.80.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n5
-    image_definition: null
-    label: DHCP/DNS-HQ-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 960
-    y: -320
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-  - boot_disk_size: null
-    configuration:
       - name: day0-config
         content: |-
+          : Saved
+
+          :
+          : Serial Number: 9A89LFMFVRL
+          : Hardware:   ASAv, 2048 MB RAM, CPU Pentium II 2100 MHz
+          : Written by enable_15 at 12:33:11.343 UTC Mon Aug 17 2026
+          !
+          ASA Version 9.24(1)
           !
           hostname Firewall-DR-1
           domain-name dr.p45.local
+          enable password $sha512$5000$LiHMhOxbU5lnlH/KYuB/fA==$ppVqXrqdaK/TMAFOeao5yg== pbkdf2
+          service-module 0 keepalive-timeout 4
+          service-module 0 keepalive-counter 6
           !
-          enable password autp45cml
-          username admin password autp45cml privilege 15
-          aaa authentication ssh console LOCAL
+          license smart
+           feature tier standard
+           throughput level 1G
+          names
+          no mac-address auto
+
           !
           interface GigabitEthernet0/0
-           description FO to Firewall-DR-2
-           description LAN FAILOVER
+           description LAN FAILOVER LINK - unused, see the note at the top of this file
+           shutdown
+           no nameif
+           no security-level
+           no ip address
           !
           interface GigabitEthernet0/1
            description to EdgeRouter-DR-1 GigabitEthernet0/3
            nameif outside
            security-level 0
-           ip address 10.255.4.10 255.255.255.252
-           no shutdown
+           ip address 10.255.4.18 255.255.255.252
+           ospf dead-interval minimal hello-multiplier 4
           !
           interface GigabitEthernet0/2
            description to EdgeRouter-DR-2 GigabitEthernet0/4
-           nameif outside
+           nameif outside2
            security-level 0
-           ip address 10.255.4.22 255.255.255.252
-           no shutdown
+           ip address 10.255.4.30 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
           !
           interface GigabitEthernet0/3
            description to CoreSwitch-DR-1 Ethernet0/0
            nameif inside
            security-level 100
            ip address 10.255.5.10 255.255.255.252
-           no shutdown
+           ospf dead-interval minimal hello-multiplier 4
           !
-          failover
-          failover lan unit primary
-          failover lan interface FO GigabitEthernet0/0
-          failover link FO GigabitEthernet0/0
-          failover interface ip FO 10.255.5.100 255.255.255.252 standby 10.255.5.201
+          interface GigabitEthernet0/4
+           description to CoreSwitch-DR-2 Ethernet1/2
+           nameif inside2
+           security-level 100
+           ip address 10.255.5.22 255.255.255.252
+           ospf cost 100
+           ospf dead-interval minimal hello-multiplier 4
           !
-          access-list OUTSIDE-IN extended permit icmp any any
-          access-list OUTSIDE-IN extended permit tcp any host 100.22.0.20 eq https
-          access-list OUTSIDE-IN extended permit tcp any host 100.22.0.20 eq http
-          access-list OUTSIDE-IN extended deny ip any any
-          access-group OUTSIDE-IN in interface outside
+          interface GigabitEthernet0/5
+           description to DMZSwitch-DR-1 Ethernet0/3
+           nameif dmz
+           security-level 50
+           ip address 10.50.2.1 255.255.255.0
+           ospf dead-interval minimal hello-multiplier 4
           !
+          interface GigabitEthernet0/6
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          interface GigabitEthernet0/7
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          interface GigabitEthernet0/8
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          interface Management0/0
+           no management-only
+           shutdown
+           no nameif
+           no security-level
+           no ip address
+          !
+          ftp mode passive
+          dns server-group DefaultDNS
+           domain-name dr.p45.local
+          no object-group-search access-control
           object network INSIDE-NET
            subnet 172.16.0.0 255.255.0.0
+          object network DMZ-NET
+           subnet 10.50.2.0 255.255.255.0
+          object network DMZ-DNS-REAL
+           host 10.50.2.53
+          object network DMZ-DNS-PUBLIC
+           host 100.22.0.53
+          object-group network CORP-ALL
+           network-object 10.0.0.0 255.0.0.0
+           network-object 172.16.0.0 255.255.0.0
+           network-object 192.168.0.0 255.255.0.0
+          access-group OUTSIDE-IN in interface outside
+          access-group OUTSIDE-IN in interface outside2
+          access-group DMZ-IN in interface dmz
+          access-list DMZ-IN extended deny ip any 192.168.0.0 255.255.0.0
+          access-list DMZ-IN extended deny ip any 172.16.0.0 255.255.0.0
+          access-list DMZ-IN extended permit udp 10.50.2.0 255.255.255.0 any eq domain
+          access-list DMZ-IN extended permit tcp 10.50.2.0 255.255.255.0 any eq domain
+          access-list DMZ-IN extended permit tcp 10.50.2.0 255.255.255.0 any eq www
+          access-list DMZ-IN extended permit tcp 10.50.2.0 255.255.255.0 any eq https
+          access-list DMZ-IN extended permit icmp any any
+          access-list DMZ-IN extended deny ip any any
+          access-list OUTSIDE-IN extended permit icmp any any
+          access-list OUTSIDE-IN extended permit tcp any host 100.22.0.20 eq https
+          access-list OUTSIDE-IN extended permit tcp any host 100.22.0.20 eq www
+          access-list OUTSIDE-IN extended permit ospf any any
+          access-list OUTSIDE-IN extended permit udp any host 10.50.2.53 eq domain
+          access-list OUTSIDE-IN extended permit tcp any host 10.50.2.53 eq domain
+          access-list OUTSIDE-IN extended deny ip any any
+          pager lines 23
+          mtu outside 1500
+          mtu outside2 1500
+          mtu inside 1500
+          mtu inside2 1500
+          mtu dmz 1500
+          no failover
+          no failover wait-disable
+          no monitor-interface service-module
+          icmp unreachable rate-limit 1 burst-size 1
+          no asdm history enable
+          arp timeout 14400
+          no arp permit-nonconnected
+          arp rate-limit 8192
+          nat (inside,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside) source dynamic INSIDE-NET interface
+          nat (inside,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (inside,outside2) source dynamic INSIDE-NET interface
+          nat (inside,dmz) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside) source dynamic DMZ-NET interface
+          nat (dmz,outside2) source static CORP-ALL CORP-ALL destination static CORP-ALL CORP-ALL no-proxy-arp route-lookup
+          nat (dmz,outside2) source dynamic DMZ-NET interface
+          nat (dmz,outside) source static DMZ-DNS-REAL DMZ-DNS-PUBLIC
+          nat (dmz,outside2) source static DMZ-DNS-REAL DMZ-DNS-PUBLIC
+          !
+          object network INSIDE-NET
            nat (inside,outside) dynamic interface
+          router ospf 1
+           router-id 10.255.0.171
+           network 10.50.2.0 255.255.255.0 area 0
+           network 10.255.4.8 255.255.255.252 area 0
+           network 10.255.4.16 255.255.255.252 area 0
+           network 10.255.4.20 255.255.255.252 area 0
+           network 10.255.4.28 255.255.255.252 area 0
+           network 10.255.5.8 255.255.255.252 area 0
+           network 10.255.5.20 255.255.255.252 area 0
+           log-adj-changes
           !
-          route outside 0.0.0.0 0.0.0.0 10.255.4.9 1
-          route inside 10.0.0.0 255.0.0.0 10.255.5.9 1
-          route inside 172.16.0.0 255.255.0.0 10.255.5.9 1
-          !
+          route outside 0.0.0.0 0.0.0.0 10.255.4.17 254
+          timeout xlate 3:00:00
+          timeout pat-xlate 0:00:30
+          timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+          timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+          timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+          timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+          timeout tcp-proxy-reassembly 0:01:00
+          timeout floating-conn 0:00:00
+          timeout conn-holddown 0:00:15
+          timeout igp stale-route 0:01:10
+          user-identity default-domain LOCAL
+          aaa authentication ssh console LOCAL
+          aaa authentication login-history
+          no snmp-server location
+          no snmp-server contact
+          crypto ipsec security-association pmtu-aging infinite
+          crypto ca trustpoint _SmartCallHome_ServerCA
+           no validation-usage
+           crl configure
+          crypto ca trustpoint _SmartCallHome_ServerCA2
+           no validation-usage
+           crl configure
+          crypto ca trustpool policy
+           auto-import
+          crypto ca certificate chain _SmartCallHome_ServerCA
+           certificate ca 0a0142800000014523c844b500000002
+              30820560 30820348 a0030201 0202100a 01428000 00014523 c844b500 00000230
+              0d06092a 864886f7 0d01010b 0500304a 310b3009 06035504 06130255 53311230
+              10060355 040a1309 4964656e 54727573 74312730 25060355 0403131e 4964656e
+              54727573 7420436f 6d6d6572 6369616c 20526f6f 74204341 2031301e 170d3134
+              30313136 31383132 32335a17 0d333430 31313631 38313232 335a304a 310b3009
+              06035504 06130255 53311230 10060355 040a1309 4964656e 54727573 74312730
+              25060355 0403131e 4964656e 54727573 7420436f 6d6d6572 6369616c 20526f6f
+              74204341 20313082 0222300d 06092a86 4886f70d 01010105 00038202 0f003082
+              020a0282 020100a7 5019de3f 993dd433 46f16f51 6182b2a9 4f8f6789 5d84d953
+              dd0c28d9 d7f0ffae 95437299 f9b55d7c 8ac142e1 315074d1 810d7ccd 9b21ab43
+              e2acad5e 866ef309 8a1f5a32 bda2eb94 f9e85c0a ecff98d2 af71b3b4 539f4e87
+              ef92bcbd ec4f3230 884b175e 57c453c2 f602978d d9622bbf 241f628d dfc3b829
+              4b49783c 93608822 fc99da36 c8c2a2d4 2c540067 356e73bf 0258f0a4 dde5b0a2
+              267acae0 36a51916 f5fdb7ef ae3f40f5 6d5a04fd ce34ca24 dc74231b 5d331312
+              5dc40125 f630dd02 5d9fe0d5 47bdb4eb 1ba1bb49 49d89f5b 02f38ae4 2490e462
+              4f4fc1af 8b0e7417 a8d17288 6a7a0149 ccb44679 c617b1da 981e0759 fa752185
+              65dd9056 cefbaba5 609dc49d f952b08b bd87f98f 2b230a23 763bf733 e1c900f3
+              69f94ba2 e04ebc7e 93398407 f744707e fe075ae5 b1acd118 ccf235e5 494908ca
+              56c93dfb 0f187d8b 3bc113c2 4d8fc94f 0e37e91f a10e6adf 622ecb35 0651792c
+              c82538f4 fa4ba789 5c9cd2e3 0d39864a 747cd559 87c23f4e 0c5c52f4 3df75282
+              f1eaa3ac fd49341a 28f34188 3a13eee8 deff991d 5fbacbe8 1ef2b950 60c031d3
+              73e5efbe a0ed330b 74be2020 c4676cf0 08037a55 807f464e 96a7f41e 3ee1f6d8
+              09e13364 2b63d732 5e9ff9c0 7b0f786f 97bc939a f99c1290 787a8087 15d77274
+              9c557478 b1bae16e 7004ba4f a0ba68c3 7bff31f0 733d3d94 2ab10b41 0ea0fe4d
+              88656b79 33b4d702 03010001 a3423040 300e0603 551d0f01 01ff0404 03020106
+              300f0603 551d1301 01ff0405 30030101 ff301d06 03551d0e 04160414 ed4419c0
+              d3f0068b eea47bbe 42e72654 c88e3676 300d0609 2a864886 f70d0101 0b050003
+              82020100 0dae9032 f6a64b7c 44761961 1e2728cd 5e54ef25 bce30890 f929d7ae
+              6808e194 0058ef2e 2e7e5352 8cb65c07 ea88ba99 8b5094d7 8280df61 090093ad
+              0d14e6ce c1f23794 78b05f9c b3a273b8 8f059338 cd8d3eb0 b8fbc0cf b1f2ec2d
+              2d1bccec aa9ab3aa 60821b2d 3bc3843d 578a961e 9c75b8d3 30cd6008 8390d38e
+              54f14d66 c05d7403 40a3ee85 7ec21f77 9c06e8c1 a7185d52 95edc9dd 259e6dfa
+              a9eda33a 34d0597b daed50f3 35bfedeb 144d31c7 60f4daf1 879ce248 e2c6c537
+              fb0610fa 75596631 4729da76 9a1ce982 aeef9ab9 51f78823 9a699562 3ce55580
+              36d75402 fff1b95d ced4236f d845844a 5b65ef89 0cdd14a7 20cb18a5 25b40df9
+              01f0a2d2 f400c874 8ea12a48 8e65db13 c4e22517 7debbe87 5b172054 51934a53
+              030bec5d ca33ed62 fd45c72f 5bdc58a0 8039e6fa d7fe1314 a6ed3d94 4a4274d4
+              c3775973 cd8f46be 5538effa e89132ea 97580422 de38c3cc bc6dc933 3a6a0a69
+              3fa0c8ea 728f8c63 8623bd6d 3c969e95 e0494caa a2b92a1b 9c368178 edc3e846
+              e2265944 751ed975 8951cd10 849d6160 cb5df997 224d8e98 e6e37ff6 5bbbaecd
+              ca4a816b 5e0bf351 e1742be9 7e27a7d9 99494ef8 a580db25 0f1c6362 8ac93367
+              6b3c1083 c6addea8 cd168e8d f0073771 9ff2abfc 41f5c18b ec00375d 09e54e80
+              effab15c 3806a51b 4ae1dc38 2d3cdcab 1f901ad5 4a9ceed1 706cccee f457f818
+              ba846e87
+            quit
+          crypto ca certificate chain _SmartCallHome_ServerCA2
+           certificate ca 0509
+              308205b7 3082039f a0030201 02020205 09300d06 092a8648 86f70d01 01050500
+              3045310b 30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164
+              6973204c 696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f
+              6f742043 41203230 1e170d30 36313132 34313832 3730305a 170d3331 31313234
+              31383233 33335a30 45310b30 09060355 04061302 424d3119 30170603 55040a13
+              1051756f 56616469 73204c69 6d697465 64311b30 19060355 04031312 51756f56
+              61646973 20526f6f 74204341 20323082 0222300d 06092a86 4886f70d 01010105
+              00038202 0f003082 020a0282 0201009a 18ca4b94 0d002daf 03298af0 0f81c8ae
+              4c19851d 089fab29 4485f32f 81ad321e 9046bfa3 86261a1e fe7e1c18 3a5c9c60
+              172a3a74 8333307d 615411cb edabe0e6 d2a27ef5 6b6f18b7 0a0b2dfd e93eef0a
+              c6b310e9 dcc24617 f85dfda4 daff9e49 5a9ce633 e62496f7 3fba5b2b 1c7a35c2
+              d667feab 66508b6d 28602bef d760c3c7 93bc8d36 91f37ff8 db1113c4 9c7776c1
+              aeb7026a 817aa945 83e205e6 b956c194 378f4871 6322ec17 6507958a 4bdf8fc6
+              5a0ae5b0 e35f5e6b 11ab0cf9 85eb44e9 f80473f2 e9fe5c98 8cf573af 6bb47ecd
+              d45c022b 4c39e1b2 95952d42 87d7d5b3 9043b76c 13f1dedd f6c4f889 3fd175f5
+              92c391d5 8a88d090 ecdc6dde 89c26571 968b0d03 fd9cbf5b 16ac92db eafe797c
+              adebaff7 16cbdbcd 252be51f fb9a9fe2 51cc3a53 0c48e60e bdc9b476 0652e611
+              13857263 0304e004 362b2019 02e874a7 1fb6c956 66f07525 dc67c10e 616088b3
+              3ed1a8fc a3da1db0 d1b12354 df44766d ed41d8c1 b222b653 1cdf351d dca1772a
+              31e42df5 e5e5dbc8 e0ffe580 d70b63a0 ff33a10f ba2c1515 ea97b3d2 a2b5bef2
+              8c961e1a 8f1d6ca4 6137b986 7333d797 969e237d 82a44c81 e2a1d1ba 675f9507
+              a32711ee 16107bbc 454a4cb2 04d2abef d5fd0c51 ce506a08 31f991da 0c8f645c
+              03c33a8b 203f6e8d 673d3ad6 fe7d5b88 c95efbcc 61dc8b33 77d34432 35096204
+              921610d8 9e2747fb 3b21e3f8 eb1d5b02 03010001 a381b030 81ad300f 0603551d
+              130101ff 04053003 0101ff30 0b060355 1d0f0404 03020106 301d0603 551d0e04
+              1604141a 8462bc48 4c332504 d4eed0f6 03c41946 d1946b30 6e060355 1d230467
+              30658014 1a8462bc 484c3325 04d4eed0 f603c419 46d1946b a149a447 3045310b
+              30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 6973204c
+              696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 6f742043
+              41203282 02050930 0d06092a 864886f7 0d010105 05000382 0201003e 0a164d9f
+              065ba8ae 715d2f05 2f67e613 4583c436 f6f3c026 0c0db547 645df8b4 72c946a5
+              03182755 89787d76 ea963480 1720dce7 83f88dfc 07b8da5f 4d2e67b2 84fdd944
+              fc775081 e67cb4c9 0d0b7253 f8760707 4147960c fbe08226 93558cfe 221f6065
+              7c5fe726 b3f73290 9850d437 7155f692 2178f795 79faf82d 26876656 3077a637
+              78335210 58ae3f61 8ef26ab1 ef187e4a 5963ca8d a256d5a7 2fbc561f cf39c1e2
+              fb0aa815 2c7d4d7a 63c66c97 443cd26f c34a170a f890d257 a21951a5 2d9741da
+              074fa950 da908d94 46e13ef0 94fd1000 38f53be8 40e1b46e 561a20cc 6f588ded
+              2e458fd6 e9933fe7 b12cdf3a d6228cdc 84bb226f d0f8e4c6 39e90488 3cc3baeb
+              557a6d80 9924f56c 01fbf897 b0945beb fdd26ff1 77680d35 6423acb8 55a103d1
+              4d4219dc f8755956 a3f9a849 79f8af0e b911a07c b76aed34 d0b62662 381a870c
+              f8e8fd2e d3907f07 912a1dd6 7e5c8583 99b03808 3fe95ef9 3507e4c9 626e577f
+              a75095f7 bac89be6 8ea201c5 d666bf79 61f33c1c e1b9825c 5da0c3e9 d848bd19
+              a2111419 6eb2861b 683e4837 1a88b75d 965e9cc7 ef276208 e291195c d2f121dd
+              ba174282 97718153 31a99ff6 7d62bf72 e1a3931d cc8a265a 0938d0ce d70d8016
+              b478a53a 874c8d8a a5d54697 f22c10b9 bc5422c0 01506943 9ef4b2ef 6df8ecda
+              f1e3b1ef df918f54 2a0b25c1 2619c452 100565d5 8210eac2 31cd2e
+            quit
+          telnet timeout 10
+          ssh stricthostkeycheck
+          ssh timeout 5
+          ssh key-exchange group dh-group14-sha256
           ssh 172.16.90.0 255.255.255.0 inside
-          ssh version 2
+          console timeout 0
+          threat-detection basic-threat
+          threat-detection statistics access-list
+          no threat-detection statistics tcp-intercept
+          dynamic-access-policy-record DfltAccessPolicy
+          username admin password $sha512$5000$Kep99+/0f+VHw+PFfHQF8A==$xom6d4N3k3T59Zck1Qjb4w== pbkdf2 privilege 15
           !
-          end
+          class-map inspection_default
+           match default-inspection-traffic
+          !
+          !
+          policy-map type inspect dns migrated_dns_map_1
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          policy-map global_policy
+           class inspection_default
+            inspect dns migrated_dns_map_1
+            inspect ftp
+            inspect h323 h225
+            inspect h323 ras
+            inspect ip-options
+            inspect netbios
+            inspect rsh
+            inspect rtsp
+            inspect skinny
+            inspect esmtp
+            inspect sqlnet
+            inspect sunrpc
+            inspect tftp
+            inspect sip
+            inspect icmp
+            inspect icmp error
+          policy-map type inspect dns migrated_dns_map_2
+           parameters
+            message-length maximum client auto
+            message-length maximum 512
+            no tcp-inspection
+          !
+          service-policy global_policy global
+          prompt hostname context
+          call-home
+           profile License
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination transport-method http
+           profile CiscoTAC-1
+            no active
+            destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+            destination address email callhome@cisco.com
+            destination transport-method http
+            subscribe-to-alert-group diagnostic
+            subscribe-to-alert-group environment
+            subscribe-to-alert-group inventory periodic monthly
+            subscribe-to-alert-group configuration periodic monthly
+            subscribe-to-alert-group telemetry periodic daily
+          Cryptochecksum:a8b6a3e0badd65746c8a21bc1e062ea2
+          : end
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n6
+    id: n5
     image_definition: null
     label: Firewall-DR-1
     node_definition: asav
@@ -1152,7 +2031,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n7
+    id: n6
     image_definition: null
     label: Firewall-DR-2
     node_definition: asav
@@ -1221,52 +2100,94 @@ nodes:
     configuration:
       - name: iosxe_config.txt
         content: |-
-          !
           hostname WLC-DR-1
           !
           no ip domain lookup
-          ip domain-name dr.p45.local
+          ip domain name dr.p45.local
           !
           username admin privilege 15 secret 0 autp45cml
           enable secret 0 autp45cml
           !
+          aaa new-model
+          aaa group server radius P45-RAD
+           server name P45-RADIUS
+          !
+          aaa authentication login default local
+          aaa authentication dot1x default group P45-RAD
+          aaa authorization network default group P45-RAD
+          !
+          radius server P45-RADIUS
+           address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
+           key P45-RADIUS-KEY
+          !
+          vlan 80
+           name SERVERS
+          vlan 90
+           name MGMT
+          vlan 100
+           name GUEST
+          !
           interface GigabitEthernet1
            description To CoreSwitch trunk
-           no switchport
+           switchport trunk allowed vlan 80,90,100
+           switchport mode trunk
            no shutdown
           !
           interface GigabitEthernet2
-           description WLC HA RP
-           no switchport
+           description WLC HA redundancy port
            no shutdown
           !
-          interface Loopback0
-           description WLC mgmt
-           ip address 172.16.90.81 255.255.255.0
+          interface Vlan80
+           description Wireless management
+           ip address 172.16.80.5 255.255.255.0
+           no shutdown
           !
-          redundancy
-           mode sso
+          ip route 0.0.0.0 0.0.0.0 172.16.80.1
           !
-          wireless management interface Loopback0
+          wireless management interface Vlan80
+          !
+          ap country NZ
           !
           wlan P45-Guest 1 P45-Guest
-           no shutdown
-           wpa2 psk set-key ascii 0 P45-Guest-WiFi
            no security wpa akm dot1x
-           security wpa akm psk
+           security wpa akm psk set-key ascii 0 P45-Guest-WiFi
+           security wpa wpa2 ciphers aes
+           no shutdown
           !
-          ap join-profile default-ap-profile
-           country NZ
+          wireless profile flex P45-FLEX
+           native-vlan-id 100
+           vlan-name GUEST
+            vlan-id 100
           !
+          wireless profile policy P45-POLICY
+           no central association
+           no central dhcp
+           no central switching
+           vlan 100
+           no shutdown
+          !
+          wireless tag site P45-SITE
+           flex-profile P45-FLEX
+           no local-site
+          !
+          wireless tag policy P45-POLICY-TAG
+           wlan P45-Guest policy P45-POLICY
+          !
+          ap profile default-ap-profile
+           description P45 default AP profile
+          !
+          line con 0
+           logging synchronous
           line vty 0 15
            transport input ssh
+           login authentication default
           !
           end
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n8
+    id: n7
     image_definition: null
     label: WLC-DR-1
     node_definition: cat9800
@@ -1354,7 +2275,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n9
+    id: n8
     image_definition: null
     label: WLC-DR-2
     node_definition: cat9800
@@ -1395,160 +2316,99 @@ nodes:
         slot: 3
   - boot_disk_size: null
     configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DHCP/DNS-DR-1 — internal DNS + DHCP (dnsmasq)
-          hostname: DHCP-DNS-DR-1
-          fqdn: DHCP-DNS-DR-1.dr.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [172.16.80.10/24]
-                      gateway4: 172.16.80.1
-                      nameservers: {addresses: [172.16.80.10]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                local=/dr.p45.local/
-                address=/www.p45.local/100.11.0.20
-                address=/vpn.p45.local/100.11.0.10
-                # DHCP for user VLANs — served over the interface trunked from the switch.
-                # Range per-VLAN configured below (helper=true means we act as relay target on other subnets).
-          dhcp-range=tag:vlan10,172.16.10.100,172.16.10.200,12h
-                dhcp-option=tag:vlan10,option:router,172.16.10.1
-                dhcp-option=tag:vlan10,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan20,172.16.20.100,172.16.20.200,12h
-                dhcp-option=tag:vlan20,option:router,172.16.20.1
-                dhcp-option=tag:vlan20,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan30,172.16.30.100,172.16.30.200,12h
-                dhcp-option=tag:vlan30,option:router,172.16.30.1
-                dhcp-option=tag:vlan30,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan40,172.16.40.100,172.16.40.200,12h
-                dhcp-option=tag:vlan40,option:router,172.16.40.1
-                dhcp-option=tag:vlan40,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan50,172.16.50.100,172.16.50.200,12h
-                dhcp-option=tag:vlan50,option:router,172.16.50.1
-                dhcp-option=tag:vlan50,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan60,172.16.60.100,172.16.60.200,12h
-                dhcp-option=tag:vlan60,option:router,172.16.60.1
-                dhcp-option=tag:vlan60,option:dns-server,172.16.80.10
-          dhcp-range=tag:vlan100,172.16.100.100,172.16.100.200,12h
-                dhcp-option=tag:vlan100,option:router,172.16.100.1
-                dhcp-option=tag:vlan100,option:dns-server,172.16.80.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n10
-    image_definition: null
-    label: DHCP/DNS-DR-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -1600
-    y: -80
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i2
-        label: eth2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i3
-        label: eth3
-        mac_address: null
-        type: physical
-        slot: 3
-      - id: i4
-        label: eth4
-        mac_address: null
-        type: physical
-        slot: 4
-  - boot_disk_size: null
-    configuration:
       - name: clients.conf
         content: |-
-          #cloud-config
-          # RADIUS-DR-1 — FreeRADIUS server
-          hostname: RADIUS-DR-1
-          manage_etc_hosts: true
+          # Every NAS that may ask this server a question.
+          #
+          # Declared as whole subnets rather than per-device: every switch and
+          # router in the estate is a NAS, they are renumbered from the manifest,
+          # and a per-host list would go stale the first time one moved.
+          #
+          # The secret MUST match the `key` on the devices (P45-RADIUS-KEY) or the
+          # server answers nothing and the device reports a timeout, which looks
+          # identical to the server being down.
 
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [172.16.80.20/24]
-                      gateway4: 172.16.80.1
-                      nameservers: {addresses: [172.16.80.10]}
-                    eth1:
-                      optional: true
+          client localhost {
+              ipaddr = 127.0.0.1
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = other
+          }
 
-            - path: /etc/freeradius/3.0/clients.conf.d/p45-devices.conf
-              permissions: '0640'
-              content: |
-                client p45-devices {
-                  ipaddr = 0.0.0.0/0
-                  secret = P45-RADIUS-KEY
-                  nas_type = cisco
-                }
+          client p45-net-0 {
+              ipaddr = 172.16.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
 
-            - path: /etc/freeradius/3.0/mods-config/files/authorize
-              append: true
-              content: |
-                admin Cleartext-Password := "autp45cml"
-                        Service-Type = NAS-Prompt-User
+          client p45-net-1 {
+              ipaddr = 10.255.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
 
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y freeradius
-            - systemctl restart freeradius
+          client p45-net-2 {
+              ipaddr = 10.50.0.0/16
+              secret = P45-RADIUS-KEY
+              require_message_authenticator = no
+              nas_type = cisco
+          }
+      - name: radiusd.conf
+        content: "prefix = /usr\nexec_prefix = /usr\nsysconfdir = /etc\nlocalstatedir\
+          \ = /var\nsbindir = ${exec_prefix}/sbin\nlogdir = /var/log/freeradius\n\
+          raddbdir = ${sysconfdir}/freeradius/3.0\nradacctdir = ${logdir}/radacct\n\
+          \nname = freeradius\nconfdir = ${raddbdir}\nmodconfdir = ${confdir}/mods-config\n\
+          certdir = ${confdir}/certs\ncadir = ${confdir}/certs\nrun_dir = ${localstatedir}/run/${name}\n\
+          db_dir = ${raddbdir}\nlibdir = /usr/lib/freeradius\npidfile = ${run_dir}/${name}.pid\n\
+          \nmax_request_time = 30\ncleanup_delay = 5\nmax_requests = 16384\nhostname_lookups\
+          \ = no\n\nlog {\n\tdestination = stdout\n\tcolourise = no\n\tstripped_names\
+          \ = no\n\tauth = yes\n\tauth_badpass = yes\n\tauth_goodpass = no\n}\n\n\
+          checkrad = ${sbindir}/checkrad\n\nsecurity {\n\tmax_attributes = 200\n\t\
+          reject_delay = 1\n\tstatus_server = yes\n}\n\n$INCLUDE clients.conf\n\n\
+          thread pool {\n\tstart_servers = 5\n\tmax_servers = 32\n\tmin_spare_servers\
+          \ = 3\n\tmax_spare_servers = 10\n\tmax_requests_per_server = 0\n\tauto_limit_acct\
+          \ = no\n}\n\nmodules {\n\t$INCLUDE mods-enabled/\n}\n\ninstantiate {\n}\n\
+          \npolicy {\n\t$INCLUDE policy.d/\n}\n\n$INCLUDE sites-enabled/"
+      - name: users
+        content: |-
+          # Device administration (AAA login from switches, routers and WLCs).
+          p45admin Cleartext-Password := "autp45cml"
+          # Wireless 802.1X account.
+          wifiuser Cleartext-Password := "P45-WiFi-Pass"
+          # Kept so the stock smoke test still works.
+          testuser Cleartext-Password := "testpassword"
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_radius.py — do not edit on the node, edit the manifest.
+          #
+          # freeradius is PID 1 in this container, so this hook must exit 0 and must print
+          # READY to the console or the node never reaches BOOTED.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 172.16.80.20/24 dev eth0 2>/dev/null || true
+            ip route add default via 172.16.80.1 2>/dev/null || true
+            ip -4 addr show
+            ip route show
+            # Record whether the config would actually load.  freeradius is PID 1 here, so
+            # a config it cannot parse kills the container and CML rolls the node back to
+            # DEFINED_ON_CORE with no error surfaced anywhere (known-issues #10).  This
+            # turns that silent death into a line the next boot can be read for.
+            freeradius -XC 2>&1 | tail -25
+            echo "freeradius -XC exit=$?"
+          } >/var/log/boot.log 2>&1
+
+          echo "READY" >/dev/console
+          exit 0
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n11
+    id: n9
     image_definition: null
     label: RADIUS-DR-1
     node_definition: radius
@@ -1561,7 +2421,7 @@ nodes:
     ram: null
     tags: []
     x: -1600
-    y: 40
+    y: -320
     interfaces:
       - id: i0
         label: eth0
@@ -1583,227 +2443,6 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DMZDNS-DR-1 — DMZ external DNS (authoritative for the public zone)
-          hostname: DMZDNS-DR-1
-          fqdn: DMZDNS-DR-1.dmz.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.2.10/24]
-                      gateway4: 10.50.2.1
-                      nameservers: {addresses: [8.8.8.8]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                address=/www.p45.local/None
-                address=/vpn.p45.local/100.11.0.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n12
-    image_definition: null
-    label: DMZDNS-DR-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -1600
-    y: -800
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # WebsiteServer-DR-1 — public + internal web server
-          hostname: WebsiteServer-DR-1
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.2.20/24]
-                      gateway4: 10.50.2.1
-                      nameservers: {addresses: [10.50.2.1]}
-                    eth1:
-                      optional: true
-
-            - path: /var/www/html/index.html
-              permissions: '0644'
-              content: |
-                <html><body>
-                <h1>P45 DR Web Server</h1>
-                <p>Host: WebsiteServer-DR-1</p>
-                <p>Site: DR</p>
-                <p>Internal IP: 10.50.2.20</p>
-                <p>Public IP: 100.22.0.20</p>
-                </body></html>
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y nginx
-            - systemctl restart nginx
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n13
-    image_definition: null
-    label: WebsiteServer-DR-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -1600
-    y: -680
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i2
-        label: eth2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i3
-        label: eth3
-        mac_address: null
-        type: physical
-        slot: 3
-      - id: i4
-        label: eth4
-        mac_address: null
-        type: physical
-        slot: 4
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DMZDNS-DR-2 — DMZ external DNS (authoritative for the public zone)
-          hostname: DMZDNS-DR-2
-          fqdn: DMZDNS-DR-2.dmz.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.2.11/24]
-                      gateway4: 10.50.2.1
-                      nameservers: {addresses: [8.8.8.8]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                address=/www.p45.local/None
-                address=/vpn.p45.local/100.11.0.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n14
-    image_definition: null
-    label: DMZDNS-DR-2
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -1600
-    y: -560
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -1860,6 +2499,11 @@ nodes:
            ip ospf 2 area 0
            no shutdown
           !
+          interface GigabitEthernet0/6
+           description to Internet-WebServer-1 eth2
+           ip address 100.64.2.9 255.255.255.252
+           no shutdown
+          !
           ip route 192.168.0.0 255.255.0.0 10.255.10.9   ! HQ enterprise network
           ip route 100.11.0.61 255.255.255.255 10.255.10.9   ! VPN head-end public address
           ip route 10.255.0.61 255.255.255.255 10.255.10.9   ! edge Loopback0 — GRE tunnel endpoint
@@ -1874,6 +2518,10 @@ nodes:
           ip route 100.22.0.62 255.255.255.255 10.255.20.13   ! VPN head-end public address
           ip route 10.255.0.162 255.255.255.255 10.255.20.13   ! edge Loopback0 — GRE tunnel endpoint
           ip route 100.22.0.53 255.255.255.255 10.255.20.13   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 100.64.2.100 255.255.255.255 100.64.2.10   ! internet website
+          !
+          ip dns server
+          ip host www.internet.example 100.64.2.100
           !
           router ospf 2
            router-id 100.13.0.1
@@ -1891,7 +2539,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n15
+    id: n10
     image_definition: null
     label: ISP-3 (Satellite)
     node_definition: iosv
@@ -2001,16 +2649,29 @@ nodes:
            ip ospf 2 area 0
            no shutdown
           !
+          interface GigabitEthernet0/6
+           description to Internet-WebServer-1 eth0
+           ip address 100.64.2.1 255.255.255.252
+           no shutdown
+          !
           ip route 192.168.0.0 255.255.0.0 10.255.10.1   ! HQ enterprise network
           ip route 100.11.0.61 255.255.255.255 10.255.10.1   ! VPN head-end public address
           ip route 10.255.0.61 255.255.255.255 10.255.10.1   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.11.0.53 255.255.255.255 10.255.10.1   ! public DNS resolver (NAT'd on the site's primary firewall)
           ip route 192.168.0.0 255.255.0.0 10.255.10.13   ! HQ enterprise network
           ip route 10.255.0.62 255.255.255.255 10.255.10.13   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.11.0.53 255.255.255.255 10.255.10.13   ! public DNS resolver (NAT'd on the site's primary firewall)
           ip route 172.16.0.0 255.255.0.0 10.255.20.1   ! DR enterprise network
           ip route 10.255.0.161 255.255.255.255 10.255.20.1   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.22.0.53 255.255.255.255 10.255.20.1   ! public DNS resolver (NAT'd on the site's primary firewall)
           ip route 172.16.0.0 255.255.0.0 10.255.20.21   ! DR enterprise network
           ip route 100.22.0.62 255.255.255.255 10.255.20.21   ! VPN head-end public address
           ip route 10.255.0.162 255.255.255.255 10.255.20.21   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.22.0.53 255.255.255.255 10.255.20.21   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 100.64.2.100 255.255.255.255 100.64.2.2   ! internet website
+          !
+          ip dns server
+          ip host www.internet.example 100.64.2.100
           !
           router ospf 2
            router-id 100.11.0.1
@@ -2028,7 +2689,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n16
+    id: n11
     image_definition: null
     label: ISP-1 (Terrestrial Fibre)
     node_definition: iosv
@@ -2077,6 +2738,31 @@ nodes:
         mac_address: null
         type: physical
         slot: 5
+      - id: i7
+        label: GigabitEthernet0/6
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: GigabitEthernet0/7
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i9
+        label: GigabitEthernet0/8
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i10
+        label: GigabitEthernet0/9
+        mac_address: null
+        type: physical
+        slot: 9
+      - id: i11
+        label: GigabitEthernet0/10
+        mac_address: null
+        type: physical
+        slot: 10
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -2138,16 +2824,37 @@ nodes:
            ip ospf 2 area 0
            no shutdown
           !
+          interface GigabitEthernet0/7
+           description to Internet-WebServer-1 eth1
+           ip address 100.64.2.5 255.255.255.252
+           no shutdown
+          !
+          ip route 10.255.4.0 255.255.255.252 10.255.10.5   ! perimeter PAT source — firewall outside /30
+          ip route 10.255.4.4 255.255.255.252 10.255.10.5   ! perimeter PAT source — firewall outside /30
           ip route 192.168.0.0 255.255.0.0 10.255.10.5   ! HQ enterprise network
           ip route 100.11.0.61 255.255.255.255 10.255.10.5   ! VPN head-end public address
           ip route 10.255.0.61 255.255.255.255 10.255.10.5   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.11.0.53 255.255.255.255 10.255.10.5   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 10.255.4.8 255.255.255.252 10.255.10.17   ! perimeter PAT source — firewall outside /30
+          ip route 10.255.4.12 255.255.255.252 10.255.10.17   ! perimeter PAT source — firewall outside /30
           ip route 192.168.0.0 255.255.0.0 10.255.10.17   ! HQ enterprise network
           ip route 10.255.0.62 255.255.255.255 10.255.10.17   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.11.0.53 255.255.255.255 10.255.10.17   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 10.255.4.16 255.255.255.252 10.255.20.5   ! perimeter PAT source — firewall outside /30
+          ip route 10.255.4.20 255.255.255.252 10.255.20.5   ! perimeter PAT source — firewall outside /30
           ip route 172.16.0.0 255.255.0.0 10.255.20.5   ! DR enterprise network
           ip route 10.255.0.161 255.255.255.255 10.255.20.5   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.22.0.53 255.255.255.255 10.255.20.5   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 10.255.4.24 255.255.255.252 10.255.20.17   ! perimeter PAT source — firewall outside /30
+          ip route 10.255.4.28 255.255.255.252 10.255.20.17   ! perimeter PAT source — firewall outside /30
           ip route 172.16.0.0 255.255.0.0 10.255.20.17   ! DR enterprise network
           ip route 100.22.0.62 255.255.255.255 10.255.20.17   ! VPN head-end public address
           ip route 10.255.0.162 255.255.255.255 10.255.20.17   ! edge Loopback0 — GRE tunnel endpoint
+          ip route 100.22.0.53 255.255.255.255 10.255.20.17   ! public DNS resolver (NAT'd on the site's primary firewall)
+          ip route 100.64.2.100 255.255.255.255 100.64.2.6   ! internet website
+          !
+          ip dns server
+          ip host www.internet.example 100.64.2.100
           !
           router ospf 2
            router-id 100.12.0.1
@@ -2165,7 +2872,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n17
+    id: n12
     image_definition: null
     label: ISP-2 (Terrestrial Fibre)
     node_definition: iosv
@@ -2219,6 +2926,16 @@ nodes:
         mac_address: null
         type: physical
         slot: 6
+      - id: i8
+        label: GigabitEthernet0/7
+        mac_address: null
+        type: physical
+        slot: 7
+      - id: i9
+        label: GigabitEthernet0/8
+        mac_address: null
+        type: physical
+        slot: 8
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -2304,7 +3021,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n18
+    id: n13
     image_definition: null
     label: EdgeRouter-HQ-1
     node_definition: iosv
@@ -2443,7 +3160,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n19
+    id: n14
     image_definition: null
     label: EdgeRouter-HQ-2
     node_definition: iosv
@@ -2595,7 +3312,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n20
+    id: n15
     image_definition: null
     label: EdgeRouter-DR-2
     node_definition: iosv
@@ -2747,7 +3464,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n21
+    id: n16
     image_definition: null
     label: EdgeRouter-DR-1
     node_definition: iosv
@@ -2812,12 +3529,35 @@ nodes:
         type: physical
         slot: 8
   - boot_disk_size: null
-    configuration: []
+    configuration:
+      - name: user-data
+        content: |-
+          #cloud-config
+          hostname: wireless-client-1
+          manage_etc_hosts: True
+          system_info:
+            default_user:
+              name: cisco
+          password: cisco
+          chpasswd:
+            expire: False
+          ssh_pwauth: True
+          write_files:
+            - path: /home/cisco/wpa_supplicant.conf
+              content: |
+                ctrl_interface=/var/run/wpa_supplicant
+                network={
+                    ssid="P45-Guest"
+                    psk="P45-Guest-WiFi"
+                    key_mgmt=WPA-PSK
+                }
+              owner: cisco:cisco
+              permissions: '0644'
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n22
+    id: n17
     image_definition: null
     label: wireless-client-1
     node_definition: wireless-client
@@ -2887,7 +3627,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n23
+    id: n18
     image_definition: null
     label: WFH user (VPN client)
     node_definition: desktop
@@ -2923,12 +3663,18 @@ nodes:
         type: physical
         slot: 3
   - boot_disk_size: null
-    configuration: []
+    configuration:
+      - name: apvirtual.env
+        content: |-
+          AP_TYPE=9178
+          CAPWAP_VER=17.18.3.18
+          RADIO_FREQ=2.4/5/6GHz
+          WLC_IP=172.16.80.5
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n24
+    id: n19
     image_definition: null
     label: AP-DR-1
     node_definition: vap
@@ -2949,12 +3695,18 @@ nodes:
         type: physical
         slot: 0
   - boot_disk_size: null
-    configuration: []
+    configuration:
+      - name: apvirtual.env
+        content: |-
+          AP_TYPE=9178
+          CAPWAP_VER=17.18.3.18
+          RADIO_FREQ=2.4/5/6GHz
+          WLC_IP=192.168.80.5
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n25
+    id: n20
     image_definition: null
     label: AP-HQ-1
     node_definition: vap
@@ -2974,257 +3726,6 @@ nodes:
         mac_address: null
         type: physical
         slot: 0
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # WebsiteServer-HQ-1 — public + internal web server
-          hostname: WebsiteServer-HQ-1
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.1.20/24]
-                      gateway4: 10.50.1.1
-                      nameservers: {addresses: [10.50.1.1]}
-                    eth1:
-                      optional: true
-
-            - path: /var/www/html/index.html
-              permissions: '0644'
-              content: |
-                <html><body>
-                <h1>P45 HQ Web Server</h1>
-                <p>Host: WebsiteServer-HQ-1</p>
-                <p>Site: HQ</p>
-                <p>Internal IP: 10.50.1.20</p>
-                <p>Public IP: 100.11.0.20</p>
-                </body></html>
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y nginx
-            - systemctl restart nginx
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n26
-    image_definition: null
-    label: WebsiteServer-HQ-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 1480
-    y: -920
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i2
-        label: eth2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i3
-        label: eth3
-        mac_address: null
-        type: physical
-        slot: 3
-      - id: i4
-        label: eth4
-        mac_address: null
-        type: physical
-        slot: 4
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DMZDNS-HQ-1 — DMZ external DNS (authoritative for the public zone)
-          hostname: DMZDNS-HQ-1
-          fqdn: DMZDNS-HQ-1.dmz.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.1.10/24]
-                      gateway4: 10.50.1.1
-                      nameservers: {addresses: [8.8.8.8]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                address=/www.p45.local/None
-                address=/vpn.p45.local/100.11.0.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n27
-    image_definition: null
-    label: DMZDNS-HQ-1
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 1480
-    y: -1040
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i2
-        label: eth2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i3
-        label: eth3
-        mac_address: null
-        type: physical
-        slot: 3
-      - id: i4
-        label: eth4
-        mac_address: null
-        type: physical
-        slot: 4
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          #cloud-config
-          # DMZDNS-HQ-2 — DMZ external DNS (authoritative for the public zone)
-          hostname: DMZDNS-HQ-2
-          fqdn: DMZDNS-HQ-2.dmz.p45.local
-          manage_etc_hosts: true
-
-          write_files:
-            - path: /etc/netplan/50-p45.yaml
-              permissions: '0600'
-              content: |
-                network:
-                  version: 2
-                  ethernets:
-                    eth0:
-                      addresses: [10.50.1.11/24]
-                      gateway4: 10.50.1.1
-                      nameservers: {addresses: [8.8.8.8]}
-                    eth1:
-                      optional: true
-
-            - path: /etc/dnsmasq.conf
-              permissions: '0644'
-              content: |
-                port=53
-                domain-needed
-                bogus-priv
-                no-resolv
-                server=8.8.8.8
-                address=/www.p45.local/None
-                address=/vpn.p45.local/100.11.0.10
-
-          runcmd:
-            - netplan apply
-            - apt-get update -y
-            - apt-get install -y dnsmasq
-            - systemctl restart dnsmasq
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n28
-    image_definition: null
-    label: DMZDNS-HQ-2
-    node_definition: server
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 1480
-    y: -800
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i2
-        label: eth2
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i3
-        label: eth3
-        mac_address: null
-        type: physical
-        slot: 3
-      - id: i4
-        label: eth4
-        mac_address: null
-        type: physical
-        slot: 4
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -3300,7 +3801,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n29
+    id: n21
     image_definition: null
     label: DMZSwitch-DR-1
     node_definition: ioll2-xe
@@ -3312,8 +3813,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1400
-    y: -600
+    x: -1600
+    y: -880
     interfaces:
       - id: i0
         label: Loopback0
@@ -3374,15 +3875,21 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           !
-          vlan 50
-           name SALES
+          vlan 55
+           name DMZ
           vlan 90
            name MGMT
           !
@@ -3391,38 +3898,39 @@ nodes:
            ip address 172.16.90.52 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 172.16.90.1
           ip default-gateway 172.16.90.1
           !
           interface Ethernet0/0
-           description to DMZDNS-DR-1 eth1
+           description to Firewall-DR-2 GigabitEthernet0/5
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/1
-           description to WebsiteServer-DR-1 eth1
+           description to DNS-DMZ-DR-1 eth1
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/2
-           description to DMZDNS-DR-2 eth1
+           description to DNS-DMZ-DR-2 eth1
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
-          interface Ethernet0/3
-           description to CoreSwitch-DR-2 Ethernet0/2
+          interface Ethernet1/0
+           description to DMZSwitch-DR-1 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 55,90
            no shutdown
           !
           line vty 0 15
@@ -3434,7 +3942,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n30
+    id: n22
     image_definition: null
     label: DMZSwitch-DR-2
     node_definition: ioll2-xe
@@ -3446,8 +3954,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1400
-    y: -720
+    x: -1600
+    y: -1000
     interfaces:
       - id: i0
         label: Loopback0
@@ -3473,6 +3981,11 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+      - id: i5
+        label: Ethernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -3527,7 +4040,7 @@ nodes:
            description to CoreSwitch-DR-1 Ethernet0/3
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 80,90
+           switchport trunk allowed vlan 70,80,90
            spanning-tree guard root
            no shutdown
           !
@@ -3540,7 +4053,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n31
+    id: n23
     image_definition: null
     label: ServerRoomSwitch-DR-1
     node_definition: ioll2-xe
@@ -3553,7 +4066,7 @@ nodes:
     ram: null
     tags: []
     x: -1440
-    y: -80
+    y: -440
     interfaces:
       - id: i0
         label: Loopback0
@@ -3633,7 +4146,7 @@ nodes:
            description to CoreSwitch-DR-2 Ethernet0/3
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 80,90
+           switchport trunk allowed vlan 70,80,90
            spanning-tree guard root
            no shutdown
           !
@@ -3646,7 +4159,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n32
+    id: n24
     image_definition: null
     label: ServerRoomSwitch-DR-2
     node_definition: ioll2-xe
@@ -3659,7 +4172,7 @@ nodes:
     ram: null
     tags: []
     x: -1440
-    y: 40
+    y: -320
     interfaces:
       - id: i0
         label: Loopback0
@@ -3704,41 +4217,79 @@ nodes:
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           !
+          vlan 10
+           name FINANCE
+          vlan 20
+           name HR
+          vlan 30
+           name IT
+          vlan 40
+           name RND
+          vlan 50
+           name SALES
+          vlan 55
+           name DMZ
+          vlan 60
+           name SECURITY
           vlan 70
            name TECHSUP
+          vlan 80
+           name SERVERS
           vlan 90
            name MGMT
+          vlan 100
+           name GUEST
           !
           interface Vlan90
            description MGMT
            ip address 172.16.90.31 255.255.255.0
            no shutdown
           !
-          ip default-gateway 172.16.90.1
+          interface Vlan70
+           description TEST HOST - simulates a user PC on VLAN 70 (TECHSUP)
+           ip address 172.16.70.201 255.255.255.0
+           no shutdown
+          !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 172.16.70.1
+          !
+          interface Vlan60
+           description DHCP PROBE - proves this site can still lease an address (SECURITY)
+           no ip dhcp client request router
+           ip address dhcp
+           no shutdown
           !
           interface Ethernet0/0
            description to CoreSwitch-DR-2 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           spanning-tree guard root
+           switchport trunk allowed vlan 10,20,30,40,50,55,60,70,80,90,100
            no shutdown
           !
           interface Ethernet0/1
            description to CoreSwitch-DR-1 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           spanning-tree guard root
+           switchport trunk allowed vlan 10,20,30,40,50,55,60,70,80,90,100
            no shutdown
           !
           interface Ethernet0/2
            description to AP-DR-1 wired0
            switchport mode access
            switchport access vlan 100
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet0/3
+           description to desktop-1 eth0
+           switchport mode access
+           switchport access vlan 70
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
@@ -3752,9 +4303,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n33
+    id: n25
     image_definition: null
-    label: DepartmentSwitch-DR-TechnicalSupport
+    label: AccessSwitch-DR-1
     node_definition: ioll2-xe
     parameters: {}
     priority: null
@@ -3812,6 +4363,10 @@ nodes:
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          ip routing
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           spanning-tree vlan 1-4094 priority 4096
@@ -3840,107 +4395,125 @@ nodes:
           interface Loopback0
            description Router ID / management
            ip address 10.255.0.111 255.255.255.255
-          !
-          interface Vlan90
-           description MGMT
-           ip address 172.16.90.11 255.255.255.0
-           no shutdown
+           ip ospf 1 area 0
           !
           interface Vlan10
            description FINANCE gateway
            ip address 172.16.10.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 10 ip 172.16.10.1
            standby 10 priority 200
-           standby 10 preempt
+           standby 10 preempt delay minimum 90
            standby 10 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan20
            description HR gateway
            ip address 172.16.20.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 20 ip 172.16.20.1
            standby 20 priority 200
-           standby 20 preempt
+           standby 20 preempt delay minimum 90
            standby 20 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan30
            description IT gateway
            ip address 172.16.30.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 30 ip 172.16.30.1
            standby 30 priority 200
-           standby 30 preempt
+           standby 30 preempt delay minimum 90
            standby 30 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan40
            description RND gateway
            ip address 172.16.40.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 40 ip 172.16.40.1
            standby 40 priority 200
-           standby 40 preempt
+           standby 40 preempt delay minimum 90
            standby 40 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan50
            description SALES gateway
            ip address 172.16.50.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 50 ip 172.16.50.1
            standby 50 priority 200
-           standby 50 preempt
+           standby 50 preempt delay minimum 90
            standby 50 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan60
            description SECURITY gateway
            ip address 172.16.60.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 60 ip 172.16.60.1
            standby 60 priority 200
-           standby 60 preempt
+           standby 60 preempt delay minimum 90
            standby 60 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan70
            description TECHSUP gateway
            ip address 172.16.70.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 70 ip 172.16.70.1
            standby 70 priority 200
-           standby 70 preempt
+           standby 70 preempt delay minimum 90
            standby 70 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan100
            description GUEST gateway
            ip address 172.16.100.2 255.255.255.0
+           ip ospf 1 area 0
+           ip helper-address 172.16.80.53
            standby version 2
            standby 100 ip 172.16.100.1
            standby 100 priority 200
-           standby 100 preempt
+           standby 100 preempt delay minimum 90
            standby 100 timers msec 250 msec 750
            no shutdown
           !
           interface Vlan80
            description SERVERS gateway
            ip address 172.16.80.2 255.255.255.0
+           ip ospf 1 area 0
            standby version 2
            standby 80 ip 172.16.80.1
            standby 80 priority 200
-           standby 80 preempt
+           standby 80 preempt delay minimum 90
            standby 80 timers msec 250 msec 750
+           no shutdown
+          !
+          interface Vlan90
+           description MGMT (local segment - intentionally not in OSPF)
+           ip address 172.16.90.11 255.255.255.0
            no shutdown
           !
           interface Ethernet0/0
            description to Firewall-DR-1 GigabitEthernet0/3
            no switchport
            ip address 10.255.5.9 255.255.255.252
-           ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
            no shutdown
           !
@@ -3949,13 +4522,6 @@ nodes:
            switchport trunk encapsulation dot1q
            switchport mode trunk
            switchport trunk allowed vlan 90,100
-           no shutdown
-          !
-          interface Ethernet0/2
-           description to DMZSwitch-DR-1 Ethernet0/3
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
            no shutdown
           !
           interface Ethernet0/3
@@ -3969,13 +4535,30 @@ nodes:
            description to DepartmentSwitch-DR-TechnicalSupport Ethernet0/1
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
+           switchport trunk allowed vlan 10,20,30,40,50,55,60,70,80,90,100
+           no shutdown
+          !
+          interface Ethernet1/1
+           description to CoreSwitch-DR-2 Ethernet1/1
+           switchport trunk encapsulation dot1q
+           switchport mode trunk
+           switchport trunk allowed vlan 1,10,20,30,40,50,55,60,70,80,90,100
+           no shutdown
+          !
+          interface Ethernet1/2
+           description to Firewall-DR-2 GigabitEthernet0/4
+           no switchport
+           ip address 10.255.5.13 255.255.255.252
+           ip ospf cost 50
+           ip ospf dead-interval minimal hello-multiplier 4
+           ip ospf 1 area 0
            no shutdown
           !
           router ospf 1
            router-id 10.255.0.111
            passive-interface default
            no passive-interface Ethernet0/0
+           no passive-interface Ethernet1/2
           !
           line vty 0 15
            transport input ssh
@@ -3986,7 +4569,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n34
+    id: n26
     image_definition: null
     label: CoreSwitch-DR-1
     node_definition: ioll2-xe
@@ -4240,7 +4823,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n35
+    id: n27
     image_definition: null
     label: CoreSwitch-DR-2
     node_definition: ioll2-xe
@@ -4378,9 +4961,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n36
+    id: n28
     image_definition: null
-    label: FloorSwitch-HQ-1
+    label: AccessSwitch-HQ-1
     node_definition: ioll2-xe
     parameters: {}
     priority: null
@@ -4488,9 +5071,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n37
+    id: n29
     image_definition: null
-    label: FloorSwitch-HQ-2
+    label: AccessSwitch-HQ-2
     node_definition: ioll2-xe
     parameters: {}
     priority: null
@@ -4602,7 +5185,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n38
+    id: n30
     image_definition: null
     label: ServerRoomSwitch-HQ-1
     node_definition: ioll2-xe
@@ -4641,6 +5224,26 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+      - id: i5
+        label: Ethernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: Ethernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: Ethernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: Ethernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -4716,7 +5319,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n39
+    id: n31
     image_definition: null
     label: ServerRoomSwitch-HQ-2
     node_definition: ioll2-xe
@@ -4755,6 +5358,26 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+      - id: i5
+        label: Ethernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: Ethernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: Ethernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: Ethernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -4846,7 +5469,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n40
+    id: n32
     image_definition: null
     label: DMZSwitch-HQ-1
     node_definition: ioll2-xe
@@ -4986,7 +5609,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n41
+    id: n33
     image_definition: null
     label: DMZSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5220,7 +5843,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n42
+    id: n34
     image_definition: null
     label: DistSwitch-HQ-1
     node_definition: ioll2-xe
@@ -5449,7 +6072,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n43
+    id: n35
     image_definition: null
     label: DistSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5510,15 +6133,22 @@ nodes:
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          ip routing
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
+          spanning-tree vlan 1-4094 priority 4096
           !
-          vlan 50
-           name SALES
           vlan 80
            name SERVERS
           vlan 90
@@ -5527,35 +6157,29 @@ nodes:
           interface Loopback0
            description Router ID / management
            ip address 10.255.0.11 255.255.255.255
-          !
-          interface Vlan90
-           description MGMT
-           ip address 192.168.90.11 255.255.255.0
-           no shutdown
-          !
-          interface Vlan50
-           description DMZ transport
-           ip address 192.168.50.2 255.255.255.0
-           standby version 2
-           standby 50 ip 192.168.50.1
-           standby 50 priority 200
-           standby 50 preempt
-           no shutdown
+           ip ospf 1 area 0
           !
           interface Vlan80
-           description SERVERS
+           description SERVERS gateway
            ip address 192.168.80.2 255.255.255.0
+           ip ospf 1 area 0
            standby version 2
            standby 80 ip 192.168.80.1
            standby 80 priority 200
-           standby 80 preempt
+           standby 80 preempt delay minimum 90
+           standby 80 timers msec 250 msec 750
+           no shutdown
+          !
+          interface Vlan90
+           description MGMT (local segment - intentionally not in OSPF)
+           ip address 192.168.90.11 255.255.255.0
            no shutdown
           !
           interface Ethernet0/0
            description to Firewall-HQ-1 GigabitEthernet0/2
            no switchport
            ip address 10.255.5.1 255.255.255.252
-           ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
            no shutdown
           !
@@ -5563,7 +6187,7 @@ nodes:
            description to WLC-HQ-1 GigabitEthernet1
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 90,100
+           switchport trunk allowed vlan 80,90,100
            no shutdown
           !
           interface Ethernet0/2
@@ -5571,6 +6195,7 @@ nodes:
            no switchport
            ip address 10.255.1.1 255.255.255.252
            ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
            no shutdown
           !
@@ -5578,7 +6203,7 @@ nodes:
            description to CoreSwitch-HQ-2 Ethernet0/3
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,90,100
+           switchport trunk allowed vlan 1,10,20,30,40,50,55,60,70,80,90,100
            no shutdown
           !
           interface Ethernet1/0
@@ -5586,6 +6211,7 @@ nodes:
            no switchport
            ip address 10.255.1.5 255.255.255.252
            ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
            no shutdown
           !
@@ -5596,18 +6222,30 @@ nodes:
            switchport trunk allowed vlan 80,90
            no shutdown
           !
-          interface Ethernet1/2
-           description to DMZSwitch-HQ-1 Ethernet0/3
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
+          interface Ethernet1/3
+           description to DNS-HQ-1 eth0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
            no shutdown
           !
-          interface Ethernet1/3
-           description to DMZSwitch-HQ-2 Ethernet1/1
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
+          interface Ethernet2/0
+           description DCI1 - to CoreSwitch-DR-1 Ethernet0/2
+           no switchport
+           ip address 10.255.6.2 255.255.255.252
+           ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
+           ip ospf 1 area 0
+           no shutdown
+          !
+          interface Ethernet2/1
+           description to Firewall-HQ-2 GigabitEthernet0/5
+           no switchport
+           ip address 10.255.5.25 255.255.255.252
+           ip ospf cost 50
+           ip ospf dead-interval minimal hello-multiplier 4
+           ip ospf 1 area 0
            no shutdown
           !
           router ospf 1
@@ -5616,6 +6254,8 @@ nodes:
            no passive-interface Ethernet0/0
            no passive-interface Ethernet0/2
            no passive-interface Ethernet1/0
+           no passive-interface Ethernet2/0
+           no passive-interface Ethernet2/1
           !
           line vty 0 15
            transport input ssh
@@ -5626,7 +6266,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n44
+    id: n36
     image_definition: null
     label: CoreSwitch-HQ-1
     node_definition: ioll2-xe
@@ -5685,6 +6325,16 @@ nodes:
         mac_address: null
         type: physical
         slot: 7
+      - id: i9
+        label: Ethernet2/0
+        mac_address: null
+        type: physical
+        slot: 8
+      - id: i10
+        label: Ethernet2/1
+        mac_address: null
+        type: physical
+        slot: 9
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -5818,7 +6468,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n45
+    id: n37
     image_definition: null
     label: CoreSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5878,12 +6528,74 @@ nodes:
         type: physical
         slot: 7
   - boot_disk_size: null
-    configuration: []
+    configuration:
+      - name: ios_config.txt
+        content: "Building configuration...\n\nCurrent configuration : 4295 bytes\n\
+          !\n! Last configuration change at 12:33:12 UTC Mon Aug 17 2026\n!\nversion\
+          \ 17.18\nservice timestamps debug datetime msec\nservice timestamps log\
+          \ datetime msec\n!\nhostname HomeRouter-WFH\n!\nboot-start-marker\nboot-end-marker\n\
+          !\n!\nno logging console\nno aaa new-model\n!\n!\n!\n!\n!\n!\n!\n!\n!\n\
+          !\nip dhcp excluded-address 192.168.1.1 192.168.1.9\n!\nip dhcp pool HOME\n\
+          \ network 192.168.1.0 255.255.255.0\n default-router 192.168.1.1\n dns-server\
+          \ 192.168.1.1\n lease 0 8\n!\n!\n!\nip name-server 100.11.0.53 100.64.1.2\n\
+          ip cef\nlogin on-success log\nno ipv6 cef\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n\
+          crypto pki trustpoint TP-self-signed-2039844\n enrollment selfsigned\n subject-name\
+          \ cn=IOS-Self-Signed-Certificate-2039844\n revocation-check none\n rsakeypair\
+          \ TP-self-signed-2039844\n hash sha512\n!\n!\ncrypto pki certificate chain\
+          \ TP-self-signed-2039844\n certificate self-signed 01\n  3082032A 30820212\
+          \ A0030201 02020101 300D0609 2A864886 F70D0101 0D050030\n  2E312C30 2A060355\
+          \ 04030C23 494F532D 53656C66 2D536967 6E65642D 43657274\n  69666963 6174652D\
+          \ 32303339 38343430 1E170D32 36303831 32303731 3334305A\n  170D3336 30383131\
+          \ 30373133 34305A30 2E312C30 2A060355 04030C23 494F532D\n  53656C66 2D536967\
+          \ 6E65642D 43657274 69666963 6174652D 32303339 38343430\n  82012230 0D06092A\
+          \ 864886F7 0D010101 05000382 010F0030 82010A02 82010100\n  AB7D809A 0B36C6C3\
+          \ 04792ADA 09A3DA23 863ACCCE FA5BD448 AE201476 4B16AA31\n  F148A997 30F906BA\
+          \ 68A24597 92E721DE AF457408 7ECF6F44 543A3942 45A9C4B4\n  72564272 2FAE489D\
+          \ 562E93D5 E576E6B4 5D9C736A 7C05D973 198288B8 6A63C684\n  781FA0A6 D19E7187\
+          \ 2322C5A0 EA32F5AA FA66C982 EED5F634 A2A1E22C CE32594F\n  0FC5C706 B5C2BF96\
+          \ CA714D95 B8CB1DA9 4970B039 96FF21CC 8163832A CA9F647A\n  0E80FCB7 2F6C562A\
+          \ 17E59178 0A7FE12C 4E7A3E2A 060AF4B1 DC6AA4FE 152917D8\n  5B3563DF AE16FBE3\
+          \ 06E9B794 A080AF88 23B2E379 FFD33868 223AF17A F16AA488\n  9BF9CCBC 075022FD\
+          \ 19249600 48D566A1 40F7C526 B0DE1D44 F6C8B75F 4E8EB8AB\n  02030100 01A35330\
+          \ 51301D06 03551D0E 04160414 8774E9E2 731EA2F9 DA388CFF\n  C2FC900C F7D3A81D\
+          \ 301F0603 551D2304 18301680 148774E9 E2731EA2 F9DA388C\n  FFC2FC90 0CF7D3A8\
+          \ 1D300F06 03551D13 0101FF04 05300301 01FF300D 06092A86\n  4886F70D 01010D05\
+          \ 00038201 01003E46 D92667D6 22EA09C7 9C5187E6 6885B3BF\n  756AFC9D 72205EFA\
+          \ 7F285BAD 8E1A3515 B4108063 D7D0D0B2 48B7ACAB C7082E09\n  E87748D5 1465B85D\
+          \ 422EA4B5 278AFE0B 98B689E9 8774B3E4 E9FDCA2F F290D4FD\n  CF08705C 33487D87\
+          \ C2796B2B ECCD95F4 B7485928 AF2C6B06 26D54D31 6F54209A\n  A393E112 03F23BDF\
+          \ E0A5FBC1 0F97B1CB EA81A016 801841C9 2760D8E9 028390E0\n  2BB3011A ABD33B65\
+          \ 9532BCF2 0B756A5A D0A85633 DF3391C0 EAEF9646 5434096D\n  85ACDF6C 2F891FAB\
+          \ F29B079E 014D31EC 276EDF72 C6ADAA00 695B62AD 9A23D148\n  45382105 2ADD5D3A\
+          \ 607DF66F 28918653 AC8D5EB5 EFF2F1CB 1F31F0E1 A7D63D49\n  7A456DAF B998B836\
+          \ 935BDE26 ABC7\n  \tquit\n!\n!\nmemory free low-watermark processor 79866\n\
+          !\n!\nspanning-tree mode rapid-pvst\n!\n!\n!\n!\n!\n!\n!\ntrack 1 ip sla\
+          \ 1 reachability\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ninterface\
+          \ Ethernet0/0\n description to ISP-2 (Terrestrial Fibre) GigabitEthernet0/3\n\
+          \ ip address 100.64.1.1 255.255.255.252\n ip nat outside\n!\ninterface Ethernet0/1\n\
+          \ description to WFH user (VPN client) eth0\n ip address 192.168.1.1 255.255.255.0\n\
+          \ ip nat inside\n!\ninterface Ethernet0/2\n description to ISP-3 (Satellite)\
+          \ GigabitEthernet0/6\n ip address 100.64.1.5 255.255.255.252\n ip nat outside\n\
+          !\ninterface Ethernet0/3\n no ip address\n shutdown\n!\nip forward-protocol\
+          \ nd\n!\n!\nip http server\nip http secure-server\nip dns server\nip nat\
+          \ inside source route-map NAT-BACKUP interface Ethernet0/2 overload\nip\
+          \ nat inside source route-map NAT-PRIMARY interface Ethernet0/0 overload\n\
+          ip route 0.0.0.0 0.0.0.0 100.64.1.2 track 1\nip route 0.0.0.0 0.0.0.0 100.64.1.6\
+          \ 20\nip ssh bulk-mode 131072\n!\nip access-list standard HOME-LAN\n 10\
+          \ permit 192.168.1.0 0.0.0.255\nip sla 1\n icmp-echo 100.64.1.2 source-interface\
+          \ Ethernet0/0\n  frequency 5\nip sla schedule 1 life forever start-time\
+          \ now\nno logging btrace\nroute-map NAT-PRIMARY permit 10\n match ip address\
+          \ HOME-LAN\n match interface Ethernet0/0\n!\nroute-map NAT-BACKUP permit\
+          \ 10\n match ip address HOME-LAN\n match interface Ethernet0/2\n!\n!\n!\n\
+          !\ncontrol-plane\n!\n!\n!\nline con 0\n exec-timeout 0 0\n activation-character\
+          \ 13\n logging synchronous\nline aux 0\n activation-character 13\nline vty\
+          \ 0 4\n exec-timeout 0 0\n activation-character 13\n login\n transport input\
+          \ ssh\n!\n!\n!\n!\nend"
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n46
+    id: n38
     image_definition: null
     label: HomeRouter-WFH
     node_definition: iol-xe
@@ -5954,11 +6666,32 @@ nodes:
           expand-hosts
 
           # ---------------------------------------------------------------- forwarding
-          # Anything not in the internal zone goes to the DMZ resolvers, which forward on
-          # to the carrier.  Internal clients therefore never talk to the internet
-          # directly, and all external resolution is logged in one place.
+          # Anything not in the internal zone goes to the CARRIER's resolver.
+          #
+          # This used to point at the DMZ tier, and could never work: the DMZ resolver is
+          # the public authoritative server AND was the recursive resolver for internal
+          # clients, and dnsmasq arbitrates those two roles with one blunt switch —
+          # `local-service`, which restricts recursion to directly-connected subnets.
+          # The internal tier is off-subnet, so every external query was refused.  See the
+          # long note in render_configs.py and docs/known-issues.md.
           no-resolv
-          server=10.50.1.53
+          server=100.11.0.1
+
+          # ...EXCEPT the public zone, which is forwarded to the DMZ tier by name.
+          #
+          # The carrier's resolver does not know p45.example — it holds one static
+          # host entry and nothing else — so sending everything to it made
+          # www.p45.example stop resolving for staff.  That was a real regression
+          # introduced by the fix above, caught by testing the public zone after the
+          # change rather than only the thing being fixed.
+          #
+          # A zone-specific forwarder is safe here precisely because `local-service`
+          # restricts RECURSION and not AUTHORITATIVE answers: the DMZ resolver holds
+          # p45.example via auth-zone, so it answers this off-subnet client from its
+          # own zone data.  Measured before relying on it — the same client that was
+          # REFUSED for an external name was answered 100.11.0.20 for www.p45.example.
+          server=/p45.example/10.50.1.53
+          server=/p45.example/10.50.1.54
 
           # Don't forward queries for names with no dots, or for RFC1918 reverse zones —
           # they are internal by definition and leaking them tells an outsider how the
@@ -5978,11 +6711,10 @@ nodes:
           host-record=dhcp-dns-hq-1.hq.p45.local,192.168.80.10
           host-record=distswitch-hq-1.hq.p45.local,192.168.90.21
           host-record=distswitch-hq-2.hq.p45.local,192.168.90.22
-          host-record=dmzdns-hq-1.hq.p45.local,10.50.1.10
-          host-record=dmzdns-hq-2.hq.p45.local,10.50.1.11
           host-record=dmzswitch-hq-1.hq.p45.local,192.168.90.51
           host-record=dmzswitch-hq-2.hq.p45.local,192.168.90.52
           host-record=dns-dmz-hq-1.hq.p45.local,10.50.1.53
+          host-record=dns-dmz-hq-2.hq.p45.local,10.50.1.54
           host-record=dns-hq-1.hq.p45.local,192.168.80.53
           host-record=edgerouter-hq-1.hq.p45.local,192.168.90.61
           host-record=edgerouter-hq-2.hq.p45.local,192.168.90.62
@@ -6128,9 +6860,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n47
+    id: n39
     image_definition: null
-    label: DNS-HQ-1
+    label: DNS/DHCP-HQ-1
     node_definition: dnsmasq
     parameters: {}
     priority: null
@@ -6140,7 +6872,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 80
+    x: 1000
     y: -440
     interfaces:
       - id: i0
@@ -6148,6 +6880,21 @@ nodes:
         mac_address: null
         type: physical
         slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
   - boot_disk_size: null
     configuration:
       - name: hosts
@@ -6180,11 +6927,32 @@ nodes:
           expand-hosts
 
           # ---------------------------------------------------------------- forwarding
-          # Anything not in the internal zone goes to the DMZ resolvers, which forward on
-          # to the carrier.  Internal clients therefore never talk to the internet
-          # directly, and all external resolution is logged in one place.
+          # Anything not in the internal zone goes to the CARRIER's resolver.
+          #
+          # This used to point at the DMZ tier, and could never work: the DMZ resolver is
+          # the public authoritative server AND was the recursive resolver for internal
+          # clients, and dnsmasq arbitrates those two roles with one blunt switch —
+          # `local-service`, which restricts recursion to directly-connected subnets.
+          # The internal tier is off-subnet, so every external query was refused.  See the
+          # long note in render_configs.py and docs/known-issues.md.
           no-resolv
-          server=10.50.2.53
+          server=100.22.0.1
+
+          # ...EXCEPT the public zone, which is forwarded to the DMZ tier by name.
+          #
+          # The carrier's resolver does not know p45.example — it holds one static
+          # host entry and nothing else — so sending everything to it made
+          # www.p45.example stop resolving for staff.  That was a real regression
+          # introduced by the fix above, caught by testing the public zone after the
+          # change rather than only the thing being fixed.
+          #
+          # A zone-specific forwarder is safe here precisely because `local-service`
+          # restricts RECURSION and not AUTHORITATIVE answers: the DMZ resolver holds
+          # p45.example via auth-zone, so it answers this off-subnet client from its
+          # own zone data.  Measured before relying on it — the same client that was
+          # REFUSED for an external name was answered 100.11.0.20 for www.p45.example.
+          server=/p45.example/10.50.2.53
+          server=/p45.example/10.50.2.54
 
           # Don't forward queries for names with no dots, or for RFC1918 reverse zones —
           # they are internal by definition and leaking them tells an outsider how the
@@ -6203,11 +6971,10 @@ nodes:
           host-record=coreswitch-dr-2.dr.p45.local,172.16.90.12
           host-record=departmentswitch-dr-technicalsupport.dr.p45.local,172.16.90.31
           host-record=dhcp-dns-dr-1.dr.p45.local,172.16.80.10
-          host-record=dmzdns-dr-1.dr.p45.local,10.50.2.10
-          host-record=dmzdns-dr-2.dr.p45.local,10.50.2.11
           host-record=dmzswitch-dr-1.dr.p45.local,172.16.90.51
           host-record=dmzswitch-dr-2.dr.p45.local,172.16.90.52
           host-record=dns-dmz-dr-1.dr.p45.local,10.50.2.53
+          host-record=dns-dmz-dr-2.dr.p45.local,10.50.2.54
           host-record=dns-dr-1.dr.p45.local,172.16.80.53
           host-record=edgerouter-dr-1.dr.p45.local,172.16.90.61
           host-record=edgerouter-dr-2.dr.p45.local,172.16.90.62
@@ -6351,9 +7118,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n48
+    id: n40
     image_definition: null
-    label: DNS-DR-1
+    label: DNS/DHCP-DR-1
     node_definition: dnsmasq
     parameters: {}
     priority: null
@@ -6363,8 +7130,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1440
-    y: -240
+    x: -1600
+    y: -480
     interfaces:
       - id: i0
         label: eth0
@@ -6374,9 +7141,7 @@ nodes:
   - boot_disk_size: null
     configuration:
       - name: hosts
-        content: |-
-          # records live in dnsmasq.conf
-          10.50.1.53 dns-dmz-hq-1
+        content: ''
       - name: dnsmasq.conf
         content: |-
           # ---------------------------------------------------------------- interface
@@ -6432,6 +7197,14 @@ nodes:
           bogus-priv
           stop-dns-rebind
 
+          # The carrier's resolver is a Cisco IOS router (`ip dns server`), and IOS answers
+          # an A query correctly and then SERVFAILs the AAAA query every stub resolver
+          # sends straight after it.  dnsmasq passed that failure back down the chain, so a
+          # client saw REFUSED for a name that had in fact just resolved perfectly.
+          # Filtering AAAA here answers it locally as no-data instead of forwarding it,
+          # which is also honest: there is no IPv6 anywhere in this network.
+          filter-AAAA
+
           cache-size=1000
           log-queries
           log-facility=-
@@ -6465,7 +7238,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n49
+    id: n41
     image_definition: null
     label: DNS-DMZ-HQ-1
     node_definition: dnsmasq
@@ -6477,14 +7250,19 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 1240
-    y: -1160
+    x: 1400
+    y: -1120
     interfaces:
       - id: i0
         label: eth0
         mac_address: null
         type: physical
         slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
   - boot_disk_size: null
     configuration:
       - name: hosts
@@ -6546,6 +7324,14 @@ nodes:
           bogus-priv
           stop-dns-rebind
 
+          # The carrier's resolver is a Cisco IOS router (`ip dns server`), and IOS answers
+          # an A query correctly and then SERVFAILs the AAAA query every stub resolver
+          # sends straight after it.  dnsmasq passed that failure back down the chain, so a
+          # client saw REFUSED for a name that had in fact just resolved perfectly.
+          # Filtering AAAA here answers it locally as no-data instead of forwarding it,
+          # which is also honest: there is no IPv6 anywhere in this network.
+          filter-AAAA
+
           cache-size=1000
           log-queries
           log-facility=-
@@ -6579,7 +7365,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n50
+    id: n42
     image_definition: null
     label: DNS-DMZ-DR-1
     node_definition: dnsmasq
@@ -6591,21 +7377,49 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1400
-    y: -440
+    x: -1800
+    y: -880
     interfaces:
       - id: i0
         label: eth0
         mac_address: null
         type: physical
         slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
   - boot_disk_size: null
-    configuration: []
+    configuration:
+      - name: user-data
+        content: |-
+          #cloud-config
+          hostname: wireless-client-0
+          manage_etc_hosts: True
+          system_info:
+            default_user:
+              name: cisco
+          password: cisco
+          chpasswd:
+            expire: False
+          ssh_pwauth: True
+          write_files:
+            - path: /home/cisco/wpa_supplicant.conf
+              content: |
+                ctrl_interface=/var/run/wpa_supplicant
+                network={
+                    ssid="P45-Guest"
+                    psk="P45-Guest-WiFi"
+                    key_mgmt=WPA-PSK
+                }
+              owner: cisco:cisco
+              permissions: '0644'
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n51
+    id: n43
     image_definition: null
     label: wireless-client-0
     node_definition: wireless-client
@@ -6631,7 +7445,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n52
+    id: n44
     image_definition: null
     label: desktop-0
     node_definition: desktop
@@ -6651,65 +7465,698 @@ nodes:
         mac_address: null
         type: physical
         slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n45
+    image_definition: null
+    label: desktop-1
+    node_definition: desktop
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -880
+    y: 280
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n46
+    image_definition: null
+    label: desktop-2
+    node_definition: desktop
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 200
+    y: 480
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_web.py — do not edit on the node, edit the manifest.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 100.64.2.2/30 dev eth0 2>/dev/null || true
+            ip link set eth1 up
+            ip addr flush dev eth1 2>/dev/null || true
+            ip addr add 100.64.2.6/30 dev eth1 2>/dev/null || true
+            ip link set eth2 up
+            ip addr flush dev eth2 2>/dev/null || true
+            ip addr add 100.64.2.10/30 dev eth2 2>/dev/null || true
+            # The PUBLISHED address. A /32 on loopback, reachable through any of
+            # the three carriers, so losing one carrier does not take the site off
+            # the internet.
+            ip addr add 100.64.2.100/32 dev lo 2>/dev/null || true
+            ip route add default via 100.64.2.1 2>/dev/null || true
+            ip -4 addr show
+            ip route show
+          } >/var/log/boot.log 2>&1
+
+          cat >/usr/share/nginx/html/index.html <<'HTML'
+          <!doctype html>
+          <html><head><title>Internet Web Server</title></head><body>
+          <h1>www.internet.example</h1>
+          <p>This host is OUTSIDE the P45 network.</p>
+          <p>Published address: 100.64.2.100</p>
+          <p>Reaching this page proves a P45 client can resolve and fetch a site on the public internet, end to end.</p>
+          </body></html>
+          HTML
+
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n47
+    image_definition: null
+    label: Internet-WebServer-1
+    node_definition: nginx
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -40
+    y: -920
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_web.py — do not edit on the node, edit the manifest.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 10.50.1.20/24 dev eth0 2>/dev/null || true
+            ip route add default via 10.50.1.1 2>/dev/null || true
+            ip -4 addr show
+            ip route show
+          } >/var/log/boot.log 2>&1
+
+          cat >/usr/share/nginx/html/index.html <<'HTML'
+          <!doctype html>
+          <html><head><title>P45 HQ Website</title></head>
+          <body>
+          <h1>P45 HQ Website</h1>
+          <p>Served by WebsiteServer-HQ-1 on 10.50.1.20 (DMZ VLAN 55).</p>
+          <p>This is the HQ site's own web service, inside the DMZ.</p>
+          </body></html>
+          HTML
+
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n48
+    image_definition: null
+    label: WebsiteServer-HQ-1
+    node_definition: nginx
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 1480
+    y: -880
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_web.py — do not edit on the node, edit the manifest.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 10.50.2.20/24 dev eth0 2>/dev/null || true
+            ip route add default via 10.50.2.1 2>/dev/null || true
+            ip -4 addr show
+            ip route show
+          } >/var/log/boot.log 2>&1
+
+          cat >/usr/share/nginx/html/index.html <<'HTML'
+          <!doctype html>
+          <html><head><title>P45 DR Website</title></head>
+          <body>
+          <h1>P45 DR Website</h1>
+          <p>Served by WebsiteServer-DR-1 on 10.50.2.20 (DMZ VLAN 55).</p>
+          <p>This is the DR site's own web service, inside the DMZ.</p>
+          </body></html>
+          HTML
+
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n49
+    image_definition: null
+    label: WebsiteServer-DR-1
+    node_definition: nginx
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -1800
+    y: -760
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: hosts
+        content: |-
+          # records live in dnsmasq.conf
+          10.50.1.54 dns-dmz-hq-2
+      - name: dnsmasq.conf
+        content: |-
+          # ---------------------------------------------------------------- interface
+          listen-address=10.50.1.54
+          # bind-dynamic, NOT bind-interfaces — see dnsmasq_internal.j2 for why.  dnsmasq
+          # is PID 1 here and starts before boot.sh addresses eth0.
+          bind-dynamic
+
+          # ---------------------------------------------------------------- the zone
+          domain=p45.example
+          local=/p45.example/
+          expand-hosts
+          # The subnet list is the PUBLIC ranges, NOT the DMZ subnet this server sits on.
+          # dnsmasq only serves a name from an auth-zone when its address falls inside one
+          # of these subnets.  Scoping the zone to the DMZ subnet excluded every public
+          # record the server exists to publish, and the resolver answered NXDOMAIN for
+          # www and vpn while looking entirely healthy — no error, no log line.
+          auth-zone=p45.example,100.11.0.0/24,100.12.0.0/24,100.13.0.0/24,100.21.0.0/24,100.22.0.0/24,100.23.0.0/24
+          auth-server=p45.example,eth0
+
+          # ---------------------------------------------------------------- public records
+          # Every address here is a PUBLIC one.  If an internal 192.168/172.16 address ever
+          # appears in this file, the internal layout has just been published.
+          #
+          # host-record, not address=.  `address=/name/ip` is a local override that dnsmasq
+          # answers for its own clients; only host-record entries are carried in an
+          # authoritative zone, which is what makes these names answerable from off-net.
+          host-record=dns-dmz-dr-1.p45.example,100.22.0.53
+          host-record=dns-dmz-hq-1.p45.example,100.11.0.53
+          host-record=edgerouter-dr-2.p45.example,100.22.0.62
+          host-record=edgerouter-hq-1.p45.example,100.11.0.61
+          host-record=vpn.p45.example,100.11.0.61
+          host-record=websiteserver-dr-1.p45.example,100.22.0.20
+          host-record=websiteserver-hq-1.p45.example,100.11.0.20
+          host-record=www.p45.example,100.11.0.20
+
+          # ---------------------------------------------------------------- recursion policy
+          # Serve OUR zone to the world; recurse only for our own clients.
+          #
+          # These two lines work as a pair and neither is optional:
+          #   * auth-zone above makes the public names authoritative, and authoritative
+          #     answers are served to ANY querier — that is the server's whole job.
+          #   * local-service restricts RECURSION to clients on directly-connected subnets.
+          # An open recursive resolver on a public address is a DNS amplification weapon,
+          # so the internet gets our zone and nothing else.  Verified by dns_check.py, which
+          # resolves a public name from an off-subnet client (it must succeed) and a foreign
+          # name from the same client (it must not).
+          local-service
+          no-resolv
+          server=100.11.0.1
+
+          domain-needed
+          bogus-priv
+          stop-dns-rebind
+
+          # The carrier's resolver is a Cisco IOS router (`ip dns server`), and IOS answers
+          # an A query correctly and then SERVFAILs the AAAA query every stub resolver
+          # sends straight after it.  dnsmasq passed that failure back down the chain, so a
+          # client saw REFUSED for a name that had in fact just resolved perfectly.
+          # Filtering AAAA here answers it locally as no-data instead of forwarding it,
+          # which is also honest: there is no IPv6 anywhere in this network.
+          filter-AAAA
+
+          cache-size=1000
+          log-queries
+          log-facility=-
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_dns.py — do not edit on the node, edit the manifest.
+          #
+          # A dnsmasq.conf cannot give an interface an address, so the static addressing
+          # lives here.  Without it the resolver comes up with no IP and answers nothing,
+          # which looks identical to a broken zone file.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 10.50.1.54/24 dev eth0 2>/dev/null || true
+            ip route add default via 10.50.1.1 2>/dev/null || true
+            ip addr show eth0
+            ip route show
+            # Record whether the config would parse.  dnsmasq exits on a bad config file,
+            # which kills the container; capturing --test here turns that silent death into
+            # a line we can read on the next boot.
+            dnsmasq --test --conf-file=/etc/dnsmasq.conf
+            echo "dnsmasq --test exit=$?"
+          } >/var/log/boot.log 2>&1
+
+          # Tell CML we are up.  Nothing below this line may block.
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n50
+    image_definition: null
+    label: DNS-DMZ-HQ-2
+    node_definition: dnsmasq
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 1520
+    y: -1040
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration:
+      - name: hosts
+        content: |-
+          # records live in dnsmasq.conf
+          10.50.2.54 dns-dmz-dr-2
+      - name: dnsmasq.conf
+        content: |-
+          # ---------------------------------------------------------------- interface
+          listen-address=10.50.2.54
+          # bind-dynamic, NOT bind-interfaces — see dnsmasq_internal.j2 for why.  dnsmasq
+          # is PID 1 here and starts before boot.sh addresses eth0.
+          bind-dynamic
+
+          # ---------------------------------------------------------------- the zone
+          domain=p45.example
+          local=/p45.example/
+          expand-hosts
+          # The subnet list is the PUBLIC ranges, NOT the DMZ subnet this server sits on.
+          # dnsmasq only serves a name from an auth-zone when its address falls inside one
+          # of these subnets.  Scoping the zone to the DMZ subnet excluded every public
+          # record the server exists to publish, and the resolver answered NXDOMAIN for
+          # www and vpn while looking entirely healthy — no error, no log line.
+          auth-zone=p45.example,100.11.0.0/24,100.12.0.0/24,100.13.0.0/24,100.21.0.0/24,100.22.0.0/24,100.23.0.0/24
+          auth-server=p45.example,eth0
+
+          # ---------------------------------------------------------------- public records
+          # Every address here is a PUBLIC one.  If an internal 192.168/172.16 address ever
+          # appears in this file, the internal layout has just been published.
+          #
+          # host-record, not address=.  `address=/name/ip` is a local override that dnsmasq
+          # answers for its own clients; only host-record entries are carried in an
+          # authoritative zone, which is what makes these names answerable from off-net.
+          host-record=dns-dmz-dr-1.p45.example,100.22.0.53
+          host-record=dns-dmz-hq-1.p45.example,100.11.0.53
+          host-record=edgerouter-dr-2.p45.example,100.22.0.62
+          host-record=edgerouter-hq-1.p45.example,100.11.0.61
+          host-record=vpn.p45.example,100.22.0.62
+          host-record=websiteserver-dr-1.p45.example,100.22.0.20
+          host-record=websiteserver-hq-1.p45.example,100.11.0.20
+          host-record=www.p45.example,100.22.0.20
+
+          # ---------------------------------------------------------------- recursion policy
+          # Serve OUR zone to the world; recurse only for our own clients.
+          #
+          # These two lines work as a pair and neither is optional:
+          #   * auth-zone above makes the public names authoritative, and authoritative
+          #     answers are served to ANY querier — that is the server's whole job.
+          #   * local-service restricts RECURSION to clients on directly-connected subnets.
+          # An open recursive resolver on a public address is a DNS amplification weapon,
+          # so the internet gets our zone and nothing else.  Verified by dns_check.py, which
+          # resolves a public name from an off-subnet client (it must succeed) and a foreign
+          # name from the same client (it must not).
+          local-service
+          no-resolv
+          server=100.22.0.1
+
+          domain-needed
+          bogus-priv
+          stop-dns-rebind
+
+          # The carrier's resolver is a Cisco IOS router (`ip dns server`), and IOS answers
+          # an A query correctly and then SERVFAILs the AAAA query every stub resolver
+          # sends straight after it.  dnsmasq passed that failure back down the chain, so a
+          # client saw REFUSED for a name that had in fact just resolved perfectly.
+          # Filtering AAAA here answers it locally as no-data instead of forwarding it,
+          # which is also honest: there is no IPv6 anywhere in this network.
+          filter-AAAA
+
+          cache-size=1000
+          log-queries
+          log-facility=-
+      - name: boot.sh
+        content: |-
+          #!/bin/bash
+          # Generated by push_dns.py — do not edit on the node, edit the manifest.
+          #
+          # A dnsmasq.conf cannot give an interface an address, so the static addressing
+          # lives here.  Without it the resolver comes up with no IP and answers nothing,
+          # which looks identical to a broken zone file.
+          {
+            set -x
+            ip link set eth0 up
+            ip addr flush dev eth0 2>/dev/null || true
+            ip addr add 10.50.2.54/24 dev eth0 2>/dev/null || true
+            ip route add default via 10.50.2.1 2>/dev/null || true
+            ip addr show eth0
+            ip route show
+            # Record whether the config would parse.  dnsmasq exits on a bad config file,
+            # which kills the container; capturing --test here turns that silent death into
+            # a line we can read on the next boot.
+            dnsmasq --test --conf-file=/etc/dnsmasq.conf
+            echo "dnsmasq --test exit=$?"
+          } >/var/log/boot.log 2>&1
+
+          # Tell CML we are up.  Nothing below this line may block.
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n51
+    image_definition: null
+    label: DNS-DMZ-DR-2
+    node_definition: dnsmasq
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -1800
+    y: -1000
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n52
+    image_definition: null
+    label: desktop-3
+    node_definition: desktop
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -120
+    y: -1000
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |2-
+
+          ip address add dev eth1 10.0.0.1/24
+          ip link set dev eth1 up
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n53
+    image_definition: null
+    label: splunk-0
+    node_definition: splunk
+    parameters: {}
+    priority: null
+    pyats:
+      username: admin
+      password: p45aut
+      enable_password: p45aut
+    ram: null
+    tags: []
+    x: 800
+    y: 0
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: 2
+    data_volume: null
+    hide_links: false
+    id: n54
+    image_definition: server2025-core
+    label: DC-HQ-1
+    node_definition: win2025
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 4096
+    tags: []
+    x: 1000
+    y: -360
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n55
+    image_definition: server2025
+    label: WIN-DC-DR-1
+    node_definition: win2025
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -1680
+    y: -360
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n56
+    image_definition: null
+    label: DC-HQ-2
+    node_definition: win2025
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 1000
+    y: -280
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
 links:
   - id: l0
-    n1: n6
-    n2: n7
+    n1: n5
+    n2: n6
     i1: i1
     i2: i1
     conditioning: {}
     label: asav-DR-1-GigabitEthernet0/0<->asav-DR-2-GigabitEthernet0/0
   - id: l1
-    n1: n16
-    n2: n18
+    n1: n11
+    n2: n13
     i1: i1
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/0
   - id: l2
-    n1: n16
-    n2: n19
+    n1: n11
+    n2: n14
     i1: i2
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/0
   - id: l3
-    n1: n17
-    n2: n18
+    n1: n12
+    n2: n13
     i1: i1
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/1
   - id: l4
-    n1: n19
-    n2: n17
+    n1: n14
+    n2: n12
     i1: i2
     i2: i2
     conditioning: {}
     label: EdgeRouter-HQ-2-GigabitEthernet0/1<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/1
   - id: l5
-    n1: n15
-    n2: n18
+    n1: n10
+    n2: n13
     i1: i1
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/2
   - id: l6
-    n1: n15
-    n2: n19
+    n1: n10
+    n2: n14
     i1: i2
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/2
   - id: l7
-    n1: n18
+    n1: n13
     n2: n0
     i1: i4
     i2: i1
     conditioning: {}
     label: EdgeRouter-HQ-1-GigabitEthernet0/3<->Firewall-HQ-1-GigabitEthernet0/0
   - id: l8
-    n1: n19
+    n1: n14
     n2: n1
     i1: i4
     i2: i1
@@ -6730,559 +8177,629 @@ links:
     conditioning: {}
     label: WLC-HQ-2-GigabitEthernet2<->WLC-HQ-1-GigabitEthernet2
   - id: l11
-    n1: n21
-    n2: n6
+    n1: n16
+    n2: n5
     i1: i4
     i2: i2
     conditioning: {}
     label: EdgeRouter-DR-1-GigabitEthernet0/3<->asav-DR-1-GigabitEthernet0/1
   - id: l12
-    n1: n20
-    n2: n7
+    n1: n15
+    n2: n6
     i1: i4
     i2: i2
     conditioning: {}
     label: EdgeRouter-DR-2-GigabitEthernet0/3<->asav-DR-2-GigabitEthernet0/1
   - id: l13
-    n1: n7
-    n2: n21
+    n1: n6
+    n2: n16
     i1: i3
     i2: i5
     conditioning: {}
     label: asav-DR-2-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/4
   - id: l14
-    n1: n6
-    n2: n20
+    n1: n5
+    n2: n15
     i1: i3
     i2: i5
     conditioning: {}
     label: asav-DR-1-GigabitEthernet0/2<->EdgeRouter-DR-2-GigabitEthernet0/4
   - id: l15
-    n1: n9
-    n2: n8
+    n1: n8
+    n2: n7
     i1: i2
     i2: i2
     conditioning: {}
     label: WLC-DR-2-GigabitEthernet2<->WLC-DR-1-GigabitEthernet2
   - id: l16
-    n1: n29
-    n2: n12
-    i1: i1
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-DR-1-Ethernet0/0<->DMZDNS-DR-1-eth0
-  - id: l17
-    n1: n29
-    n2: n13
-    i1: i2
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-DR-1-Ethernet0/1<->WebsiteServer-DR-1-eth0
-  - id: l18
-    n1: n29
-    n2: n14
-    i1: i3
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-DR-1-Ethernet0/2<->DMZDNS-DR-2-eth0
-  - id: l19
-    n1: n12
-    n2: n30
-    i1: i1
-    i2: i1
-    conditioning: {}
-    label: DMZDNS-DR-1-eth1<->DMZSwitch-DR-2-Ethernet0/0
-  - id: l20
-    n1: n13
-    n2: n30
-    i1: i1
-    i2: i2
-    conditioning: {}
-    label: WebsiteServer-DR-1-eth1<->DMZSwitch-DR-2-Ethernet0/1
-  - id: l21
-    n1: n14
-    n2: n30
-    i1: i1
-    i2: i3
-    conditioning: {}
-    label: DMZDNS-DR-2-eth1<->DMZSwitch-DR-2-Ethernet0/2
-  - id: l22
-    n1: n31
-    n2: n10
-    i1: i1
-    i2: i0
-    conditioning: {}
-    label: ServerRoomSwitch-DR-1-Ethernet0/0<->DHCP/DNS-DR-1-eth0
-  - id: l23
-    n1: n32
-    n2: n11
+    n1: n24
+    n2: n9
     i1: i1
     i2: i0
     conditioning: {}
     label: ServerRoomSwitch-DR-2-Ethernet0/0<->RADIUS-DR-1-eth0
-  - id: l24
-    n1: n31
-    n2: n11
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: ServerRoomSwitch-DR-1-Ethernet0/1<->RADIUS-DR-1-eth1
-  - id: l25
-    n1: n10
-    n2: n32
-    i1: i1
-    i2: i2
-    conditioning: {}
-    label: DHCP/DNS-DR-1-eth1<->ServerRoomSwitch-DR-2-Ethernet0/1
-  - id: l26
-    n1: n34
-    n2: n6
-    i1: i1
-    i2: i4
-    conditioning: {}
-    label: CoreSwitch-DR-1-Ethernet0/0<->asav-DR-1-GigabitEthernet0/3
-  - id: l27
-    n1: n35
-    n2: n7
-    i1: i1
-    i2: i4
-    conditioning: {}
-    label: CoreSwitch-DR-2-Ethernet0/0<->asav-DR-2-GigabitEthernet0/3
-  - id: l28
-    n1: n34
-    n2: n8
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: CoreSwitch-DR-1-Ethernet0/1<->WLC-DR-1-GigabitEthernet1
-  - id: l29
-    n1: n35
+  - id: l17
+    n1: n23
     n2: n9
     i1: i2
     i2: i1
     conditioning: {}
+    label: ServerRoomSwitch-DR-1-Ethernet0/1<->RADIUS-DR-1-eth1
+  - id: l18
+    n1: n26
+    n2: n5
+    i1: i1
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-DR-1-Ethernet0/0<->asav-DR-1-GigabitEthernet0/3
+  - id: l19
+    n1: n27
+    n2: n6
+    i1: i1
+    i2: i4
+    conditioning: {}
+    label: CoreSwitch-DR-2-Ethernet0/0<->asav-DR-2-GigabitEthernet0/3
+  - id: l20
+    n1: n26
+    n2: n7
+    i1: i2
+    i2: i1
+    conditioning: {}
+    label: CoreSwitch-DR-1-Ethernet0/1<->WLC-DR-1-GigabitEthernet1
+  - id: l21
+    n1: n27
+    n2: n8
+    i1: i2
+    i2: i1
+    conditioning: {}
     label: CoreSwitch-DR-2-Ethernet0/1<->WLC-DR-2-GigabitEthernet1
-  - id: l30
-    n1: n34
-    n2: n31
+  - id: l22
+    n1: n26
+    n2: n23
     i1: i4
     i2: i3
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet0/3<->ServerRoomSwitch-DR-1-Ethernet0/2
-  - id: l31
-    n1: n32
-    n2: n35
+  - id: l23
+    n1: n24
+    n2: n27
     i1: i3
     i2: i4
     conditioning: {}
     label: ServerRoomSwitch-DR-2-Ethernet0/2<->CoreSwitch-DR-2-Ethernet0/3
-  - id: l32
-    n1: n33
-    n2: n35
+  - id: l24
+    n1: n25
+    n2: n27
     i1: i1
     i2: i5
     conditioning: {}
     label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/0<->CoreSwitch-DR-2-Ethernet1/0
-  - id: l33
-    n1: n33
-    n2: n34
+  - id: l25
+    n1: n25
+    n2: n26
     i1: i2
     i2: i5
     conditioning: {}
     label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/1<->CoreSwitch-DR-1-Ethernet1/0
-  - id: l34
-    n1: n38
+  - id: l26
+    n1: n30
     n2: n4
     i1: i1
     i2: i0
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/0<->RADIUS-HQ-1-eth0
-  - id: l35
-    n1: n39
-    n2: n5
-    i1: i1
-    i2: i0
-    conditioning: {}
-    label: ServerRoomSwitch-HQ-2-Ethernet0/0<->DHCP/DNS-HQ-1-eth0
-  - id: l36
-    n1: n38
-    n2: n39
+  - id: l27
+    n1: n30
+    n2: n31
     i1: i2
     i2: i2
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/1<->ServerRoomSwitch-HQ-2-Ethernet0/1
-  - id: l37
-    n1: n39
+  - id: l28
+    n1: n31
     n2: n4
     i1: i4
     i2: i1
     conditioning: {}
     label: ServerRoomSwitch-HQ-2-Ethernet0/3<->RADIUS-HQ-1-eth1
-  - id: l38
-    n1: n38
-    n2: n5
-    i1: i4
-    i2: i1
-    conditioning: {}
-    label: ServerRoomSwitch-HQ-1-Ethernet0/3<->DHCP/DNS-HQ-1-eth1
-  - id: l39
-    n1: n40
-    n2: n27
-    i1: i1
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-HQ-1-Ethernet0/0<->DMZDNS-HQ-1-eth0
-  - id: l40
-    n1: n40
-    n2: n26
-    i1: i2
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-HQ-1-Ethernet0/1<->WebsiteServer-HQ-1-eth0
-  - id: l41
-    n1: n40
-    n2: n28
-    i1: i3
-    i2: i0
-    conditioning: {}
-    label: DMZSwitch-HQ-1-Ethernet0/2<->DMZDNS-HQ-2-eth0
-  - id: l42
-    n1: n41
-    n2: n27
-    i1: i1
-    i2: i1
-    conditioning: {}
-    label: DMZSwitch-HQ-2-Ethernet0/0<->DMZDNS-HQ-1-eth1
-  - id: l43
-    n1: n41
-    n2: n26
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: DMZSwitch-HQ-2-Ethernet0/1<->WebsiteServer-HQ-1-eth1
-  - id: l44
-    n1: n41
-    n2: n28
-    i1: i3
-    i2: i1
-    conditioning: {}
-    label: DMZSwitch-HQ-2-Ethernet0/2<->DMZDNS-HQ-2-eth1
-  - id: l45
-    n1: n41
-    n2: n40
+  - id: l29
+    n1: n33
+    n2: n32
     i1: i5
     i2: i5
     conditioning: {}
     label: DMZSwitch-HQ-2-Ethernet1/0<->DMZSwitch-HQ-1-Ethernet1/0
-  - id: l46
-    n1: n42
-    n2: n36
+  - id: l30
+    n1: n34
+    n2: n28
     i1: i2
     i2: i1
     conditioning: {}
     label: DistSwitch-HQ-1-Ethernet0/1<->FloorSwitch-HQ-1-Ethernet0/0
-  - id: l47
-    n1: n43
-    n2: n37
+  - id: l31
+    n1: n35
+    n2: n29
     i1: i2
     i2: i1
     conditioning: {}
     label: DistSwitch-HQ-2-Ethernet0/1<->FloorSwitch-HQ-2-Ethernet0/0
-  - id: l48
-    n1: n42
-    n2: n43
+  - id: l32
+    n1: n34
+    n2: n35
     i1: i3
     i2: i3
     conditioning: {}
     label: DistSwitch-HQ-1-Ethernet0/2<->DistSwitch-HQ-2-Ethernet0/2
-  - id: l49
-    n1: n36
-    n2: n43
+  - id: l33
+    n1: n28
+    n2: n35
     i1: i2
     i2: i5
     conditioning: {}
     label: FloorSwitch-HQ-1-Ethernet0/1<->DistSwitch-HQ-2-Ethernet1/0
-  - id: l50
-    n1: n37
-    n2: n42
+  - id: l34
+    n1: n29
+    n2: n34
     i1: i2
     i2: i5
     conditioning: {}
     label: FloorSwitch-HQ-2-Ethernet0/1<->DistSwitch-HQ-1-Ethernet1/0
-  - id: l51
+  - id: l35
     n1: n0
-    n2: n44
+    n2: n36
     i1: i3
     i2: i1
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/2<->CoreSwitch-HQ-1-Ethernet0/0
-  - id: l52
+  - id: l36
     n1: n1
-    n2: n45
+    n2: n37
     i1: i3
     i2: i1
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/2<->CoreSwitch-HQ-2-Ethernet0/0
-  - id: l53
-    n1: n44
+  - id: l37
+    n1: n36
     n2: n2
     i1: i2
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet0/1<->WLC-HQ-1-GigabitEthernet1
-  - id: l54
-    n1: n45
+  - id: l38
+    n1: n37
     n2: n3
     i1: i2
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet0/1<->WLC-HQ-2-GigabitEthernet1
-  - id: l55
-    n1: n44
-    n2: n42
+  - id: l39
+    n1: n36
+    n2: n34
     i1: i3
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet0/2<->DistSwitch-HQ-1-Ethernet0/0
-  - id: l56
-    n1: n45
-    n2: n43
+  - id: l40
+    n1: n37
+    n2: n35
     i1: i3
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet0/2<->DistSwitch-HQ-2-Ethernet0/0
-  - id: l57
-    n1: n44
-    n2: n45
+  - id: l41
+    n1: n36
+    n2: n37
     i1: i4
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet0/3<->CoreSwitch-HQ-2-Ethernet0/3
-  - id: l58
-    n1: n44
-    n2: n43
+  - id: l42
+    n1: n36
+    n2: n35
     i1: i5
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet1/0<->DistSwitch-HQ-2-Ethernet0/3
-  - id: l59
-    n1: n45
-    n2: n42
+  - id: l43
+    n1: n37
+    n2: n34
     i1: i5
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet1/0<->DistSwitch-HQ-1-Ethernet0/3
-  - id: l60
-    n1: n38
-    n2: n44
+  - id: l44
+    n1: n30
+    n2: n36
     i1: i3
     i2: i6
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/2<->CoreSwitch-HQ-1-Ethernet1/1
-  - id: l61
-    n1: n39
-    n2: n45
+  - id: l45
+    n1: n31
+    n2: n37
     i1: i3
     i2: i6
     conditioning: {}
     label: ServerRoomSwitch-HQ-2-Ethernet0/2<->CoreSwitch-HQ-2-Ethernet1/1
-  - id: l62
-    n1: n33
-    n2: n24
+  - id: l46
+    n1: n25
+    n2: n19
     i1: i3
     i2: i0
     conditioning: {}
     label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/2<->AP-DR-1-wired0
-  - id: l63
-    n1: n36
-    n2: n25
+  - id: l47
+    n1: n28
+    n2: n20
     i1: i3
     i2: i0
     conditioning: {}
     label: FloorSwitch-HQ-1-Ethernet0/2<->AP-HQ-1-wired0
-  - id: l64
+  - id: l48
     n1: n1
-    n2: n18
+    n2: n13
     i1: i4
     i2: i7
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/3<->EdgeRouter-HQ-1-GigabitEthernet0/6
-  - id: l65
+  - id: l49
     n1: n0
-    n2: n19
+    n2: n14
     i1: i4
     i2: i6
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/3<->EdgeRouter-HQ-2-GigabitEthernet0/5
-  - id: l66
-    n1: n34
-    n2: n35
+  - id: l50
+    n1: n26
+    n2: n27
     i1: i6
     i2: i6
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet1/1<->CoreSwitch-DR-2-Ethernet1/1
-  - id: l67
-    n1: n6
-    n2: n35
+  - id: l51
+    n1: n5
+    n2: n27
     i1: i5
     i2: i7
     conditioning: {}
     label: Firewall-DR-1-GigabitEthernet0/4<->CoreSwitch-DR-2-Ethernet1/2
-  - id: l68
-    n1: n34
-    n2: n7
+  - id: l52
+    n1: n26
+    n2: n6
     i1: i7
     i2: i5
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet1/2<->Firewall-DR-2-GigabitEthernet0/4
-  - id: l69
-    n1: n41
-    n2: n1
-    i1: i4
-    i2: i5
-    conditioning: {}
-    label: DMZSwitch-HQ-2-Ethernet0/3<->Firewall-HQ-2-GigabitEthernet0/4
-  - id: l70
-    n1: n40
-    n2: n0
-    i1: i4
-    i2: i5
-    conditioning: {}
-    label: DMZSwitch-HQ-1-Ethernet0/3<->Firewall-HQ-1-GigabitEthernet0/4
-  - id: l71
-    n1: n6
-    n2: n29
-    i1: i6
-    i2: i4
-    conditioning: {}
-    label: Firewall-DR-1-GigabitEthernet0/5<->DMZSwitch-DR-1-Ethernet0/3
-  - id: l72
-    n1: n7
-    n2: n30
-    i1: i6
-    i2: i4
-    conditioning: {}
-    label: Firewall-DR-2-GigabitEthernet0/5<->DMZSwitch-DR-2-Ethernet0/3
-  - id: l73
-    n1: n46
-    n2: n17
+  - id: l53
+    n1: n38
+    n2: n12
     i1: i1
     i2: i4
     conditioning: {}
     label: HomeRouter-WFH-Ethernet0/0<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/3
-  - id: l74
-    n1: n46
-    n2: n23
+  - id: l54
+    n1: n38
+    n2: n18
     i1: i2
     i2: i0
     conditioning: {}
     label: HomeRouter-WFH-Ethernet0/1<->WFH user (VPN client)-eth0
-  - id: l75
-    n1: n48
-    n2: n31
+  - id: l55
+    n1: n40
+    n2: n23
     i1: i0
     i2: i4
     conditioning: {}
     label: DNS-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/3
-  - id: l76
-    n1: n49
-    n2: n40
-    i1: i0
-    i2: i6
-    conditioning: {}
-    label: DNS-DMZ-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet1/1
-  - id: l77
-    n1: n50
-    n2: n29
-    i1: i0
-    i2: i5
-    conditioning: {}
-    label: DNS-DMZ-DR-1-eth0<->DMZSwitch-DR-1-Ethernet1/0
-  - id: l78
-    n1: n47
-    n2: n44
-    i1: i0
-    i2: i8
-    conditioning: {}
-    label: DNS-HQ-1-eth0<->CoreSwitch-HQ-1-Ethernet1/3
-  - id: l79
-    n1: n16
-    n2: n21
+  - id: l56
+    n1: n11
+    n2: n16
     i1: i3
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/0
-  - id: l80
-    n1: n16
-    n2: n20
+  - id: l57
+    n1: n11
+    n2: n15
     i1: i4
     i2: i3
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/2
-  - id: l81
-    n1: n17
-    n2: n21
+  - id: l58
+    n1: n12
+    n2: n16
     i1: i3
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/1
-  - id: l82
-    n1: n17
-    n2: n20
+  - id: l59
+    n1: n12
+    n2: n15
     i1: i5
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/4<->EdgeRouter-DR-2-GigabitEthernet0/1
-  - id: l83
-    n1: n15
-    n2: n21
+  - id: l60
+    n1: n10
+    n2: n16
     i1: i3
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/2
-  - id: l84
-    n1: n15
-    n2: n20
+  - id: l61
+    n1: n10
+    n2: n15
     i1: i4
     i2: i1
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/0
-  - id: l85
-    n1: n16
-    n2: n17
+  - id: l62
+    n1: n11
+    n2: n12
     i1: i5
     i2: i6
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/4<->ISP-HQ-2 (Terrestrial
       Fibre)-GigabitEthernet0/5
-  - id: l86
-    n1: n16
-    n2: n15
+  - id: l63
+    n1: n11
+    n2: n10
     i1: i6
     i2: i5
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/5<->ISP-HQ-3 (Satellite)-GigabitEthernet0/4
-  - id: l87
-    n1: n17
-    n2: n15
+  - id: l64
+    n1: n12
+    n2: n10
     i1: i7
     i2: i6
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/6<->ISP-HQ-3 (Satellite)-GigabitEthernet0/5
-  - id: l88
-    n1: n37
-    n2: n52
+  - id: l65
+    n1: n29
+    n2: n44
     i1: i3
     i2: i0
     conditioning: {}
     label: FloorSwitch-HQ-2-Ethernet0/2<->desktop-0-eth0
-  - id: l89
+  - id: l66
+    n1: n45
+    n2: n25
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: desktop-1-eth0<->DepartmentSwitch-DR-TechnicalSupport-Ethernet0/3
+  - id: l67
     n1: n46
-    n2: n15
-    i1: i3
+    n2: n28
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: desktop-2-eth0<->FloorSwitch-HQ-1-Ethernet0/3
+  - id: l68
+    n1: n37
+    n2: n27
+    i1: i7
+    i2: i3
+    conditioning: {}
+    label: CoreSwitch-HQ-2-Ethernet1/2<->CoreSwitch-DR-2-Ethernet0/2
+  - id: l69
+    n1: n47
+    n2: n11
+    i1: i0
     i2: i7
     conditioning: {}
-    label: HomeRouter-WFH-Ethernet0/2<->ISP-3 (Satellite)-GigabitEthernet0/6
+    label: Internet-WebServer-1-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/6
+  - id: l70
+    n1: n47
+    n2: n12
+    i1: i1
+    i2: i8
+    conditioning: {}
+    label: Internet-WebServer-1-eth1<->ISP-2 (Terrestrial Fibre)-GigabitEthernet0/7
+  - id: l71
+    n1: n47
+    n2: n10
+    i1: i2
+    i2: i7
+    conditioning: {}
+    label: Internet-WebServer-1-eth2<->ISP-3 (Satellite)-GigabitEthernet0/6
+  - id: l72
+    n1: n36
+    n2: n26
+    i1: i9
+    i2: i3
+    conditioning: {}
+    label: CoreSwitch-HQ-1-Ethernet2/0<->CoreSwitch-DR-1-Ethernet0/2
+  - id: l73
+    n1: n0
+    n2: n32
+    i1: i5
+    i2: i1
+    conditioning: {}
+    label: Firewall-HQ-1-GigabitEthernet0/4<->DMZSwitch-HQ-1-Ethernet0/0
+  - id: l74
+    n1: n41
+    n2: n32
+    i1: i0
+    i2: i2
+    conditioning: {}
+    label: DNS-DMZ-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/1
+  - id: l75
+    n1: n50
+    n2: n32
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: DNS-DMZ-HQ-2-eth0<->DMZSwitch-HQ-1-Ethernet0/2
+  - id: l76
+    n1: n48
+    n2: n32
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: WebsiteServer-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/3
+  - id: l77
+    n1: n1
+    n2: n33
+    i1: i5
+    i2: i1
+    conditioning: {}
+    label: Firewall-HQ-2-GigabitEthernet0/4<->DMZSwitch-HQ-2-Ethernet0/0
+  - id: l78
+    n1: n41
+    n2: n33
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DNS-DMZ-HQ-1-eth1<->DMZSwitch-HQ-2-Ethernet0/1
+  - id: l79
+    n1: n50
+    n2: n33
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: DNS-DMZ-HQ-2-eth1<->DMZSwitch-HQ-2-Ethernet0/2
+  - id: l80
+    n1: n5
+    n2: n21
+    i1: i6
+    i2: i1
+    conditioning: {}
+    label: Firewall-DR-1-GigabitEthernet0/5<->DMZSwitch-DR-1-Ethernet0/0
+  - id: l81
+    n1: n42
+    n2: n21
+    i1: i0
+    i2: i2
+    conditioning: {}
+    label: DNS-DMZ-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/1
+  - id: l82
+    n1: n51
+    n2: n21
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: DNS-DMZ-DR-2-eth0<->DMZSwitch-DR-1-Ethernet0/2
+  - id: l83
+    n1: n49
+    n2: n21
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: WebsiteServer-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/3
+  - id: l84
+    n1: n6
+    n2: n22
+    i1: i6
+    i2: i1
+    conditioning: {}
+    label: Firewall-DR-2-GigabitEthernet0/5<->DMZSwitch-DR-2-Ethernet0/0
+  - id: l85
+    n1: n42
+    n2: n22
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: DNS-DMZ-DR-1-eth1<->DMZSwitch-DR-2-Ethernet0/1
+  - id: l86
+    n1: n51
+    n2: n22
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: DNS-DMZ-DR-2-eth1<->DMZSwitch-DR-2-Ethernet0/2
+  - id: l87
+    n1: n21
+    n2: n22
+    i1: i5
+    i2: i5
+    conditioning: {}
+    label: DMZSwitch-DR-1-Ethernet1/0<->DMZSwitch-DR-2-Ethernet1/0
+  - id: l88
+    n1: n36
+    n2: n1
+    i1: i10
+    i2: i6
+    conditioning: {}
+    label: CoreSwitch-HQ-1-Ethernet2/1<->Firewall-HQ-2-GigabitEthernet0/5
+  - id: l89
+    n1: n0
+    n2: n37
+    i1: i6
+    i2: i8
+    conditioning: {}
+    label: Firewall-HQ-1-GigabitEthernet0/5<->CoreSwitch-HQ-2-Ethernet1/3
+  - id: l90
+    n1: n52
+    n2: n11
+    i1: i0
+    i2: i8
+    conditioning: {}
+    label: desktop-3-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/7
+  - id: l91
+    n1: n39
+    n2: n30
+    i1: i0
+    i2: i5
+    conditioning: {}
+    label: DNS-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet1/0
+  - id: l92
+    n1: n39
+    n2: n31
+    i1: i1
+    i2: i5
+    conditioning: {}
+    label: DNS-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/0
+  - id: l93
+    n1: n31
+    n2: n53
+    i1: i6
+    i2: i0
+    conditioning: {}
+    label: ServerRoomSwitch-HQ-2-Ethernet1/1<->splunk-0-eth0
+  - id: l94
+    n1: n54
+    n2: n30
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: WIN-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet0/3
+  - id: l95
+    n1: n55
+    n2: n23
+    i1: i0
+    i2: i1
+    conditioning: {}
+    label: WIN-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/0
+  - id: l96
+    n1: n55
+    n2: n24
+    i1: i1
+    i2: i2
+    conditioning: {}
+    label: WIN-DR-1-eth1<->ServerRoomSwitch-DR-2-Ethernet0/1
+  - id: l97
+    n1: n54
+    n2: n31
+    i1: i1
+    i2: i1
+    conditioning: {}
+    label: WIN-DC-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet0/0
+  - id: l98
+    n1: n56
+    n2: n30
+    i1: i0
+    i2: i6
+    conditioning: {}
+    label: win2025-0-eth0<->ServerRoomSwitch-HQ-1-Ethernet1/1
+  - id: l99
+    n1: n56
+    n2: n31
+    i1: i1
+    i2: i7
+    conditioning: {}
+    label: win2025-0-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/2
 lab:
   description: ''
   notes: ''
