@@ -228,7 +228,7 @@ annotations:
     x1: -920.0
     y1: 80.0
     x2: 400.0
-    y2: 400.0
+    y2: 280.0
     z_index: 0
   - border_color: '#00000000'
     border_style: ''
@@ -258,7 +258,7 @@ annotations:
     thickness: 1
     type: text
     x1: -920.0
-    y1: 520.0
+    y1: 400.0
     z_index: 3
   - border_color: '#808080FF'
     border_radius: 10
@@ -270,7 +270,7 @@ annotations:
     x1: -1720.0
     y1: -520.0
     x2: 440.0
-    y2: 280.0
+    y2: 360.0
     z_index: 0
   - border_color: '#FFFFFF'
     border_radius: 10
@@ -425,7 +425,20 @@ annotations:
     x1: -160.0
     y1: -1080.0
     z_index: 4
-smart_annotations: []
+smart_annotations:
+  - tag: pat:2800:8000
+    is_on: true
+    padding: 35
+    label: pat:2800:8000
+    tag_offset_x: 0
+    tag_offset_y: 0
+    tag_size: 14
+    group_distance: 400
+    thickness: 1
+    border_style: ''
+    fill_color: '#4B4D4F80'
+    border_color: '#00000080'
+    z_index: 1
 nodes:
   - boot_disk_size: null
     configuration:
@@ -1200,224 +1213,6 @@ nodes:
         slot: 6
   - boot_disk_size: null
     configuration:
-      - name: iosxe_config.txt
-        content: |-
-          hostname WLC-HQ-1
-          !
-          no ip domain lookup
-          ip domain name hq.p45.local
-          !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
-          !
-          aaa new-model
-          aaa group server radius P45-RAD
-           server name P45-RADIUS
-          !
-          aaa authentication login default local
-          aaa authentication dot1x default group P45-RAD
-          aaa authorization network default group P45-RAD
-          !
-          radius server P45-RADIUS
-           address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
-           key P45-RADIUS-KEY
-          !
-          vlan 80
-           name SERVERS
-          vlan 90
-           name MGMT
-          vlan 100
-           name GUEST
-          !
-          interface GigabitEthernet1
-           description To CoreSwitch trunk
-           switchport trunk allowed vlan 80,90,100
-           switchport mode trunk
-           no shutdown
-          !
-          interface GigabitEthernet2
-           description WLC HA redundancy port
-           no shutdown
-          !
-          interface Vlan80
-           description Wireless management
-           ip address 192.168.80.5 255.255.255.0
-           no shutdown
-          !
-          ip route 0.0.0.0 0.0.0.0 192.168.80.1
-          !
-          wireless management interface Vlan80
-          !
-          ap country NZ
-          !
-          wlan P45-Guest 1 P45-Guest
-           no security wpa akm dot1x
-           security wpa akm psk set-key ascii 0 P45-Guest-WiFi
-           security wpa wpa2 ciphers aes
-           no shutdown
-          !
-          wireless profile flex P45-FLEX
-           native-vlan-id 100
-           vlan-name GUEST
-            vlan-id 100
-          !
-          wireless profile policy P45-POLICY
-           no central association
-           no central dhcp
-           no central switching
-           vlan 100
-           no shutdown
-          !
-          wireless tag site P45-SITE
-           flex-profile P45-FLEX
-           no local-site
-          !
-          wireless tag policy P45-POLICY-TAG
-           wlan P45-Guest policy P45-POLICY
-          !
-          ap profile default-ap-profile
-           description P45 default AP profile
-          !
-          line con 0
-           logging synchronous
-          line vty 0 15
-           transport input ssh
-           login authentication default
-          !
-          end
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n2
-    image_definition: null
-    label: WLC-HQ-1
-    node_definition: cat9800
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 80
-    y: -280
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          !
-          hostname WLC-HQ-2
-          !
-          no ip domain lookup
-          ip domain-name hq.p45.local
-          !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
-          !
-          interface GigabitEthernet1
-           description To CoreSwitch trunk
-           no switchport
-           no shutdown
-          !
-          interface GigabitEthernet2
-           description WLC HA RP
-           no switchport
-           no shutdown
-          !
-          interface Loopback0
-           description WLC mgmt
-           ip address 192.168.90.82 255.255.255.0
-          !
-          redundancy
-           mode sso
-          !
-          wireless management interface Loopback0
-          !
-          wlan P45-Guest 1 P45-Guest
-           no shutdown
-           wpa2 psk set-key ascii 0 P45-Guest-WiFi
-           no security wpa akm dot1x
-           security wpa akm psk
-          !
-          ap join-profile default-ap-profile
-           country NZ
-          !
-          line vty 0 15
-           transport input ssh
-          !
-          end
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n3
-    image_definition: null
-    label: WLC-HQ-2
-    node_definition: cat9800
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 560
-    y: -280
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration:
       - name: clients.conf
         content: |-
           # Every NAS that may ask this server a question.
@@ -1510,7 +1305,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n4
+    id: n2
     image_definition: null
     label: RADIUS-HQ-1
     node_definition: radius
@@ -1523,7 +1318,7 @@ nodes:
     ram: null
     tags: []
     x: 1000
-    y: -520
+    y: -480
     interfaces:
       - id: i0
         label: eth0
@@ -1901,7 +1696,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n5
+    id: n3
     image_definition: null
     label: Firewall-DR-1
     node_definition: asav
@@ -2031,7 +1826,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n6
+    id: n4
     image_definition: null
     label: Firewall-DR-2
     node_definition: asav
@@ -2096,224 +1891,6 @@ nodes:
         mac_address: null
         type: physical
         slot: 9
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          hostname WLC-DR-1
-          !
-          no ip domain lookup
-          ip domain name dr.p45.local
-          !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
-          !
-          aaa new-model
-          aaa group server radius P45-RAD
-           server name P45-RADIUS
-          !
-          aaa authentication login default local
-          aaa authentication dot1x default group P45-RAD
-          aaa authorization network default group P45-RAD
-          !
-          radius server P45-RADIUS
-           address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
-           key P45-RADIUS-KEY
-          !
-          vlan 80
-           name SERVERS
-          vlan 90
-           name MGMT
-          vlan 100
-           name GUEST
-          !
-          interface GigabitEthernet1
-           description To CoreSwitch trunk
-           switchport trunk allowed vlan 80,90,100
-           switchport mode trunk
-           no shutdown
-          !
-          interface GigabitEthernet2
-           description WLC HA redundancy port
-           no shutdown
-          !
-          interface Vlan80
-           description Wireless management
-           ip address 172.16.80.5 255.255.255.0
-           no shutdown
-          !
-          ip route 0.0.0.0 0.0.0.0 172.16.80.1
-          !
-          wireless management interface Vlan80
-          !
-          ap country NZ
-          !
-          wlan P45-Guest 1 P45-Guest
-           no security wpa akm dot1x
-           security wpa akm psk set-key ascii 0 P45-Guest-WiFi
-           security wpa wpa2 ciphers aes
-           no shutdown
-          !
-          wireless profile flex P45-FLEX
-           native-vlan-id 100
-           vlan-name GUEST
-            vlan-id 100
-          !
-          wireless profile policy P45-POLICY
-           no central association
-           no central dhcp
-           no central switching
-           vlan 100
-           no shutdown
-          !
-          wireless tag site P45-SITE
-           flex-profile P45-FLEX
-           no local-site
-          !
-          wireless tag policy P45-POLICY-TAG
-           wlan P45-Guest policy P45-POLICY
-          !
-          ap profile default-ap-profile
-           description P45 default AP profile
-          !
-          line con 0
-           logging synchronous
-          line vty 0 15
-           transport input ssh
-           login authentication default
-          !
-          end
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n7
-    image_definition: null
-    label: WLC-DR-1
-    node_definition: cat9800
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -920
-    y: -120
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
-  - boot_disk_size: null
-    configuration:
-      - name: iosxe_config.txt
-        content: |-
-          !
-          hostname WLC-DR-2
-          !
-          no ip domain lookup
-          ip domain-name dr.p45.local
-          !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
-          !
-          interface GigabitEthernet1
-           description To CoreSwitch trunk
-           no switchport
-           no shutdown
-          !
-          interface GigabitEthernet2
-           description WLC HA RP
-           no switchport
-           no shutdown
-          !
-          interface Loopback0
-           description WLC mgmt
-           ip address 172.16.90.82 255.255.255.0
-          !
-          redundancy
-           mode sso
-          !
-          wireless management interface Loopback0
-          !
-          wlan P45-Guest 1 P45-Guest
-           no shutdown
-           wpa2 psk set-key ascii 0 P45-Guest-WiFi
-           no security wpa akm dot1x
-           security wpa akm psk
-          !
-          ap join-profile default-ap-profile
-           country NZ
-          !
-          line vty 0 15
-           transport input ssh
-          !
-          end
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n8
-    image_definition: null
-    label: WLC-DR-2
-    node_definition: cat9800
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -600
-    y: -120
-    interfaces:
-      - id: i0
-        label: Loopback0
-        mac_address: null
-        type: loopback
-      - id: i1
-        label: GigabitEthernet1
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i2
-        label: GigabitEthernet2
-        mac_address: null
-        type: physical
-        slot: 1
-      - id: i3
-        label: GigabitEthernet3
-        mac_address: null
-        type: physical
-        slot: 2
-      - id: i4
-        label: GigabitEthernet4
-        mac_address: null
-        type: physical
-        slot: 3
   - boot_disk_size: null
     configuration:
       - name: clients.conf
@@ -2408,7 +1985,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n9
+    id: n5
     image_definition: null
     label: RADIUS-DR-1
     node_definition: radius
@@ -2421,7 +1998,7 @@ nodes:
     ram: null
     tags: []
     x: -1600
-    y: -320
+    y: -440
     interfaces:
       - id: i0
         label: eth0
@@ -2539,7 +2116,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n10
+    id: n6
     image_definition: null
     label: ISP-3 (Satellite)
     node_definition: iosv
@@ -2551,7 +2128,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 520
+    x: 480
     y: -840
     interfaces:
       - id: i0
@@ -2689,7 +2266,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n11
+    id: n7
     image_definition: null
     label: ISP-1 (Terrestrial Fibre)
     node_definition: iosv
@@ -2872,7 +2449,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n12
+    id: n8
     image_definition: null
     label: ISP-2 (Terrestrial Fibre)
     node_definition: iosv
@@ -3021,7 +2598,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n13
+    id: n9
     image_definition: null
     label: EdgeRouter-HQ-1
     node_definition: iosv
@@ -3160,7 +2737,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n14
+    id: n10
     image_definition: null
     label: EdgeRouter-HQ-2
     node_definition: iosv
@@ -3312,7 +2889,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n15
+    id: n11
     image_definition: null
     label: EdgeRouter-DR-2
     node_definition: iosv
@@ -3464,7 +3041,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n16
+    id: n12
     image_definition: null
     label: EdgeRouter-DR-1
     node_definition: iosv
@@ -3530,55 +3107,6 @@ nodes:
         slot: 8
   - boot_disk_size: null
     configuration:
-      - name: user-data
-        content: |-
-          #cloud-config
-          hostname: wireless-client-1
-          manage_etc_hosts: True
-          system_info:
-            default_user:
-              name: cisco
-          password: cisco
-          chpasswd:
-            expire: False
-          ssh_pwauth: True
-          write_files:
-            - path: /home/cisco/wpa_supplicant.conf
-              content: |
-                ctrl_interface=/var/run/wpa_supplicant
-                network={
-                    ssid="P45-Guest"
-                    psk="P45-Guest-WiFi"
-                    key_mgmt=WPA-PSK
-                }
-              owner: cisco:cisco
-              permissions: '0644'
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n17
-    image_definition: null
-    label: wireless-client-1
-    node_definition: wireless-client
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -720
-    y: 400
-    interfaces:
-      - id: i0
-        label: ens2
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration:
       - name: node.cfg
         content: |-
           #cloud-config
@@ -3627,7 +3155,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n18
+    id: n13
     image_definition: null
     label: WFH user (VPN client)
     node_definition: desktop
@@ -3664,70 +3192,6 @@ nodes:
         slot: 3
   - boot_disk_size: null
     configuration:
-      - name: apvirtual.env
-        content: |-
-          AP_TYPE=9178
-          CAPWAP_VER=17.18.3.18
-          RADIO_FREQ=2.4/5/6GHz
-          WLC_IP=172.16.80.5
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n19
-    image_definition: null
-    label: AP-DR-1
-    node_definition: vap
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -720
-    y: 280
-    interfaces:
-      - id: i0
-        label: wired0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration:
-      - name: apvirtual.env
-        content: |-
-          AP_TYPE=9178
-          CAPWAP_VER=17.18.3.18
-          RADIO_FREQ=2.4/5/6GHz
-          WLC_IP=192.168.80.5
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n20
-    image_definition: null
-    label: AP-HQ-1
-    node_definition: vap
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 120
-    y: 520
-    interfaces:
-      - id: i0
-        label: wired0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration:
       - name: ios_config.txt
         content: |-
           !
@@ -3741,15 +3205,21 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           !
-          vlan 50
-           name SALES
+          vlan 55
+           name DMZ
           vlan 90
            name MGMT
           !
@@ -3758,38 +3228,47 @@ nodes:
            ip address 172.16.90.51 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 172.16.90.1
           ip default-gateway 172.16.90.1
           !
           interface Ethernet0/0
-           description to DMZDNS-DR-1 eth0
+           description to Firewall-DR-1 GigabitEthernet0/5
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/1
-           description to WebsiteServer-DR-1 eth0
+           description to DNS-DMZ-DR-1 eth0
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/2
-           description to DMZDNS-DR-2 eth0
+           description to DNS-DMZ-DR-2 eth0
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/3
-           description to CoreSwitch-DR-1 Ethernet0/2
+           description to WebsiteServer-DR-1 eth0
+           switchport mode access
+           switchport access vlan 55
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet1/0
+           description to DMZSwitch-DR-2 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 55,90
            no shutdown
           !
           line vty 0 15
@@ -3801,7 +3280,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n21
+    id: n14
     image_definition: null
     label: DMZSwitch-DR-1
     node_definition: ioll2-xe
@@ -3942,7 +3421,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n22
+    id: n15
     image_definition: null
     label: DMZSwitch-DR-2
     node_definition: ioll2-xe
@@ -4001,9 +3480,15 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
+          !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
           !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
@@ -4018,10 +3503,12 @@ nodes:
            ip address 172.16.90.41 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 172.16.90.1
           ip default-gateway 172.16.90.1
           !
           interface Ethernet0/0
-           description to DHCP/DNS-DR-1 eth0
+           description to DC-DR-1 eth0
            switchport mode access
            switchport access vlan 80
            spanning-tree portfast
@@ -4040,8 +3527,23 @@ nodes:
            description to CoreSwitch-DR-1 Ethernet0/3
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 70,80,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 80,90
+           no shutdown
+          !
+          interface Ethernet0/3
+           description to DNS/DHCP-DR-1 eth0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet1/0
+           description to DC-DR-2 eth1
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
            no shutdown
           !
           line vty 0 15
@@ -4053,7 +3555,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n23
+    id: n16
     image_definition: null
     label: ServerRoomSwitch-DR-1
     node_definition: ioll2-xe
@@ -4092,6 +3594,26 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+      - id: i5
+        label: Ethernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: Ethernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: Ethernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: Ethernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -4107,9 +3629,15 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 172.16.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
+          !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
           !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
@@ -4124,6 +3652,8 @@ nodes:
            ip address 172.16.90.42 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 172.16.90.1
           ip default-gateway 172.16.90.1
           !
           interface Ethernet0/0
@@ -4135,7 +3665,7 @@ nodes:
            no shutdown
           !
           interface Ethernet0/1
-           description to DHCP/DNS-DR-1 eth1
+           description to DC-DR-1 eth1
            switchport mode access
            switchport access vlan 80
            spanning-tree portfast
@@ -4146,8 +3676,23 @@ nodes:
            description to CoreSwitch-DR-2 Ethernet0/3
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 70,80,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 80,90
+           no shutdown
+          !
+          interface Ethernet0/3
+           description to DC-DR-2 eth0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet1/0
+           description to DC-DR-2 eth1
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
            no shutdown
           !
           line vty 0 15
@@ -4159,7 +3704,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n24
+    id: n17
     image_definition: null
     label: ServerRoomSwitch-DR-2
     node_definition: ioll2-xe
@@ -4172,7 +3717,7 @@ nodes:
     ram: null
     tags: []
     x: -1440
-    y: -320
+    y: -280
     interfaces:
       - id: i0
         label: Loopback0
@@ -4198,6 +3743,26 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+      - id: i5
+        label: Ethernet1/0
+        mac_address: null
+        type: physical
+        slot: 4
+      - id: i6
+        label: Ethernet1/1
+        mac_address: null
+        type: physical
+        slot: 5
+      - id: i7
+        label: Ethernet1/2
+        mac_address: null
+        type: physical
+        slot: 6
+      - id: i8
+        label: Ethernet1/3
+        mac_address: null
+        type: physical
+        slot: 7
   - boot_disk_size: null
     configuration:
       - name: ios_config.txt
@@ -4303,7 +3868,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n25
+    id: n18
     image_definition: null
     label: AccessSwitch-DR-1
     node_definition: ioll2-xe
@@ -4569,7 +4134,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n26
+    id: n19
     image_definition: null
     label: CoreSwitch-DR-1
     node_definition: ioll2-xe
@@ -4823,7 +4388,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n27
+    id: n20
     image_definition: null
     label: CoreSwitch-DR-2
     node_definition: ioll2-xe
@@ -4961,7 +4526,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n28
+    id: n21
     image_definition: null
     label: AccessSwitch-HQ-1
     node_definition: ioll2-xe
@@ -5071,7 +4636,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n29
+    id: n22
     image_definition: null
     label: AccessSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5185,7 +4750,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n30
+    id: n23
     image_definition: null
     label: ServerRoomSwitch-HQ-1
     node_definition: ioll2-xe
@@ -5278,6 +4843,8 @@ nodes:
           !
           ip default-gateway 192.168.90.1
           !
+          ! --- Server & Service Connections (VLAN 80) ---
+          !
           interface Ethernet0/0
            description to DHCP/DNS-HQ-1 eth0
            switchport mode access
@@ -5285,6 +4852,32 @@ nodes:
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
+          !
+          interface Ethernet0/3
+           description to RADIUS-HQ-1 eth1
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet1/1
+           description to splunk-0 eth0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet1/0
+           description to ext-conn-0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          ! --- Trunk Connections to Core & HQ Switch (VLANs 80,90) ---
           !
           interface Ethernet0/1
            description to ServerRoomSwitch-HQ-1 Ethernet0/1
@@ -5302,14 +4895,6 @@ nodes:
            spanning-tree guard root
            no shutdown
           !
-          interface Ethernet0/3
-           description to RADIUS-HQ-1 eth1
-           switchport mode access
-           switchport access vlan 80
-           spanning-tree portfast
-           spanning-tree bpduguard enable
-           no shutdown
-          !
           line vty 0 15
            transport input ssh
            login authentication default
@@ -5319,7 +4904,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n31
+    id: n24
     image_definition: null
     label: ServerRoomSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5393,15 +4978,21 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           !
-          vlan 50
-           name SALES
+          vlan 55
+           name DMZ
           vlan 90
            name MGMT
           !
@@ -5410,54 +5001,47 @@ nodes:
            ip address 192.168.90.51 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 192.168.90.1
           ip default-gateway 192.168.90.1
           !
           interface Ethernet0/0
-           description to DMZDNS-HQ-1 eth0
+           description to Firewall-HQ-1 GigabitEthernet0/4
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/1
-           description to WebsiteServer-HQ-1 eth0
+           description to DNS-DMZ-HQ-1 eth0
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/2
-           description to DMZDNS-HQ-2 eth0
+           description to DNS-DMZ-HQ-2 eth0
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/3
-           description to CoreSwitch-HQ-1 Ethernet1/2
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
+           description to WebsiteServer-HQ-1 eth0
+           switchport mode access
+           switchport access vlan 55
+           spanning-tree portfast
+           spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet1/0
            description to DMZSwitch-HQ-2 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
-           no shutdown
-          !
-          interface Ethernet1/1
-           description to CoreSwitch-HQ-2 Ethernet1/3
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 55,90
            no shutdown
           !
           line vty 0 15
@@ -5469,7 +5053,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n32
+    id: n25
     image_definition: null
     label: DMZSwitch-HQ-1
     node_definition: ioll2-xe
@@ -5533,15 +5117,21 @@ nodes:
           enable secret 0 autp45cml
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
           !
-          vlan 50
-           name SALES
+          vlan 55
+           name DMZ
           vlan 90
            name MGMT
           !
@@ -5550,54 +5140,39 @@ nodes:
            ip address 192.168.90.52 255.255.255.0
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 192.168.90.1
           ip default-gateway 192.168.90.1
           !
           interface Ethernet0/0
-           description to DMZDNS-HQ-1 eth1
+           description to Firewall-HQ-2 GigabitEthernet0/4
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/1
-           description to WebsiteServer-HQ-1 eth1
+           description to DNS-DMZ-HQ-1 eth1
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
           interface Ethernet0/2
-           description to DMZDNS-HQ-2 eth1
+           description to DNS-DMZ-HQ-2 eth1
            switchport mode access
-           switchport access vlan 50
+           switchport access vlan 55
            spanning-tree portfast
            spanning-tree bpduguard enable
-           no shutdown
-          !
-          interface Ethernet0/3
-           description to CoreSwitch-HQ-2 Ethernet1/2
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
            no shutdown
           !
           interface Ethernet1/0
            description to DMZSwitch-HQ-1 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
-           no shutdown
-          !
-          interface Ethernet1/1
-           description to CoreSwitch-HQ-1 Ethernet1/3
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 50,90
-           spanning-tree guard root
+           switchport trunk allowed vlan 55,90
            no shutdown
           !
           line vty 0 15
@@ -5609,7 +5184,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n33
+    id: n26
     image_definition: null
     label: DMZSwitch-HQ-2
     node_definition: ioll2-xe
@@ -5843,7 +5418,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n34
+    id: n27
     image_definition: null
     label: DistSwitch-HQ-1
     node_definition: ioll2-xe
@@ -6072,7 +5647,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n35
+    id: n28
     image_definition: null
     label: DistSwitch-HQ-2
     node_definition: ioll2-xe
@@ -6266,7 +5841,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n36
+    id: n29
     image_definition: null
     label: CoreSwitch-HQ-1
     node_definition: ioll2-xe
@@ -6468,7 +6043,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n37
+    id: n30
     image_definition: null
     label: CoreSwitch-HQ-2
     node_definition: ioll2-xe
@@ -6595,7 +6170,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n38
+    id: n31
     image_definition: null
     label: HomeRouter-WFH
     node_definition: iol-xe
@@ -6736,6 +6311,7 @@ nodes:
           host-record=radius-hq-1.hq.p45.local,192.168.80.20
           host-record=serverroomswitch-hq-1.hq.p45.local,192.168.90.41
           host-record=serverroomswitch-hq-2.hq.p45.local,192.168.90.42
+          host-record=dc-hq-2.hq.p45.local,192.168.80.61
           host-record=websiteserver-hq-1.hq.p45.local,10.50.1.20
           host-record=wlc-hq-1.hq.p45.local,192.168.90.81
           host-record=wlc-hq-2.hq.p45.local,192.168.90.82
@@ -6860,9 +6436,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n39
+    id: n32
     image_definition: null
-    label: DNS/DHCP-HQ-1
+    label: DEPRECATED - DNS/DHCP-HQ-1
     node_definition: dnsmasq
     parameters: {}
     priority: null
@@ -6872,8 +6448,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 1000
-    y: -440
+    x: 1200
+    y: -520
     interfaces:
       - id: i0
         label: eth0
@@ -7118,9 +6694,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n40
+    id: n33
     image_definition: null
-    label: DNS/DHCP-DR-1
+    label: DEPRECATED - DNS/DHCP-DR-1
     node_definition: dnsmasq
     parameters: {}
     priority: null
@@ -7130,7 +6706,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1600
+    x: -1840
     y: -480
     interfaces:
       - id: i0
@@ -7238,7 +6814,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n41
+    id: n34
     image_definition: null
     label: DNS-DMZ-HQ-1
     node_definition: dnsmasq
@@ -7250,7 +6826,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 1400
+    x: 1440
     y: -1120
     interfaces:
       - id: i0
@@ -7365,7 +6941,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n42
+    id: n35
     image_definition: null
     label: DNS-DMZ-DR-1
     node_definition: dnsmasq
@@ -7391,63 +6967,14 @@ nodes:
         type: physical
         slot: 1
   - boot_disk_size: null
-    configuration:
-      - name: user-data
-        content: |-
-          #cloud-config
-          hostname: wireless-client-0
-          manage_etc_hosts: True
-          system_info:
-            default_user:
-              name: cisco
-          password: cisco
-          chpasswd:
-            expire: False
-          ssh_pwauth: True
-          write_files:
-            - path: /home/cisco/wpa_supplicant.conf
-              content: |
-                ctrl_interface=/var/run/wpa_supplicant
-                network={
-                    ssid="P45-Guest"
-                    psk="P45-Guest-WiFi"
-                    key_mgmt=WPA-PSK
-                }
-              owner: cisco:cisco
-              permissions: '0644'
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n43
-    image_definition: null
-    label: wireless-client-0
-    node_definition: wireless-client
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 120
-    y: 600
-    interfaces:
-      - id: i0
-        label: ens2
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
     configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n44
+    id: n36
     image_definition: null
-    label: desktop-0
+    label: Sales PC
     node_definition: desktop
     parameters: {}
     priority: null
@@ -7457,7 +6984,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 480
+    x: 400
     y: 520
     interfaces:
       - id: i0
@@ -7471,9 +6998,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n45
+    id: n37
     image_definition: null
-    label: desktop-1
+    label: Tech/support dept PC
     node_definition: desktop
     parameters: {}
     priority: null
@@ -7483,7 +7010,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -880
+    x: -720
     y: 280
     interfaces:
       - id: i0
@@ -7497,7 +7024,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n46
+    id: n38
     image_definition: null
     label: desktop-2
     node_definition: desktop
@@ -7522,7 +7049,9 @@ nodes:
       - name: boot.sh
         content: |-
           #!/bin/bash
-          # Generated by push_web.py — do not edit on the node, edit the manifest.
+          # Generated for Internet-WebServer-1 â€” do not edit on the node, edit push_web.py.
+          # Simple public test site, published on a /32 (100.100.100.100) reachable via any
+          # of the three carriers.  Same shape as the DMZ nginx website servers.
           {
             set -x
             ip link set eth0 up
@@ -7534,10 +7063,9 @@ nodes:
             ip link set eth2 up
             ip addr flush dev eth2 2>/dev/null || true
             ip addr add 100.64.2.10/30 dev eth2 2>/dev/null || true
-            # The PUBLISHED address. A /32 on loopback, reachable through any of
-            # the three carriers, so losing one carrier does not take the site off
-            # the internet.
-            ip addr add 100.64.2.100/32 dev lo 2>/dev/null || true
+            # The PUBLISHED address. A /32 on loopback, reachable through any of the three
+            # carriers, so losing one carrier does not take the site off the internet.
+            ip addr add 100.100.100.100/32 dev lo 2>/dev/null || true
             ip route add default via 100.64.2.1 2>/dev/null || true
             ip -4 addr show
             ip route show
@@ -7545,10 +7073,10 @@ nodes:
 
           cat >/usr/share/nginx/html/index.html <<'HTML'
           <!doctype html>
-          <html><head><title>Internet Web Server</title></head><body>
+          <html><head><title>www.internet.example</title></head><body>
           <h1>www.internet.example</h1>
           <p>This host is OUTSIDE the P45 network.</p>
-          <p>Published address: 100.64.2.100</p>
+          <p>Published address: 100.100.100.100</p>
           <p>Reaching this page proves a P45 client can resolve and fetch a site on the public internet, end to end.</p>
           </body></html>
           HTML
@@ -7559,7 +7087,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n47
+    id: n39
     image_definition: null
     label: Internet-WebServer-1
     node_definition: nginx
@@ -7601,6 +7129,9 @@ nodes:
             ip addr flush dev eth0 2>/dev/null || true
             ip addr add 10.50.1.20/24 dev eth0 2>/dev/null || true
             ip route add default via 10.50.1.1 2>/dev/null || true
+            # Anycast VIP for HQ/DR web failover — owned by both servers, steered by the
+            # firewalls' OSPF redistribution + health track.
+            ip addr add 10.50.100.20/32 dev lo 2>/dev/null || true
             ip -4 addr show
             ip route show
           } >/var/log/boot.log 2>&1
@@ -7621,7 +7152,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n48
+    id: n40
     image_definition: null
     label: WebsiteServer-HQ-1
     node_definition: nginx
@@ -7653,6 +7184,9 @@ nodes:
             ip addr flush dev eth0 2>/dev/null || true
             ip addr add 10.50.2.20/24 dev eth0 2>/dev/null || true
             ip route add default via 10.50.2.1 2>/dev/null || true
+            # Anycast VIP for HQ/DR web failover — owned by both servers, steered by the
+            # firewalls' OSPF redistribution + health track.
+            ip addr add 10.50.100.20/32 dev lo 2>/dev/null || true
             ip -4 addr show
             ip route show
           } >/var/log/boot.log 2>&1
@@ -7673,7 +7207,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n49
+    id: n41
     image_definition: null
     label: WebsiteServer-DR-1
     node_definition: nginx
@@ -7795,7 +7329,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n50
+    id: n42
     image_definition: null
     label: DNS-DMZ-HQ-2
     node_definition: dnsmasq
@@ -7922,7 +7456,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n51
+    id: n43
     image_definition: null
     label: DNS-DMZ-DR-2
     node_definition: dnsmasq
@@ -7953,7 +7487,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n52
+    id: n44
     image_definition: null
     label: desktop-3
     node_definition: desktop
@@ -7976,16 +7510,221 @@ nodes:
   - boot_disk_size: null
     configuration:
       - name: boot.sh
-        content: |2-
+        content: |-
+          #!/bin/sh
+          set -u
 
-          ip address add dev eth1 10.0.0.1/24
-          ip link set dev eth1 up
+          # Bring up the actual CML-connected interface. This node only has eth0.
+          ip link set dev eth0 up || true
+          ip address replace 10.0.0.1/24 dev eth0 || ip address add 10.0.0.1/24 dev eth0 || true
+
+          SPLUNK=/opt/splunk/bin/splunk
+          AUTH='admin:p45aut'
+          APP_DIR=/opt/splunk/etc/apps/cml_siem/local
+
+          if [ -x "$SPLUNK" ]; then
+            "$SPLUNK" start --accept-license --answer-yes --no-prompt || true
+            "$SPLUNK" add index network -auth "$AUTH" || true
+            "$SPLUNK" add index os -auth "$AUTH" || true
+
+            mkdir -p "$APP_DIR"
+
+            cat > "$APP_DIR/inputs.conf" <<'EOF'
+          [splunktcp://9997]
+          disabled = 0
+
+          [udp://514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+
+          [tcp://514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+
+          [udp://1514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+
+          [tcp://1514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+
+          [http]
+          disabled = 0
+          port = 8088
+          enableSSL = 0
+
+          [http://cml_hec]
+          disabled = 0
+          index = network
+          sourcetype = cml:json
+          token = 11111111-2222-3333-4444-555555555555
+
+          [monitor:///var/log]
+          disabled = 0
+          index = os
+          sourcetype = linux:varlog
+          EOF
+
+            cat > "$APP_DIR/props.conf" <<'EOF'
+          [cisco:ios]
+          SHOULD_LINEMERGE = false
+          TRUNCATE = 10000
+          KV_MODE = none
+          TIME_FORMAT = %b %d %H:%M:%S
+
+          [cml:json]
+          INDEXED_EXTRACTIONS = json
+          KV_MODE = json
+          SHOULD_LINEMERGE = false
+
+          [linux:varlog]
+          SHOULD_LINEMERGE = false
+          TRUNCATE = 10000
+          EOF
+
+            cat > "$APP_DIR/savedsearches.conf" <<'EOF'
+          [Network Authentication Failures]
+          search = index=network (failed OR failure OR invalid OR denied) | stats count by host sourcetype
+          cron_schedule = */5 * * * *
+          disabled = 0
+          action.email = 0
+
+          [Network Device Errors]
+          search = index=network (ERROR OR WARN OR DOWN OR "link down" OR "%SYS-" OR "%LINK-") | stats count by host sourcetype
+          cron_schedule = */5 * * * *
+          disabled = 0
+          action.email = 0
+          EOF
+
+            chown -R splunk:splunk /opt/splunk/etc/apps/cml_siem 2>/dev/null || true
+            "$SPLUNK" restart || true
+          fi
+
+          exit 0
+          #!/bin/sh
+          set -u
+
+          # CML SIEM access bootstrap for splunk-0.
+          ip link set dev eth0 up || true
+          (dhclient -nw eth0 || dhclient eth0 || udhcpc -i eth0 -n -q) >/tmp/cml_siem_dhcp.log 2>&1 || true
+          ip address show dev eth0 | grep -q '10\.0\.0\.1/24' || ip address add 10.0.0.1/24 dev eth0 || true
+
+          SPLUNK=/opt/splunk/bin/splunk
+          AUTH='admin:p45aut'
+          APP=/opt/splunk/etc/apps/cml_siem
+          SYS_LOCAL=/opt/splunk/etc/system/local
+
+          if [ -x "$SPLUNK" ]; then
+            "$SPLUNK" start --accept-license --answer-yes --no-prompt || true
+            mkdir -p "$SYS_LOCAL" "$APP/local" "$APP/default" "$APP/default/data/ui/views" "$APP/default/data/ui/nav"
+            cat > "$SYS_LOCAL/web.conf" <<'EOF'
+          [settings]
+          startwebserver = 1
+          httpport = 8000
+          server.socket_host = 0.0.0.0
+          enableSplunkWebSSL = 0
+          EOF
+            cat > "$SYS_LOCAL/server.conf" <<'EOF'
+          [general]
+          serverName = splunk-0
+          [httpServer]
+          disableDefaultPort = false
+          EOF
+            cat > "$APP/default/app.conf" <<'EOF'
+          [install]
+          is_configured = 1
+          [ui]
+          is_visible = 1
+          label = CML SIEM
+          [launcher]
+          description = Realtime network/security monitoring for this lab
+          version = 1.0.0
+          EOF
+            "$SPLUNK" enable webserver -auth "$AUTH" || true
+            "$SPLUNK" set web-port 8000 -auth "$AUTH" || true
+            "$SPLUNK" enable listen 9997 -auth "$AUTH" || true
+            "$SPLUNK" add index network -auth "$AUTH" || true
+            "$SPLUNK" add index os -auth "$AUTH" || true
+            if command -v setcap >/dev/null 2>&1; then setcap 'cap_net_bind_service=+ep' /opt/splunk/bin/splunkd 2>/dev/null || true; fi
+            cat > "$APP/local/inputs.conf" <<'EOF'
+          [splunktcp://9997]
+          disabled = 0
+          [udp://514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+          [tcp://514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+          [udp://1514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+          [tcp://1514]
+          connection_host = ip
+          sourcetype = cisco:ios
+          index = network
+          disabled = 0
+          [http]
+          disabled = 0
+          port = 8088
+          enableSSL = 0
+          [http://cml_hec]
+          disabled = 0
+          index = network
+          indexes = network,os
+          sourcetype = cml:json
+          token = 11111111-2222-3333-4444-555555555555
+          [monitor:///var/log]
+          disabled = 0
+          recursive = true
+          index = os
+          sourcetype = linux:varlog
+          EOF
+            cat > "$APP/local/savedsearches.conf" <<'EOF'
+          [Network Authentication Failures]
+          search = index=network (failed OR failure OR invalid OR denied) earliest=-15m | stats count by host sourcetype
+          cron_schedule = */5 * * * *
+          enableSched = 1
+          disabled = 0
+          [Network Device Errors]
+          search = index=network (ERROR OR WARN OR DOWN OR "link down" OR "%SYS-" OR "%LINK-") earliest=-15m | stats count by host sourcetype
+          cron_schedule = */5 * * * *
+          enableSched = 1
+          disabled = 0
+          EOF
+            cat > "$APP/default/data/ui/nav/default.xml" <<'EOF'
+          <nav search_view="search" color="#0072ce"><view name="search" default="true"/><view name="cml_siem_realtime"/></nav>
+          EOF
+            cat > "$APP/default/data/ui/views/cml_siem_realtime.xml" <<'EOF'
+          <form version="1.1"><label>CML SIEM Realtime</label><row><panel><title>Live Network Events</title><table><search><query>index=network | table _time host sourcetype source _raw | sort - _time</query><earliest>rt-15m</earliest><latest>rt</latest></search><option name="count">20</option></table></panel></row><row><panel><title>Security/Error Signals</title><table><search><query>index=network (failed OR failure OR invalid OR denied OR ERROR OR WARN OR DOWN OR "link down" OR "%SYS-" OR "%LINK-") | stats count by host sourcetype</query><earliest>rt-15m</earliest><latest>rt</latest></search></table></panel></row></form>
+          EOF
+            if command -v firewall-cmd >/dev/null 2>&1; then for spec in 8000/tcp 8089/tcp 8088/tcp 9997/tcp 514/tcp 1514/tcp 514/udp 1514/udp; do firewall-cmd --permanent --add-port="$spec" >/dev/null 2>&1 || true; done; firewall-cmd --reload >/dev/null 2>&1 || true; fi
+            if command -v ufw >/dev/null 2>&1; then for spec in 8000/tcp 8089/tcp 8088/tcp 9997/tcp 514/tcp 1514/tcp 514/udp 1514/udp; do ufw allow "$spec" >/dev/null 2>&1 || true; done; fi
+            for port in 8000 8089 8088 9997 514 1514; do iptables -C INPUT -p tcp --dport "$port" -j ACCEPT 2>/dev/null || iptables -I INPUT -p tcp --dport "$port" -j ACCEPT 2>/dev/null || true; done
+            for port in 514 1514; do iptables -C INPUT -p udp --dport "$port" -j ACCEPT 2>/dev/null || iptables -I INPUT -p udp --dport "$port" -j ACCEPT 2>/dev/null || true; done
+            chown -R splunk:splunk "$APP" "$SYS_LOCAL" 2>/dev/null || true
+            "$SPLUNK" restart || true
+          fi
           exit 0
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n53
+    id: n45
     image_definition: null
     label: splunk-0
     node_definition: splunk
@@ -7996,55 +7735,25 @@ nodes:
       password: p45aut
       enable_password: p45aut
     ram: null
-    tags: []
+    tags:
+      - pat:2800:8000
     x: 800
-    y: 0
+    y: -80
     interfaces:
       - id: i0
         label: eth0
         mac_address: null
         type: physical
         slot: 0
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: 2
-    data_volume: null
-    hide_links: false
-    id: n54
-    image_definition: server2025-core
-    label: DC-HQ-1
-    node_definition: win2025
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: 4096
-    tags: []
-    x: 1000
-    y: -360
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-      - id: i1
-        label: eth1
-        mac_address: null
-        type: physical
-        slot: 1
   - boot_disk_size: null
     configuration: []
     cpu_limit: null
     cpus: null
     data_volume: null
     hide_links: false
-    id: n55
+    id: n46
     image_definition: server2025
-    label: WIN-DC-DR-1
+    label: DC-DR-1
     node_definition: win2025
     parameters: {}
     priority: null
@@ -8054,7 +7763,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1680
+    x: -1600
     y: -360
     interfaces:
       - id: i0
@@ -8073,9 +7782,9 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n56
-    image_definition: null
-    label: DC-HQ-2
+    id: n47
+    image_definition: server2025-core
+    label: FileServer-DR-1
     node_definition: win2025
     parameters: {}
     priority: null
@@ -8085,7 +7794,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 1000
+    x: -1600
     y: -280
     interfaces:
       - id: i0
@@ -8098,65 +7807,316 @@ nodes:
         mac_address: null
         type: physical
         slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: eth4
+        mac_address: null
+        type: physical
+        slot: 4
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n48
+    image_definition: server2025
+    label: DC-HQ-2
+    node_definition: win2025
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 8192
+    tags: []
+    x: 1000
+    y: -400
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: eth4
+        mac_address: null
+        type: physical
+        slot: 4
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n49
+    image_definition: server2025-core
+    label: FileServer-HQ-1
+    node_definition: win2025
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 1000
+    y: -320
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+      - id: i4
+        label: eth4
+        mac_address: null
+        type: physical
+        slot: 4
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n50
+    image_definition: null
+    label: ext-conn-0
+    node_definition: external_connector
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 680
+    y: -120
+    interfaces:
+      - id: i0
+        label: port
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n51
+    image_definition: null
+    label: Finance PC
+    node_definition: desktop
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 0
+    y: 480
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          ip link set eth0 up
+          ip addr flush dev eth0 2>/dev/null || true
+          ip addr add 192.168.20.250/24 dev eth0 2>/dev/null || true
+          ip route add default via 192.168.20.1 2>/dev/null || true
+          exit 0
+      - name: environment
+        content: |-
+          # -- These are understood by the start script
+          # -- Homepage to open at start (needs network!)
+          HOME_URL=http://10.50.1.20/
+          # -- Wait additional time for network before starting Chromium
+          WAIT=2
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n52
+    image_definition: chromium-147-0-7727-137-1-deb13u1
+    label: chromium-0
+    node_definition: chromium
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 560
+    y: 520
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: boot.sh
+        content: |-
+          # insert more commands here
+          hostname SIEM-Collector-DR-1
+          ip address add dev eth0 172.16.80.250/24
+          ip link set dev eth0 up
+          ip route add default via 172.16.80.1
+          #
+          # keep the next line to indicate that the machine is ready
+          echo "READY" >/dev/console
+          exit 0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n53
+    image_definition: syslog-4-8-1-5-deb13u1
+    label: SIEM-Collector-DR-1
+    node_definition: syslog
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: -1760
+    y: -40
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
 links:
   - id: l0
-    n1: n5
-    n2: n6
+    n1: n3
+    n2: n4
     i1: i1
     i2: i1
     conditioning: {}
     label: asav-DR-1-GigabitEthernet0/0<->asav-DR-2-GigabitEthernet0/0
   - id: l1
-    n1: n11
-    n2: n13
+    n1: n7
+    n2: n9
     i1: i1
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/0
   - id: l2
-    n1: n11
-    n2: n14
+    n1: n7
+    n2: n10
     i1: i2
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/0
   - id: l3
-    n1: n12
-    n2: n13
+    n1: n8
+    n2: n9
     i1: i1
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/1
   - id: l4
-    n1: n14
-    n2: n12
+    n1: n10
+    n2: n8
     i1: i2
     i2: i2
     conditioning: {}
     label: EdgeRouter-HQ-2-GigabitEthernet0/1<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/1
   - id: l5
-    n1: n10
-    n2: n13
+    n1: n6
+    n2: n9
     i1: i1
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/0<->EdgeRouter-HQ-1-GigabitEthernet0/2
   - id: l6
-    n1: n10
-    n2: n14
+    n1: n6
+    n2: n10
     i1: i2
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/1<->EdgeRouter-HQ-2-GigabitEthernet0/2
   - id: l7
-    n1: n13
+    n1: n9
     n2: n0
     i1: i4
     i2: i1
     conditioning: {}
     label: EdgeRouter-HQ-1-GigabitEthernet0/3<->Firewall-HQ-1-GigabitEthernet0/0
   - id: l8
-    n1: n14
+    n1: n10
     n2: n1
     i1: i4
     i2: i1
@@ -8170,636 +8130,622 @@ links:
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/1<->Firewall-HQ-2-GigabitEthernet0/1
   - id: l10
-    n1: n3
-    n2: n2
-    i1: i2
-    i2: i2
-    conditioning: {}
-    label: WLC-HQ-2-GigabitEthernet2<->WLC-HQ-1-GigabitEthernet2
-  - id: l11
-    n1: n16
-    n2: n5
+    n1: n12
+    n2: n3
     i1: i4
     i2: i2
     conditioning: {}
     label: EdgeRouter-DR-1-GigabitEthernet0/3<->asav-DR-1-GigabitEthernet0/1
-  - id: l12
-    n1: n15
-    n2: n6
+  - id: l11
+    n1: n11
+    n2: n4
     i1: i4
     i2: i2
     conditioning: {}
     label: EdgeRouter-DR-2-GigabitEthernet0/3<->asav-DR-2-GigabitEthernet0/1
-  - id: l13
-    n1: n6
-    n2: n16
+  - id: l12
+    n1: n4
+    n2: n12
     i1: i3
     i2: i5
     conditioning: {}
     label: asav-DR-2-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/4
-  - id: l14
-    n1: n5
-    n2: n15
+  - id: l13
+    n1: n3
+    n2: n11
     i1: i3
     i2: i5
     conditioning: {}
     label: asav-DR-1-GigabitEthernet0/2<->EdgeRouter-DR-2-GigabitEthernet0/4
-  - id: l15
-    n1: n8
-    n2: n7
-    i1: i2
-    i2: i2
-    conditioning: {}
-    label: WLC-DR-2-GigabitEthernet2<->WLC-DR-1-GigabitEthernet2
-  - id: l16
-    n1: n24
-    n2: n9
+  - id: l14
+    n1: n17
+    n2: n5
     i1: i1
     i2: i0
     conditioning: {}
     label: ServerRoomSwitch-DR-2-Ethernet0/0<->RADIUS-DR-1-eth0
-  - id: l17
-    n1: n23
-    n2: n9
+  - id: l15
+    n1: n16
+    n2: n5
     i1: i2
     i2: i1
     conditioning: {}
     label: ServerRoomSwitch-DR-1-Ethernet0/1<->RADIUS-DR-1-eth1
-  - id: l18
-    n1: n26
-    n2: n5
+  - id: l16
+    n1: n19
+    n2: n3
     i1: i1
     i2: i4
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet0/0<->asav-DR-1-GigabitEthernet0/3
-  - id: l19
-    n1: n27
-    n2: n6
+  - id: l17
+    n1: n20
+    n2: n4
     i1: i1
     i2: i4
     conditioning: {}
     label: CoreSwitch-DR-2-Ethernet0/0<->asav-DR-2-GigabitEthernet0/3
-  - id: l20
-    n1: n26
-    n2: n7
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: CoreSwitch-DR-1-Ethernet0/1<->WLC-DR-1-GigabitEthernet1
-  - id: l21
-    n1: n27
-    n2: n8
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: CoreSwitch-DR-2-Ethernet0/1<->WLC-DR-2-GigabitEthernet1
-  - id: l22
-    n1: n26
-    n2: n23
+  - id: l18
+    n1: n19
+    n2: n16
     i1: i4
     i2: i3
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet0/3<->ServerRoomSwitch-DR-1-Ethernet0/2
-  - id: l23
-    n1: n24
-    n2: n27
+  - id: l19
+    n1: n17
+    n2: n20
     i1: i3
     i2: i4
     conditioning: {}
     label: ServerRoomSwitch-DR-2-Ethernet0/2<->CoreSwitch-DR-2-Ethernet0/3
-  - id: l24
-    n1: n25
-    n2: n27
+  - id: l20
+    n1: n18
+    n2: n20
     i1: i1
     i2: i5
     conditioning: {}
     label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/0<->CoreSwitch-DR-2-Ethernet1/0
-  - id: l25
-    n1: n25
-    n2: n26
+  - id: l21
+    n1: n18
+    n2: n19
     i1: i2
     i2: i5
     conditioning: {}
     label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/1<->CoreSwitch-DR-1-Ethernet1/0
-  - id: l26
-    n1: n30
-    n2: n4
+  - id: l22
+    n1: n23
+    n2: n2
     i1: i1
     i2: i0
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/0<->RADIUS-HQ-1-eth0
-  - id: l27
-    n1: n30
-    n2: n31
+  - id: l23
+    n1: n23
+    n2: n24
     i1: i2
     i2: i2
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/1<->ServerRoomSwitch-HQ-2-Ethernet0/1
-  - id: l28
-    n1: n31
-    n2: n4
+  - id: l24
+    n1: n24
+    n2: n2
     i1: i4
     i2: i1
     conditioning: {}
     label: ServerRoomSwitch-HQ-2-Ethernet0/3<->RADIUS-HQ-1-eth1
-  - id: l29
-    n1: n33
-    n2: n32
+  - id: l25
+    n1: n26
+    n2: n25
     i1: i5
     i2: i5
     conditioning: {}
     label: DMZSwitch-HQ-2-Ethernet1/0<->DMZSwitch-HQ-1-Ethernet1/0
-  - id: l30
-    n1: n34
-    n2: n28
+  - id: l26
+    n1: n27
+    n2: n21
     i1: i2
     i2: i1
     conditioning: {}
     label: DistSwitch-HQ-1-Ethernet0/1<->FloorSwitch-HQ-1-Ethernet0/0
-  - id: l31
-    n1: n35
-    n2: n29
+  - id: l27
+    n1: n28
+    n2: n22
     i1: i2
     i2: i1
     conditioning: {}
     label: DistSwitch-HQ-2-Ethernet0/1<->FloorSwitch-HQ-2-Ethernet0/0
-  - id: l32
-    n1: n34
-    n2: n35
+  - id: l28
+    n1: n27
+    n2: n28
     i1: i3
     i2: i3
     conditioning: {}
     label: DistSwitch-HQ-1-Ethernet0/2<->DistSwitch-HQ-2-Ethernet0/2
-  - id: l33
-    n1: n28
-    n2: n35
+  - id: l29
+    n1: n21
+    n2: n28
     i1: i2
     i2: i5
     conditioning: {}
     label: FloorSwitch-HQ-1-Ethernet0/1<->DistSwitch-HQ-2-Ethernet1/0
-  - id: l34
-    n1: n29
-    n2: n34
+  - id: l30
+    n1: n22
+    n2: n27
     i1: i2
     i2: i5
     conditioning: {}
     label: FloorSwitch-HQ-2-Ethernet0/1<->DistSwitch-HQ-1-Ethernet1/0
-  - id: l35
+  - id: l31
     n1: n0
-    n2: n36
+    n2: n29
     i1: i3
     i2: i1
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/2<->CoreSwitch-HQ-1-Ethernet0/0
-  - id: l36
+  - id: l32
     n1: n1
-    n2: n37
+    n2: n30
     i1: i3
     i2: i1
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/2<->CoreSwitch-HQ-2-Ethernet0/0
-  - id: l37
-    n1: n36
-    n2: n2
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: CoreSwitch-HQ-1-Ethernet0/1<->WLC-HQ-1-GigabitEthernet1
-  - id: l38
-    n1: n37
-    n2: n3
-    i1: i2
-    i2: i1
-    conditioning: {}
-    label: CoreSwitch-HQ-2-Ethernet0/1<->WLC-HQ-2-GigabitEthernet1
-  - id: l39
-    n1: n36
-    n2: n34
+  - id: l33
+    n1: n29
+    n2: n27
     i1: i3
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet0/2<->DistSwitch-HQ-1-Ethernet0/0
-  - id: l40
-    n1: n37
-    n2: n35
+  - id: l34
+    n1: n30
+    n2: n28
     i1: i3
     i2: i1
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet0/2<->DistSwitch-HQ-2-Ethernet0/0
-  - id: l41
-    n1: n36
-    n2: n37
+  - id: l35
+    n1: n29
+    n2: n30
     i1: i4
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet0/3<->CoreSwitch-HQ-2-Ethernet0/3
-  - id: l42
-    n1: n36
-    n2: n35
+  - id: l36
+    n1: n29
+    n2: n28
     i1: i5
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet1/0<->DistSwitch-HQ-2-Ethernet0/3
-  - id: l43
-    n1: n37
-    n2: n34
+  - id: l37
+    n1: n30
+    n2: n27
     i1: i5
     i2: i4
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet1/0<->DistSwitch-HQ-1-Ethernet0/3
-  - id: l44
-    n1: n30
-    n2: n36
+  - id: l38
+    n1: n23
+    n2: n29
     i1: i3
     i2: i6
     conditioning: {}
     label: ServerRoomSwitch-HQ-1-Ethernet0/2<->CoreSwitch-HQ-1-Ethernet1/1
-  - id: l45
-    n1: n31
-    n2: n37
+  - id: l39
+    n1: n24
+    n2: n30
     i1: i3
     i2: i6
     conditioning: {}
     label: ServerRoomSwitch-HQ-2-Ethernet0/2<->CoreSwitch-HQ-2-Ethernet1/1
-  - id: l46
-    n1: n25
-    n2: n19
-    i1: i3
-    i2: i0
-    conditioning: {}
-    label: DepartmentSwitch-DR-TechnicalSupport-Ethernet0/2<->AP-DR-1-wired0
-  - id: l47
-    n1: n28
-    n2: n20
-    i1: i3
-    i2: i0
-    conditioning: {}
-    label: FloorSwitch-HQ-1-Ethernet0/2<->AP-HQ-1-wired0
-  - id: l48
+  - id: l40
     n1: n1
-    n2: n13
+    n2: n9
     i1: i4
     i2: i7
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/3<->EdgeRouter-HQ-1-GigabitEthernet0/6
-  - id: l49
+  - id: l41
     n1: n0
-    n2: n14
+    n2: n10
     i1: i4
     i2: i6
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/3<->EdgeRouter-HQ-2-GigabitEthernet0/5
-  - id: l50
-    n1: n26
-    n2: n27
+  - id: l42
+    n1: n19
+    n2: n20
     i1: i6
     i2: i6
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet1/1<->CoreSwitch-DR-2-Ethernet1/1
-  - id: l51
-    n1: n5
-    n2: n27
+  - id: l43
+    n1: n3
+    n2: n20
     i1: i5
     i2: i7
     conditioning: {}
     label: Firewall-DR-1-GigabitEthernet0/4<->CoreSwitch-DR-2-Ethernet1/2
-  - id: l52
-    n1: n26
-    n2: n6
+  - id: l44
+    n1: n19
+    n2: n4
     i1: i7
     i2: i5
     conditioning: {}
     label: CoreSwitch-DR-1-Ethernet1/2<->Firewall-DR-2-GigabitEthernet0/4
-  - id: l53
-    n1: n38
-    n2: n12
+  - id: l45
+    n1: n31
+    n2: n8
     i1: i1
     i2: i4
     conditioning: {}
     label: HomeRouter-WFH-Ethernet0/0<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/3
-  - id: l54
-    n1: n38
-    n2: n18
+  - id: l46
+    n1: n31
+    n2: n13
     i1: i2
     i2: i0
     conditioning: {}
     label: HomeRouter-WFH-Ethernet0/1<->WFH user (VPN client)-eth0
-  - id: l55
-    n1: n40
-    n2: n23
+  - id: l47
+    n1: n33
+    n2: n16
     i1: i0
     i2: i4
     conditioning: {}
     label: DNS-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/3
-  - id: l56
-    n1: n11
-    n2: n16
+  - id: l48
+    n1: n7
+    n2: n12
     i1: i3
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/0
-  - id: l57
-    n1: n11
-    n2: n15
+  - id: l49
+    n1: n7
+    n2: n11
     i1: i4
     i2: i3
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/2
-  - id: l58
-    n1: n12
-    n2: n16
+  - id: l50
+    n1: n8
+    n2: n12
     i1: i3
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/1
-  - id: l59
-    n1: n12
-    n2: n15
+  - id: l51
+    n1: n8
+    n2: n11
     i1: i5
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/4<->EdgeRouter-DR-2-GigabitEthernet0/1
-  - id: l60
-    n1: n10
-    n2: n16
+  - id: l52
+    n1: n6
+    n2: n12
     i1: i3
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/2
-  - id: l61
-    n1: n10
-    n2: n15
+  - id: l53
+    n1: n6
+    n2: n11
     i1: i4
     i2: i1
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/0
-  - id: l62
-    n1: n11
-    n2: n12
+  - id: l54
+    n1: n7
+    n2: n8
     i1: i5
     i2: i6
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/4<->ISP-HQ-2 (Terrestrial
       Fibre)-GigabitEthernet0/5
-  - id: l63
-    n1: n11
-    n2: n10
+  - id: l55
+    n1: n7
+    n2: n6
     i1: i6
     i2: i5
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/5<->ISP-HQ-3 (Satellite)-GigabitEthernet0/4
-  - id: l64
-    n1: n12
-    n2: n10
+  - id: l56
+    n1: n8
+    n2: n6
     i1: i7
     i2: i6
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/6<->ISP-HQ-3 (Satellite)-GigabitEthernet0/5
-  - id: l65
-    n1: n29
-    n2: n44
+  - id: l57
+    n1: n22
+    n2: n36
     i1: i3
     i2: i0
     conditioning: {}
     label: FloorSwitch-HQ-2-Ethernet0/2<->desktop-0-eth0
-  - id: l66
-    n1: n45
-    n2: n25
+  - id: l58
+    n1: n37
+    n2: n18
     i1: i0
     i2: i4
     conditioning: {}
     label: desktop-1-eth0<->DepartmentSwitch-DR-TechnicalSupport-Ethernet0/3
-  - id: l67
-    n1: n46
-    n2: n28
+  - id: l59
+    n1: n38
+    n2: n21
     i1: i0
     i2: i4
     conditioning: {}
     label: desktop-2-eth0<->FloorSwitch-HQ-1-Ethernet0/3
-  - id: l68
-    n1: n37
-    n2: n27
+  - id: l60
+    n1: n30
+    n2: n20
     i1: i7
     i2: i3
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet1/2<->CoreSwitch-DR-2-Ethernet0/2
-  - id: l69
-    n1: n47
-    n2: n11
+  - id: l61
+    n1: n39
+    n2: n7
     i1: i0
     i2: i7
     conditioning: {}
     label: Internet-WebServer-1-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/6
-  - id: l70
-    n1: n47
-    n2: n12
+  - id: l62
+    n1: n39
+    n2: n8
     i1: i1
     i2: i8
     conditioning: {}
     label: Internet-WebServer-1-eth1<->ISP-2 (Terrestrial Fibre)-GigabitEthernet0/7
-  - id: l71
-    n1: n47
-    n2: n10
+  - id: l63
+    n1: n39
+    n2: n6
     i1: i2
     i2: i7
     conditioning: {}
     label: Internet-WebServer-1-eth2<->ISP-3 (Satellite)-GigabitEthernet0/6
-  - id: l72
-    n1: n36
-    n2: n26
+  - id: l64
+    n1: n29
+    n2: n19
     i1: i9
     i2: i3
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet2/0<->CoreSwitch-DR-1-Ethernet0/2
-  - id: l73
+  - id: l65
     n1: n0
-    n2: n32
+    n2: n25
     i1: i5
     i2: i1
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/4<->DMZSwitch-HQ-1-Ethernet0/0
-  - id: l74
-    n1: n41
-    n2: n32
+  - id: l66
+    n1: n34
+    n2: n25
     i1: i0
     i2: i2
     conditioning: {}
     label: DNS-DMZ-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/1
-  - id: l75
-    n1: n50
-    n2: n32
+  - id: l67
+    n1: n42
+    n2: n25
     i1: i0
     i2: i3
     conditioning: {}
     label: DNS-DMZ-HQ-2-eth0<->DMZSwitch-HQ-1-Ethernet0/2
-  - id: l76
-    n1: n48
-    n2: n32
+  - id: l68
+    n1: n40
+    n2: n25
     i1: i0
     i2: i4
     conditioning: {}
     label: WebsiteServer-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/3
-  - id: l77
+  - id: l69
     n1: n1
-    n2: n33
+    n2: n26
     i1: i5
     i2: i1
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/4<->DMZSwitch-HQ-2-Ethernet0/0
-  - id: l78
-    n1: n41
-    n2: n33
+  - id: l70
+    n1: n34
+    n2: n26
     i1: i1
     i2: i2
     conditioning: {}
     label: DNS-DMZ-HQ-1-eth1<->DMZSwitch-HQ-2-Ethernet0/1
-  - id: l79
-    n1: n50
-    n2: n33
+  - id: l71
+    n1: n42
+    n2: n26
     i1: i1
     i2: i3
     conditioning: {}
     label: DNS-DMZ-HQ-2-eth1<->DMZSwitch-HQ-2-Ethernet0/2
-  - id: l80
-    n1: n5
-    n2: n21
+  - id: l72
+    n1: n3
+    n2: n14
     i1: i6
     i2: i1
     conditioning: {}
     label: Firewall-DR-1-GigabitEthernet0/5<->DMZSwitch-DR-1-Ethernet0/0
-  - id: l81
-    n1: n42
-    n2: n21
+  - id: l73
+    n1: n35
+    n2: n14
     i1: i0
     i2: i2
     conditioning: {}
     label: DNS-DMZ-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/1
-  - id: l82
-    n1: n51
-    n2: n21
+  - id: l74
+    n1: n43
+    n2: n14
     i1: i0
     i2: i3
     conditioning: {}
     label: DNS-DMZ-DR-2-eth0<->DMZSwitch-DR-1-Ethernet0/2
-  - id: l83
-    n1: n49
-    n2: n21
+  - id: l75
+    n1: n41
+    n2: n14
     i1: i0
     i2: i4
     conditioning: {}
     label: WebsiteServer-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/3
-  - id: l84
-    n1: n6
-    n2: n22
+  - id: l76
+    n1: n4
+    n2: n15
     i1: i6
     i2: i1
     conditioning: {}
     label: Firewall-DR-2-GigabitEthernet0/5<->DMZSwitch-DR-2-Ethernet0/0
-  - id: l85
-    n1: n42
-    n2: n22
+  - id: l77
+    n1: n35
+    n2: n15
     i1: i1
     i2: i2
     conditioning: {}
     label: DNS-DMZ-DR-1-eth1<->DMZSwitch-DR-2-Ethernet0/1
-  - id: l86
-    n1: n51
-    n2: n22
+  - id: l78
+    n1: n43
+    n2: n15
     i1: i1
     i2: i3
     conditioning: {}
     label: DNS-DMZ-DR-2-eth1<->DMZSwitch-DR-2-Ethernet0/2
-  - id: l87
-    n1: n21
-    n2: n22
+  - id: l79
+    n1: n14
+    n2: n15
     i1: i5
     i2: i5
     conditioning: {}
     label: DMZSwitch-DR-1-Ethernet1/0<->DMZSwitch-DR-2-Ethernet1/0
-  - id: l88
-    n1: n36
+  - id: l80
+    n1: n29
     n2: n1
     i1: i10
     i2: i6
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet2/1<->Firewall-HQ-2-GigabitEthernet0/5
-  - id: l89
+  - id: l81
     n1: n0
-    n2: n37
+    n2: n30
     i1: i6
     i2: i8
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/5<->CoreSwitch-HQ-2-Ethernet1/3
-  - id: l90
-    n1: n52
-    n2: n11
+  - id: l82
+    n1: n44
+    n2: n7
     i1: i0
     i2: i8
     conditioning: {}
     label: desktop-3-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/7
-  - id: l91
-    n1: n39
-    n2: n30
+  - id: l83
+    n1: n32
+    n2: n23
     i1: i0
     i2: i5
     conditioning: {}
     label: DNS-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet1/0
-  - id: l92
-    n1: n39
-    n2: n31
+  - id: l84
+    n1: n32
+    n2: n24
     i1: i1
     i2: i5
     conditioning: {}
     label: DNS-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/0
-  - id: l93
-    n1: n31
-    n2: n53
-    i1: i6
-    i2: i0
-    conditioning: {}
-    label: ServerRoomSwitch-HQ-2-Ethernet1/1<->splunk-0-eth0
-  - id: l94
-    n1: n54
-    n2: n30
-    i1: i0
-    i2: i4
-    conditioning: {}
-    label: WIN-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet0/3
-  - id: l95
-    n1: n55
-    n2: n23
+  - id: l85
+    n1: n46
+    n2: n16
     i1: i0
     i2: i1
     conditioning: {}
     label: WIN-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/0
-  - id: l96
-    n1: n55
-    n2: n24
+  - id: l86
+    n1: n46
+    n2: n17
     i1: i1
     i2: i2
     conditioning: {}
     label: WIN-DR-1-eth1<->ServerRoomSwitch-DR-2-Ethernet0/1
-  - id: l97
-    n1: n54
-    n2: n31
+  - id: l87
+    n1: n48
+    n2: n24
+    i1: i0
+    i2: i7
+    conditioning: {}
+    label: win2025-2-eth0<->ServerRoomSwitch-HQ-2-Ethernet1/2
+  - id: l88
+    n1: n48
+    n2: n23
     i1: i1
+    i2: i6
+    conditioning: {}
+    label: win2025-2-eth1<->ServerRoomSwitch-HQ-1-Ethernet1/1
+  - id: l89
+    n1: n16
+    n2: n47
+    i1: i5
+    i2: i0
+    conditioning: {}
+    label: ServerRoomSwitch-DR-1-Ethernet1/0<->FileServer-DR-1-eth0
+  - id: l90
+    n1: n17
+    n2: n47
+    i1: i4
     i2: i1
     conditioning: {}
-    label: WIN-DC-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet0/0
-  - id: l98
-    n1: n56
-    n2: n30
+    label: ServerRoomSwitch-DR-2-Ethernet0/3<->FileServer-DR-1-eth1
+  - id: l91
+    n1: n49
+    n2: n23
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: FileServer-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet0/3
+  - id: l92
+    n1: n49
+    n2: n24
+    i1: i1
+    i2: i8
+    conditioning: {}
+    label: FileServer-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/3
+  - id: l93
+    n1: n51
+    n2: n21
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: desktop-4-eth0<->AccessSwitch-HQ-1-Ethernet0/2
+  - id: l94
+    n1: n45
+    n2: n24
+    i1: i0
+    i2: i1
+    conditioning: {}
+    label: splunk-0-eth0<->ServerRoomSwitch-HQ-2-Ethernet0/0
+  - id: l95
+    n1: n50
+    n2: n24
     i1: i0
     i2: i6
     conditioning: {}
-    label: win2025-0-eth0<->ServerRoomSwitch-HQ-1-Ethernet1/1
-  - id: l99
-    n1: n56
-    n2: n31
-    i1: i1
-    i2: i7
+    label: ext-conn-0-port<->ServerRoomSwitch-HQ-2-Ethernet1/1
+  - id: l96
+    n1: n22
+    n2: n52
+    i1: i4
+    i2: i0
     conditioning: {}
-    label: win2025-0-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/2
+    label: AccessSwitch-HQ-2-Ethernet0/3<->chromium-0-eth0
+  - id: l97
+    n1: n53
+    n2: n16
+    i1: i0
+    i2: i6
+    conditioning: {}
+    label: syslog-0-eth0<->ServerRoomSwitch-DR-1-Ethernet1/1
 lab:
   description: ''
   notes: ''
