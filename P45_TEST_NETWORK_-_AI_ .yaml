@@ -21,7 +21,7 @@ annotations:
     x1: -40.0
     y1: 280.0
     x2: 320.0
-    y2: 400.0
+    y2: 320.0
     z_index: 1
   - border_color: '#808080FF'
     border_radius: 10
@@ -1271,7 +1271,7 @@ nodes:
       - name: users
         content: |-
           # Device administration (AAA login from switches, routers and WLCs).
-          p45admin Cleartext-Password := "autp45cml"
+          p45admin Cleartext-Password := "<CML_PASSWORD>"
           # Wireless 802.1X account.
           wifiuser Cleartext-Password := "P45-WiFi-Pass"
           # Kept so the stock smoke test still works.
@@ -1769,8 +1769,8 @@ nodes:
           hostname Firewall-DR-2
           domain-name dr.p45.local
           !
-          enable password autp45cml
-          username admin password autp45cml privilege 15
+          enable password <CML_PASSWORD>
+          username admin password <CML_PASSWORD> privilege 15
           aaa authentication ssh console LOCAL
           !
           interface GigabitEthernet0/0
@@ -1951,7 +1951,7 @@ nodes:
       - name: users
         content: |-
           # Device administration (AAA login from switches, routers and WLCs).
-          p45admin Cleartext-Password := "autp45cml"
+          p45admin Cleartext-Password := "<CML_PASSWORD>"
           # Wireless 802.1X account.
           wifiuser Cleartext-Password := "P45-WiFi-Pass"
           # Kept so the stock smoke test still works.
@@ -2029,8 +2029,8 @@ nodes:
           !
           no ip domain lookup
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           !
           interface Loopback99
            description Simulated public prefix 100.13.0.0 (HQ POP)
@@ -2179,8 +2179,8 @@ nodes:
           !
           no ip domain lookup
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           !
           interface Loopback99
            description Simulated public prefix 100.11.0.0 (HQ POP)
@@ -2349,8 +2349,8 @@ nodes:
           !
           no ip domain lookup
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           !
           interface Loopback99
            description Simulated public prefix 100.12.0.0 (HQ POP)
@@ -2524,8 +2524,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -2668,8 +2668,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -2807,8 +2807,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -2964,8 +2964,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -3201,8 +3201,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -3350,8 +3350,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -3476,8 +3476,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -3625,8 +3625,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -3774,8 +3774,8 @@ nodes:
           ip domain-name dr.p45.local
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -3919,8 +3919,8 @@ nodes:
           !
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
@@ -4205,8 +4205,8 @@ nodes:
           !
           ntp server 172.16.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
@@ -4458,8 +4458,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -4570,22 +4570,31 @@ nodes:
       - name: ios_config.txt
         content: |-
           !
-          hostname FloorSwitch-HQ-2
+          hostname AccessSwitch-HQ-2
           !
           no ip domain lookup
           ip domain-name hq.p45.local
-          ntp server 192.168.90.10
+          ntp server 10.255.0.11 prefer
+          ntp server 10.255.0.12
+          logging host 172.16.80.250
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
+          spanning-tree loopguard default
           !
           vlan 10
            name FINANCE
@@ -4606,28 +4615,78 @@ nodes:
           !
           interface Vlan90
            description MGMT
-           ip address 192.168.90.32 255.255.255.0
+           ip address 192.168.90.160 255.255.255.128
            no shutdown
           !
-          ip default-gateway 192.168.90.1
+          interface Vlan10
+           description TEST HOST - simulates a user PC on VLAN 10 (FINANCE)
+           ip address 192.168.10.202 255.255.255.0
+           no shutdown
+          !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 192.168.10.1
           !
           interface Ethernet0/0
            description to DistSwitch-HQ-2 Ethernet0/1
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           spanning-tree guard root
+           switchport nonegotiate
+           switchport trunk allowed vlan 10,50,90
+           ip dhcp snooping trust
+           ip arp inspection trust
            no shutdown
           !
           interface Ethernet0/1
            description to DistSwitch-HQ-1 Ethernet1/0
            switchport trunk encapsulation dot1q
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           spanning-tree guard root
+           switchport nonegotiate
+           switchport trunk allowed vlan 10,50,90
+           ip dhcp snooping trust
+           ip arp inspection trust
            no shutdown
           !
-          line vty 0 15
+          interface Ethernet0/2
+           description to Sales PC eth0
+           switchport mode access
+           switchport access vlan 50
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet0/3
+           description to chromium-0 eth0
+           switchport mode access
+           switchport access vlan 20
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           no shutdown
+          !
+          ip dhcp snooping vlan 20
+          no ip dhcp snooping information option
+          ip dhcp snooping database unix:dhcp-snooping.db
+          ip dhcp snooping
+          !
+          arp access-list DAI-DESKS
+           deny ip host 192.168.20.1 mac any log
+           deny ip host 192.168.20.2 mac any log
+           deny ip host 192.168.20.3 mac any log
+           permit ip 192.168.20.96 0.0.0.31 mac any
+           permit ip 192.168.20.128 0.0.0.63 mac any
+           permit ip 192.168.20.192 0.0.0.7 mac any
+          !
+          ip arp inspection filter DAI-DESKS vlan 20
+          ip arp inspection vlan 20
+          !
+          ip access-list standard VTY-MGMT
+           remark SSH to this device only from the management networks
+           permit 192.168.90.0 0.0.0.255
+           permit 172.16.90.0 0.0.0.255
+           permit 10.255.0.0 0.0.0.255
+           deny any log
+          !
+          line vty 0 4
+           access-class VTY-MGMT in
            transport input ssh
            login authentication default
           !
@@ -4686,8 +4745,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           radius server P45-RADIUS
@@ -4818,18 +4877,27 @@ nodes:
           !
           no ip domain lookup
           ip domain-name hq.p45.local
-          ntp server 192.168.90.10
+          ntp server 10.255.0.11 prefer
+          ntp server 10.255.0.12
+          logging host 172.16.80.250
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           radius server P45-RADIUS
            address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
            key 0 P45-RADIUS-KEY
           !
+          line con 0
+           login authentication CONSOLE
+          !
+          vtp mode transparent
+          !
           spanning-tree mode rapid-pvst
           spanning-tree extend system-id
+          spanning-tree loopguard default
           !
           vlan 80
            name SERVERS
@@ -4838,19 +4906,37 @@ nodes:
           !
           interface Vlan90
            description MGMT
-           ip address 192.168.90.42 255.255.255.0
+           ip address 192.168.90.42 255.255.255.128
            no shutdown
           !
+          ip routing
+          ip route 0.0.0.0 0.0.0.0 192.168.90.1
           ip default-gateway 192.168.90.1
           !
-          ! --- Server & Service Connections (VLAN 80) ---
-          !
           interface Ethernet0/0
-           description to DHCP/DNS-HQ-1 eth0
+           description to splunk-0 eth0
            switchport mode access
            switchport access vlan 80
            spanning-tree portfast
            spanning-tree bpduguard enable
+           no shutdown
+          !
+          interface Ethernet0/1
+           description to ServerRoomSwitch-HQ-1 Ethernet0/1
+           switchport trunk encapsulation dot1q
+           switchport mode trunk
+           switchport nonegotiate
+           switchport trunk allowed vlan 80,90
+           ip dhcp snooping trust
+           no shutdown
+          !
+          interface Ethernet0/2
+           description to CoreSwitch-HQ-2 Ethernet1/1
+           switchport trunk encapsulation dot1q
+           switchport mode trunk
+           switchport nonegotiate
+           switchport trunk allowed vlan 80,90
+           ip dhcp snooping trust
            no shutdown
           !
           interface Ethernet0/3
@@ -4861,41 +4947,45 @@ nodes:
            spanning-tree bpduguard enable
            no shutdown
           !
-          interface Ethernet1/1
-           description to splunk-0 eth0
-           switchport mode access
-           switchport access vlan 80
-           spanning-tree portfast
-           spanning-tree bpduguard enable
-           no shutdown
-          !
           interface Ethernet1/0
-           description to ext-conn-0
+           description to DEPRECATED - DNS/DHCP-HQ-1 eth1
            switchport mode access
            switchport access vlan 80
            spanning-tree portfast
            spanning-tree bpduguard enable
            no shutdown
           !
-          ! --- Trunk Connections to Core & HQ Switch (VLANs 80,90) ---
-          !
-          interface Ethernet0/1
-           description to ServerRoomSwitch-HQ-1 Ethernet0/1
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 80,90
-           spanning-tree guard root
+          interface Ethernet1/2
+           description to DC-HQ-2 eth0
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
+           ip dhcp snooping trust
            no shutdown
           !
-          interface Ethernet0/2
-           description to CoreSwitch-HQ-2 Ethernet1/1
-           switchport trunk encapsulation dot1q
-           switchport mode trunk
-           switchport trunk allowed vlan 80,90
-           spanning-tree guard root
+          interface Ethernet1/3
+           description to FileServer-HQ-1 eth1
+           switchport mode access
+           switchport access vlan 80
+           spanning-tree portfast
+           spanning-tree bpduguard enable
            no shutdown
           !
-          line vty 0 15
+          ip dhcp snooping vlan 80
+          no ip dhcp snooping information option
+          ip dhcp snooping database unix:dhcp-snooping.db
+          ip dhcp snooping
+          !
+          ip access-list standard VTY-MGMT
+           remark SSH to this device only from the management networks
+           permit 192.168.90.0 0.0.0.255
+           permit 172.16.90.0 0.0.0.255
+           permit 10.255.0.0 0.0.0.255
+           deny any log
+          !
+          line vty 0 4
+           access-class VTY-MGMT in
            transport input ssh
            login authentication default
           !
@@ -4974,8 +5064,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -5113,8 +5203,8 @@ nodes:
           ip domain-name hq.p45.local
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authentication login CONSOLE local
@@ -5245,8 +5335,8 @@ nodes:
           !
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
@@ -5430,7 +5520,7 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: 160
+    x: 200
     y: 40
     interfaces:
       - id: i0
@@ -5466,27 +5556,30 @@ nodes:
     configuration:
       - name: ios_config.txt
         content: |-
-          !
+          ! Last configuration change at 14:18:35 UTC Mon Oct 5 2026 by admin
+          ! NVRAM config last updated at 14:18:35 UTC Mon Oct 5 2026 by admin
+          version 17.18
+          service timestamps debug datetime msec
+          service timestamps log datetime msec
           hostname DistSwitch-HQ-2
-          !
-          no ip domain lookup
-          ip domain-name hq.p45.local
-          !
-          ntp server 192.168.90.10
-          !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          boot-start-marker
+          boot-end-marker
           aaa new-model
           aaa authentication login default group radius local
+          aaa authentication login CONSOLE local
           aaa authorization exec default group radius local
-          radius server P45-RADIUS
-           address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
-           key 0 P45-RADIUS-KEY
-          !
+          aaa session-id common
+          no ip domain lookup
+          ip cef
+          no ipv6 cef
+          vtp mode transparent
           spanning-tree mode rapid-pvst
+          spanning-tree loopguard default
           spanning-tree extend system-id
           spanning-tree vlan 1-4094 priority 8192
-          !
+          enable secret 9 $9$nco6EK2ivbjwTE$GXxtS6Q2bEYSZ29F6WLEef2RHmQhDQctiVBeXiE8KlQ
+          username admin privilege 15 secret 9 $9$acOBntrEwgQSOE$Fw0o/K.fFfErXu4qy3cWf6Uzy/avXALGRKNpFDQG.Wc
+          vlan internal allocation policy ascending
           vlan 10
            name FINANCE
           vlan 20
@@ -5501,147 +5594,223 @@ nodes:
            name SECURITY
           vlan 70
            name TECHSUP
-          vlan 100
-           name GUEST
           vlan 90
            name MGMT
-          !
+          vlan 100
+           name GUEST
           interface Loopback0
            description Router ID / management
            ip address 10.255.0.22 255.255.255.255
-          !
-          interface Vlan90
-           description MGMT
-           ip address 192.168.90.22 255.255.255.0
-           no shutdown
-          !
-          interface Vlan10
-           description FINANCE gateway
-           ip address 192.168.10.3 255.255.255.0
-           standby version 2
-           standby 10 ip 192.168.10.1
-           standby 10 priority 100
-           standby 10 preempt
-           standby 10 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan20
-           description HR gateway
-           ip address 192.168.20.3 255.255.255.0
-           standby version 2
-           standby 20 ip 192.168.20.1
-           standby 20 priority 100
-           standby 20 preempt
-           standby 20 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan30
-           description IT gateway
-           ip address 192.168.30.3 255.255.255.0
-           standby version 2
-           standby 30 ip 192.168.30.1
-           standby 30 priority 100
-           standby 30 preempt
-           standby 30 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan40
-           description RND gateway
-           ip address 192.168.40.3 255.255.255.0
-           standby version 2
-           standby 40 ip 192.168.40.1
-           standby 40 priority 100
-           standby 40 preempt
-           standby 40 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan50
-           description SALES gateway
-           ip address 192.168.50.3 255.255.255.0
-           standby version 2
-           standby 50 ip 192.168.50.1
-           standby 50 priority 100
-           standby 50 preempt
-           standby 50 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan60
-           description SECURITY gateway
-           ip address 192.168.60.3 255.255.255.0
-           standby version 2
-           standby 60 ip 192.168.60.1
-           standby 60 priority 100
-           standby 60 preempt
-           standby 60 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan70
-           description TECHSUP gateway
-           ip address 192.168.70.3 255.255.255.0
-           standby version 2
-           standby 70 ip 192.168.70.1
-           standby 70 priority 100
-           standby 70 preempt
-           standby 70 timers msec 250 msec 750
-           no shutdown
-          !
-          interface Vlan100
-           description GUEST gateway
-           ip address 192.168.100.3 255.255.255.0
-           standby version 2
-           standby 100 ip 192.168.100.1
-           standby 100 priority 100
-           standby 100 preempt
-           standby 100 timers msec 250 msec 750
-           no shutdown
-          !
+           ip ospf 1 area 0
           interface Ethernet0/0
            description to CoreSwitch-HQ-2 Ethernet0/2
            no switchport
            ip address 10.255.1.10 255.255.255.252
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
            ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
-           no shutdown
-          !
           interface Ethernet0/1
-           description to FloorSwitch-HQ-2 Ethernet0/0
+           description to AccessSwitch-HQ-2 Ethernet0/0
            switchport trunk encapsulation dot1q
+           switchport trunk allowed vlan 10,20,50,90
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           no shutdown
-          !
+           switchport nonegotiate
           interface Ethernet0/2
            description to DistSwitch-HQ-1 Ethernet0/2
            switchport trunk encapsulation dot1q
+           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
            switchport mode trunk
-           switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,90,100
-           no shutdown
-          !
+           switchport nonegotiate
           interface Ethernet0/3
            description to CoreSwitch-HQ-1 Ethernet1/0
            no switchport
            ip address 10.255.1.6 255.255.255.252
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
            ip ospf network point-to-point
+           ip ospf dead-interval minimal hello-multiplier 4
            ip ospf 1 area 0
-           no shutdown
-          !
           interface Ethernet1/0
-           description to FloorSwitch-HQ-1 Ethernet0/1
+           description to AccessSwitch-HQ-1 Ethernet0/1
            switchport trunk encapsulation dot1q
+           switchport trunk allowed vlan 10,20,90
            switchport mode trunk
-           switchport trunk allowed vlan 10,20,30,40,50,60,70,90,100
-           no shutdown
-          !
+           switchport nonegotiate
+          interface Ethernet1/1
+          interface Ethernet1/2
+          interface Ethernet1/3
+          interface Vlan10
+           description FINANCE gateway
+           ip address 192.168.10.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 10 ip 192.168.10.1
+           standby 10 timers msec 250 msec 750
+           standby 10 priority 100
+           standby 10 preempt delay minimum 90
+           standby 10 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan20
+           description HR gateway
+           ip address 192.168.20.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 20 ip 192.168.20.1
+           standby 20 timers msec 250 msec 750
+           standby 20 priority 100
+           standby 20 preempt delay minimum 90
+           standby 20 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan30
+           description IT gateway
+           ip address 192.168.30.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 30 ip 192.168.30.1
+           standby 30 timers msec 250 msec 750
+           standby 30 priority 100
+           standby 30 preempt delay minimum 90
+           standby 30 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan40
+           description RND gateway
+           ip address 192.168.40.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 40 ip 192.168.40.1
+           standby 40 timers msec 250 msec 750
+           standby 40 priority 100
+           standby 40 preempt delay minimum 90
+           standby 40 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan50
+           description SALES gateway
+           ip address 192.168.50.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 50 ip 192.168.50.1
+           standby 50 timers msec 250 msec 750
+           standby 50 priority 100
+           standby 50 preempt delay minimum 90
+           standby 50 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan60
+           description SECURITY gateway
+           ip address 192.168.60.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 60 ip 192.168.60.1
+           standby 60 timers msec 250 msec 750
+           standby 60 priority 100
+           standby 60 preempt delay minimum 90
+           standby 60 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan70
+           description TECHSUP gateway
+           ip address 192.168.70.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           standby version 2
+           standby 70 ip 192.168.70.1
+           standby 70 timers msec 250 msec 750
+           standby 70 priority 100
+           standby 70 preempt delay minimum 90
+           standby 70 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan90
+           description MGMT (HQ dist-side half, routed)
+           ip address 192.168.90.150 255.255.255.128
+           standby version 2
+           standby 90 ip 192.168.90.129
+           standby 90 timers msec 250 msec 750
+           standby 90 priority 100
+           standby 90 preempt delay minimum 90
+           standby 90 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
+          interface Vlan100
+           description GUEST gateway
+           ip address 192.168.100.3 255.255.255.0
+           ip helper-address 192.168.80.61
+           ip helper-address 172.16.80.53
+           ip access-group GUEST-IN in
+           standby version 2
+           standby 100 ip 192.168.100.1
+           standby 100 timers msec 250 msec 750
+           standby 100 priority 100
+           standby 100 preempt delay minimum 90
+           standby 100 authentication md5 key-string <P45_HSRP_KEY>
+           ip ospf authentication message-digest
+           ip ospf message-digest-key 1 md5 <P45_OSPF_KEY>
+           ip ospf 1 area 0
           router ospf 1
            router-id 10.255.0.22
            passive-interface default
            no passive-interface Ethernet0/0
            no passive-interface Ethernet0/3
-          !
-          line vty 0 15
+          ip forward-protocol nd
+          ip http server
+          ip http secure-server
+          ip ssh bulk-mode 131072
+          ip access-list standard VTY-MGMT
+           10 remark SSH to this device only from the management networks
+           10 permit 192.168.90.0 0.0.0.255
+           20 permit 172.16.90.0 0.0.0.255
+           30 permit 10.255.0.0 0.0.0.255
+           40 deny any log
+          ip access-list extended GUEST-IN
+           10 remark Guest VLAN - DHCP, DNS, own gateway, public website, then internet only
+           10 permit udp any any eq bootps
+           20 permit udp any host 192.168.80.61 eq domain
+           30 permit tcp any host 192.168.80.61 eq domain
+           40 permit udp any host 172.16.80.53 eq domain
+           50 permit tcp any host 172.16.80.53 eq domain
+           60 permit icmp any 192.168.100.0 0.0.0.255
+           70 permit tcp any host 10.50.100.20 eq www
+           80 permit tcp any host 10.50.100.20 eq 443
+           90 permit icmp any host 10.50.100.20
+           100 deny ip any 10.0.0.0 0.255.255.255 log
+           110 deny ip any 172.16.0.0 0.15.255.255 log
+           120 deny ip any 192.168.0.0 0.0.255.255 log
+           130 permit ip any any
+          no logging btrace
+          logging host 172.16.80.250
+          radius server P45-RADIUS
+           address ipv4 192.168.80.20 auth-port 1812 acct-port 1813
+           key P45-RADIUS-KEY
+          control-plane
+          line con 0
+           logging synchronous
+           login authentication CONSOLE
+          line aux 0
+          line vty 0 4
+           access-class VTY-MGMT in
            transport input ssh
-           login authentication default
-          !
+          ntp server 10.255.0.11 prefer
+          ntp server 10.255.0.12
           end
     cpu_limit: null
     cpus: null
@@ -5703,8 +5872,8 @@ nodes:
           !
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
@@ -5922,8 +6091,8 @@ nodes:
           !
           ntp server 192.168.90.10
           !
-          username admin privilege 15 secret 0 autp45cml
-          enable secret 0 autp45cml
+          username admin privilege 15 secret 0 <CML_PASSWORD>
+          enable secret 0 <CML_PASSWORD>
           aaa new-model
           aaa authentication login default group radius local
           aaa authorization exec default group radius local
@@ -6967,84 +7136,6 @@ nodes:
         type: physical
         slot: 1
   - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n36
-    image_definition: null
-    label: Sales PC
-    node_definition: desktop
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 400
-    y: 520
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n37
-    image_definition: null
-    label: Tech/support dept PC
-    node_definition: desktop
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: -720
-    y: 280
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n38
-    image_definition: null
-    label: desktop-2
-    node_definition: desktop
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 200
-    y: 480
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
     configuration:
       - name: boot.sh
         content: |-
@@ -7087,7 +7178,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n39
+    id: n36
     image_definition: null
     label: Internet-WebServer-1
     node_definition: nginx
@@ -7152,7 +7243,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n40
+    id: n37
     image_definition: null
     label: WebsiteServer-HQ-1
     node_definition: nginx
@@ -7207,7 +7298,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n41
+    id: n38
     image_definition: null
     label: WebsiteServer-DR-1
     node_definition: nginx
@@ -7329,7 +7420,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n42
+    id: n39
     image_definition: null
     label: DNS-DMZ-HQ-2
     node_definition: dnsmasq
@@ -7456,7 +7547,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n43
+    id: n40
     image_definition: null
     label: DNS-DMZ-DR-2
     node_definition: dnsmasq
@@ -7487,7 +7578,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n44
+    id: n41
     image_definition: null
     label: desktop-3
     node_definition: desktop
@@ -7724,7 +7815,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n45
+    id: n42
     image_definition: null
     label: splunk-0
     node_definition: splunk
@@ -7751,7 +7842,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n46
+    id: n43
     image_definition: server2025
     label: DC-DR-1
     node_definition: win2025
@@ -7782,7 +7873,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n47
+    id: n44
     image_definition: server2025-core
     label: FileServer-DR-1
     node_definition: win2025
@@ -7828,7 +7919,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n48
+    id: n45
     image_definition: server2025
     label: DC-HQ-2
     node_definition: win2025
@@ -7874,7 +7965,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n49
+    id: n46
     image_definition: server2025-core
     label: FileServer-HQ-1
     node_definition: win2025
@@ -7920,7 +8011,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n50
+    id: n47
     image_definition: null
     label: ext-conn-0
     node_definition: external_connector
@@ -7941,72 +8032,6 @@ nodes:
         type: physical
         slot: 0
   - boot_disk_size: null
-    configuration: []
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n51
-    image_definition: null
-    label: Finance PC
-    node_definition: desktop
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 0
-    y: 480
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
-    configuration:
-      - name: boot.sh
-        content: |-
-          ip link set eth0 up
-          ip addr flush dev eth0 2>/dev/null || true
-          ip addr add 192.168.20.250/24 dev eth0 2>/dev/null || true
-          ip route add default via 192.168.20.1 2>/dev/null || true
-          exit 0
-      - name: environment
-        content: |-
-          # -- These are understood by the start script
-          # -- Homepage to open at start (needs network!)
-          HOME_URL=http://10.50.1.20/
-          # -- Wait additional time for network before starting Chromium
-          WAIT=2
-    cpu_limit: null
-    cpus: null
-    data_volume: null
-    hide_links: false
-    id: n52
-    image_definition: chromium-147-0-7727-137-1-deb13u1
-    label: chromium-0
-    node_definition: chromium
-    parameters: {}
-    priority: null
-    pyats:
-      username: null
-      password: null
-      enable_password: null
-    ram: null
-    tags: []
-    x: 560
-    y: 520
-    interfaces:
-      - id: i0
-        label: eth0
-        mac_address: null
-        type: physical
-        slot: 0
-  - boot_disk_size: null
     configuration:
       - name: boot.sh
         content: |-
@@ -8023,7 +8048,7 @@ nodes:
     cpus: null
     data_volume: null
     hide_links: false
-    id: n53
+    id: n48
     image_definition: syslog-4-8-1-5-deb13u1
     label: SIEM-Collector-DR-1
     node_definition: syslog
@@ -8035,8 +8060,8 @@ nodes:
       enable_password: null
     ram: null
     tags: []
-    x: -1760
-    y: -40
+    x: -1640
+    y: -120
     interfaces:
       - id: i0
         label: eth0
@@ -8058,6 +8083,267 @@ nodes:
         mac_address: null
         type: physical
         slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n49
+    image_definition: null
+    label: syslog-0
+    node_definition: syslog
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 960
+    y: -80
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i2
+        label: eth2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i3
+        label: eth3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n50
+    image_definition: null
+    label: VPN Provider
+    node_definition: iosv
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 600
+    y: -960
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i2
+        label: GigabitEthernet0/1
+        mac_address: null
+        type: physical
+        slot: 1
+      - id: i3
+        label: GigabitEthernet0/2
+        mac_address: null
+        type: physical
+        slot: 2
+      - id: i4
+        label: GigabitEthernet0/3
+        mac_address: null
+        type: physical
+        slot: 3
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n51
+    image_definition: win10-sata
+    label: Finance PC (win10)
+    node_definition: win10
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 4096
+    tags: []
+    x: 120
+    y: 520
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: 100
+    cpus: 2
+    data_volume: null
+    hide_links: false
+    id: n52
+    image_definition: null
+    label: Sales PC (win10)
+    node_definition: win10
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 4069
+    tags: []
+    x: 480
+    y: 520
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: 100
+    cpus: 2
+    data_volume: null
+    hide_links: false
+    id: n53
+    image_definition: null
+    label: WFH user (win10)
+    node_definition: win10
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 4096
+    tags: []
+    x: 480
+    y: -1160
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: 100
+    cpus: 2
+    data_volume: null
+    hide_links: false
+    id: n54
+    image_definition: null
+    label: Support PC (win10)
+    node_definition: win10
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: 4096
+    tags: []
+    x: -720
+    y: 280
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        type: physical
+        slot: 0
+      - id: i1
+        label: eth1
+        mac_address: null
+        type: physical
+        slot: 1
+  - boot_disk_size: null
+    configuration:
+      - name: default
+        content: NAT
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n55
+    image_definition: null
+    label: Internet-NAT-ISP-1
+    node_definition: external_connector
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 80
+    y: -980
+    interfaces:
+      - id: i0
+        label: port
+        mac_address: null
+        type: physical
+        slot: 0
+  - boot_disk_size: null
+    configuration:
+      - name: default
+        content: NAT
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n56
+    image_definition: null
+    label: Internet-NAT-ISP-2
+    node_definition: external_connector
+    parameters: {}
+    priority: null
+    pyats:
+      username: null
+      password: null
+      enable_password: null
+    ram: null
+    tags: []
+    x: 320
+    y: -980
+    interfaces:
+      - id: i0
+        label: port
+        mac_address: null
+        type: physical
+        slot: 0
 links:
   - id: l0
     n1: n3
@@ -8382,62 +8668,55 @@ links:
     conditioning: {}
     label: HomeRouter-WFH-Ethernet0/0<->ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/3
   - id: l46
-    n1: n31
-    n2: n13
-    i1: i2
-    i2: i0
-    conditioning: {}
-    label: HomeRouter-WFH-Ethernet0/1<->WFH user (VPN client)-eth0
-  - id: l47
     n1: n33
     n2: n16
     i1: i0
     i2: i4
     conditioning: {}
     label: DNS-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/3
-  - id: l48
+  - id: l47
     n1: n7
     n2: n12
     i1: i3
     i2: i1
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/0
-  - id: l49
+  - id: l48
     n1: n7
     n2: n11
     i1: i4
     i2: i3
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/2
-  - id: l50
+  - id: l49
     n1: n8
     n2: n12
     i1: i3
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/1
-  - id: l51
+  - id: l50
     n1: n8
     n2: n11
     i1: i5
     i2: i2
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/4<->EdgeRouter-DR-2-GigabitEthernet0/1
-  - id: l52
+  - id: l51
     n1: n6
     n2: n12
     i1: i3
     i2: i3
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/2<->EdgeRouter-DR-1-GigabitEthernet0/2
-  - id: l53
+  - id: l52
     n1: n6
     n2: n11
     i1: i4
     i2: i1
     conditioning: {}
     label: ISP-HQ-3 (Satellite)-GigabitEthernet0/3<->EdgeRouter-DR-2-GigabitEthernet0/0
-  - id: l54
+  - id: l53
     n1: n7
     n2: n8
     i1: i5
@@ -8445,307 +8724,314 @@ links:
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/4<->ISP-HQ-2 (Terrestrial
       Fibre)-GigabitEthernet0/5
-  - id: l55
+  - id: l54
     n1: n7
     n2: n6
     i1: i6
     i2: i5
     conditioning: {}
     label: ISP-HQ-1 (Terrestrial Fibre) -GigabitEthernet0/5<->ISP-HQ-3 (Satellite)-GigabitEthernet0/4
-  - id: l56
+  - id: l55
     n1: n8
     n2: n6
     i1: i7
     i2: i6
     conditioning: {}
     label: ISP-HQ-2 (Terrestrial Fibre)-GigabitEthernet0/6<->ISP-HQ-3 (Satellite)-GigabitEthernet0/5
-  - id: l57
-    n1: n22
-    n2: n36
-    i1: i3
-    i2: i0
-    conditioning: {}
-    label: FloorSwitch-HQ-2-Ethernet0/2<->desktop-0-eth0
-  - id: l58
-    n1: n37
-    n2: n18
-    i1: i0
-    i2: i4
-    conditioning: {}
-    label: desktop-1-eth0<->DepartmentSwitch-DR-TechnicalSupport-Ethernet0/3
-  - id: l59
-    n1: n38
-    n2: n21
-    i1: i0
-    i2: i4
-    conditioning: {}
-    label: desktop-2-eth0<->FloorSwitch-HQ-1-Ethernet0/3
-  - id: l60
+  - id: l56
     n1: n30
     n2: n20
     i1: i7
     i2: i3
     conditioning: {}
     label: CoreSwitch-HQ-2-Ethernet1/2<->CoreSwitch-DR-2-Ethernet0/2
-  - id: l61
-    n1: n39
+  - id: l57
+    n1: n36
     n2: n7
     i1: i0
     i2: i7
     conditioning: {}
     label: Internet-WebServer-1-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/6
-  - id: l62
-    n1: n39
+  - id: l58
+    n1: n36
     n2: n8
     i1: i1
     i2: i8
     conditioning: {}
     label: Internet-WebServer-1-eth1<->ISP-2 (Terrestrial Fibre)-GigabitEthernet0/7
-  - id: l63
-    n1: n39
+  - id: l59
+    n1: n36
     n2: n6
     i1: i2
     i2: i7
     conditioning: {}
     label: Internet-WebServer-1-eth2<->ISP-3 (Satellite)-GigabitEthernet0/6
-  - id: l64
+  - id: l60
     n1: n29
     n2: n19
     i1: i9
     i2: i3
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet2/0<->CoreSwitch-DR-1-Ethernet0/2
-  - id: l65
+  - id: l61
     n1: n0
     n2: n25
     i1: i5
     i2: i1
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/4<->DMZSwitch-HQ-1-Ethernet0/0
-  - id: l66
+  - id: l62
     n1: n34
     n2: n25
     i1: i0
     i2: i2
     conditioning: {}
     label: DNS-DMZ-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/1
-  - id: l67
-    n1: n42
+  - id: l63
+    n1: n39
     n2: n25
     i1: i0
     i2: i3
     conditioning: {}
     label: DNS-DMZ-HQ-2-eth0<->DMZSwitch-HQ-1-Ethernet0/2
-  - id: l68
-    n1: n40
+  - id: l64
+    n1: n37
     n2: n25
     i1: i0
     i2: i4
     conditioning: {}
     label: WebsiteServer-HQ-1-eth0<->DMZSwitch-HQ-1-Ethernet0/3
-  - id: l69
+  - id: l65
     n1: n1
     n2: n26
     i1: i5
     i2: i1
     conditioning: {}
     label: Firewall-HQ-2-GigabitEthernet0/4<->DMZSwitch-HQ-2-Ethernet0/0
-  - id: l70
+  - id: l66
     n1: n34
     n2: n26
     i1: i1
     i2: i2
     conditioning: {}
     label: DNS-DMZ-HQ-1-eth1<->DMZSwitch-HQ-2-Ethernet0/1
-  - id: l71
-    n1: n42
+  - id: l67
+    n1: n39
     n2: n26
     i1: i1
     i2: i3
     conditioning: {}
     label: DNS-DMZ-HQ-2-eth1<->DMZSwitch-HQ-2-Ethernet0/2
-  - id: l72
+  - id: l68
     n1: n3
     n2: n14
     i1: i6
     i2: i1
     conditioning: {}
     label: Firewall-DR-1-GigabitEthernet0/5<->DMZSwitch-DR-1-Ethernet0/0
-  - id: l73
+  - id: l69
     n1: n35
     n2: n14
     i1: i0
     i2: i2
     conditioning: {}
     label: DNS-DMZ-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/1
-  - id: l74
-    n1: n43
+  - id: l70
+    n1: n40
     n2: n14
     i1: i0
     i2: i3
     conditioning: {}
     label: DNS-DMZ-DR-2-eth0<->DMZSwitch-DR-1-Ethernet0/2
-  - id: l75
-    n1: n41
+  - id: l71
+    n1: n38
     n2: n14
     i1: i0
     i2: i4
     conditioning: {}
     label: WebsiteServer-DR-1-eth0<->DMZSwitch-DR-1-Ethernet0/3
-  - id: l76
+  - id: l72
     n1: n4
     n2: n15
     i1: i6
     i2: i1
     conditioning: {}
     label: Firewall-DR-2-GigabitEthernet0/5<->DMZSwitch-DR-2-Ethernet0/0
-  - id: l77
+  - id: l73
     n1: n35
     n2: n15
     i1: i1
     i2: i2
     conditioning: {}
     label: DNS-DMZ-DR-1-eth1<->DMZSwitch-DR-2-Ethernet0/1
-  - id: l78
-    n1: n43
+  - id: l74
+    n1: n40
     n2: n15
     i1: i1
     i2: i3
     conditioning: {}
     label: DNS-DMZ-DR-2-eth1<->DMZSwitch-DR-2-Ethernet0/2
-  - id: l79
+  - id: l75
     n1: n14
     n2: n15
     i1: i5
     i2: i5
     conditioning: {}
     label: DMZSwitch-DR-1-Ethernet1/0<->DMZSwitch-DR-2-Ethernet1/0
-  - id: l80
+  - id: l76
     n1: n29
     n2: n1
     i1: i10
     i2: i6
     conditioning: {}
     label: CoreSwitch-HQ-1-Ethernet2/1<->Firewall-HQ-2-GigabitEthernet0/5
-  - id: l81
+  - id: l77
     n1: n0
     n2: n30
     i1: i6
     i2: i8
     conditioning: {}
     label: Firewall-HQ-1-GigabitEthernet0/5<->CoreSwitch-HQ-2-Ethernet1/3
-  - id: l82
-    n1: n44
+  - id: l78
+    n1: n41
     n2: n7
     i1: i0
     i2: i8
     conditioning: {}
     label: desktop-3-eth0<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/7
-  - id: l83
+  - id: l79
     n1: n32
     n2: n23
     i1: i0
     i2: i5
     conditioning: {}
     label: DNS-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet1/0
-  - id: l84
+  - id: l80
     n1: n32
     n2: n24
     i1: i1
     i2: i5
     conditioning: {}
     label: DNS-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/0
-  - id: l85
-    n1: n46
+  - id: l81
+    n1: n43
     n2: n16
     i1: i0
     i2: i1
     conditioning: {}
     label: WIN-DR-1-eth0<->ServerRoomSwitch-DR-1-Ethernet0/0
-  - id: l86
-    n1: n46
+  - id: l82
+    n1: n43
     n2: n17
     i1: i1
     i2: i2
     conditioning: {}
     label: WIN-DR-1-eth1<->ServerRoomSwitch-DR-2-Ethernet0/1
-  - id: l87
-    n1: n48
+  - id: l83
+    n1: n45
     n2: n24
     i1: i0
     i2: i7
     conditioning: {}
     label: win2025-2-eth0<->ServerRoomSwitch-HQ-2-Ethernet1/2
-  - id: l88
-    n1: n48
+  - id: l84
+    n1: n45
     n2: n23
     i1: i1
     i2: i6
     conditioning: {}
     label: win2025-2-eth1<->ServerRoomSwitch-HQ-1-Ethernet1/1
-  - id: l89
+  - id: l85
     n1: n16
-    n2: n47
+    n2: n44
     i1: i5
     i2: i0
     conditioning: {}
     label: ServerRoomSwitch-DR-1-Ethernet1/0<->FileServer-DR-1-eth0
-  - id: l90
+  - id: l86
     n1: n17
-    n2: n47
+    n2: n44
     i1: i4
     i2: i1
     conditioning: {}
     label: ServerRoomSwitch-DR-2-Ethernet0/3<->FileServer-DR-1-eth1
-  - id: l91
-    n1: n49
+  - id: l87
+    n1: n46
     n2: n23
     i1: i0
     i2: i4
     conditioning: {}
     label: FileServer-HQ-1-eth0<->ServerRoomSwitch-HQ-1-Ethernet0/3
-  - id: l92
-    n1: n49
+  - id: l88
+    n1: n46
     n2: n24
     i1: i1
     i2: i8
     conditioning: {}
     label: FileServer-HQ-1-eth1<->ServerRoomSwitch-HQ-2-Ethernet1/3
-  - id: l93
-    n1: n51
-    n2: n21
-    i1: i0
-    i2: i3
-    conditioning: {}
-    label: desktop-4-eth0<->AccessSwitch-HQ-1-Ethernet0/2
-  - id: l94
-    n1: n45
+  - id: l89
+    n1: n42
     n2: n24
     i1: i0
     i2: i1
     conditioning: {}
     label: splunk-0-eth0<->ServerRoomSwitch-HQ-2-Ethernet0/0
-  - id: l95
-    n1: n50
+  - id: l90
+    n1: n47
     n2: n24
     i1: i0
     i2: i6
     conditioning: {}
     label: ext-conn-0-port<->ServerRoomSwitch-HQ-2-Ethernet1/1
-  - id: l96
-    n1: n22
-    n2: n52
-    i1: i4
-    i2: i0
-    conditioning: {}
-    label: AccessSwitch-HQ-2-Ethernet0/3<->chromium-0-eth0
-  - id: l97
-    n1: n53
+  - id: l91
+    n1: n48
     n2: n16
     i1: i0
     i2: i6
     conditioning: {}
     label: syslog-0-eth0<->ServerRoomSwitch-DR-1-Ethernet1/1
+  - id: l92
+    n1: n51
+    n2: n21
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: Finance PC-eth0<->AccessSwitch-HQ-1-Ethernet0/2
+  - id: l93
+    n1: n52
+    n2: n22
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: Sales PC (win10)-eth0<->AccessSwitch-HQ-2-Ethernet0/2
+  - id: l94
+    n1: n54
+    n2: n18
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: win10-1-eth0<->AccessSwitch-DR-1-Ethernet0/3
+  - id: l95
+    n1: n31
+    n2: n53
+    i1: i2
+    i2: i0
+    conditioning: {}
+    label: HomeRouter-WFH-Ethernet0/1<->win10-0-eth0
+  - id: l96
+    n1: n55
+    n2: n7
+    i1: i0
+    i2: i9
+    conditioning: {}
+    label: Internet-NAT-ISP-1-port<->ISP-1 (Terrestrial Fibre)-GigabitEthernet0/8
+  - id: l97
+    n1: n56
+    n2: n8
+    i1: i0
+    i2: i9
+    conditioning: {}
+    label: Internet-NAT-ISP-2-port<->ISP-2 (Terrestrial Fibre)-GigabitEthernet0/8
 lab:
   description: ''
   notes: ''
